@@ -35,7 +35,7 @@ The HyperFrames MCP `compose` cannot trim or cut his footage. It mutes his video
 3. **Transcript:** run `caption_strips.sh`, then Read each capN.png. Choose:
    - **Pop words** (8–12): words he stresses, highlighted words that matter, numbered points. Keep about 4–5 s or more between them.
    - **Cards** (3–5): key sentences as `top` (small gold) + `title` (1–2 big gold lines) + `sub` (white). Use `dna:true` for heritage, memory or generation ideas.
-   - **End card:** start it just before he says the CTA. Use the CTA he actually says (e.g. "KLIK DI LINK BIO"); otherwise use "KOMEN NAK".
+   - **End card (since 5 Nov 2026):** NO class promo. He said "KELAS ONLINE PERCUMA" looks cheap ("nampak murahan"). Use the compact card: `label:"BERGABUNG BERSAMA"`, `big:"KOMUNITI KAMI"`, `platform:""`, `question:""`, `cta_text:"KLIK LINK BIO"` (empty platform and question switch to the shorter 380 px panel). Start it just before "Saya Rafee Ailiah". See `assets/timeline_orang_baik.json`.
    - Skip pops over an inserted image or cover that already has its own title.
 4. **Refine times** at 10 fps (16×1 strips around each target). A pop starts when the yellow highlight lands on the word, or about 0.1 s before.
 5. **Timeline JSON:** set duration, pops, cards, end, `accent` (rgb; change the palette per video so it differs from the last one: cyan `110,215,255`, violet `180,140,255`, red `255,110,90`…), and `head_y`.

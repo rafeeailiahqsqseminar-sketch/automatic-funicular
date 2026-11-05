@@ -59,10 +59,12 @@ const cardEls=CARDS.map(c=>{
 // end card
 const ep=document.createElement('div');ep.className='panel';ep.style.top='80px';ep.style.height='560px';root.appendChild(ep);
 const e1=mk('small',END.label||'KELAS ONLINE',120);
-const e2=mk('gold',END.big||'PERCUMA',168,'font-size:150px');
-const e3=mk('white',END.platform||'Web &nbsp;•&nbsp; Telegram',332,'font-size:46px');
-const e4=mk('white',END.question||'Ingin meneruskan kelas ini?',430,'font-size:44px;font-weight:500');
-const e5=mk('gold',END.cta_text||'KOMEN NAK',496,'font-size:'+fit(END.cta_text||'KOMEN NAK',118)+'px');
+const COMPACT=END.platform===''&&END.question==='';
+if(COMPACT)ep.style.height='380px';
+const e2=mk('gold',END.big||'PERCUMA',COMPACT?178:168,'font-size:'+fit(END.big||'PERCUMA',150)+'px');
+const e3=mk('white',COMPACT?'':END.platform||'Web &nbsp;•&nbsp; Telegram',332,'font-size:46px');
+const e4=mk('white',COMPACT?'':END.question||'Ingin meneruskan kelas ini?',430,'font-size:44px;font-weight:500');
+const e5=mk('gold',END.cta_text||'KOMEN NAK',COMPACT?318:496,'font-size:'+fit(END.cta_text||'KOMEN NAK',118)+'px');
 
 // ---------- canvas fx ----------
 const cv=document.getElementById('fx'),cx=cv.getContext('2d');
