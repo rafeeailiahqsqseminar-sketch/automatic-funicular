@@ -144,16 +144,7 @@ function moto(x,y,s,a,rot){if(a<=0)return;cx.save();cx.globalAlpha=a;cx.translat
 function note(x,y,r,a){if(a<=0)return;cx.save();cx.globalAlpha=a;cx.translate(x,y);cx.rotate(r);
   const g=cx.createLinearGradient(-40,-20,40,20);g.addColorStop(0,'#FFE58A');g.addColorStop(1,'#E39A10');cx.fillStyle=g;rrect(-42,-22,84,44,6);cx.fill();
   cx.strokeStyle='rgba(70,35,0,.9)';cx.lineWidth=3;cx.stroke();cx.fillStyle='rgba(70,35,0,.95)';cx.font='900 22px "Inter Display"';cx.textAlign='center';cx.textBaseline='middle';cx.fillText('RM',0,1);cx.restore()}
-function intro(t){if(!INTRO)return;const u=t-INTRO.t0,D=INTRO.t1-INTRO.t0;if(u<0||u>D)return;
-  const A=clamp(u/.3)*clamp((D-u)/.3),slide=(1-eOut(u/.45))*60;
-  const X=90,Y=90+slide,W=900,H=470;
-  cx.save();cx.globalAlpha=A;
-  // glass navy panel
-  const pg=cx.createRadialGradient(540,Y,0,540,Y,900);pg.addColorStop(0,'rgba(18,48,92,.88)');pg.addColorStop(.7,'rgba(4,10,26,.92)');
-  cx.shadowColor='rgba(255,170,30,.5)';cx.shadowBlur=40;cx.fillStyle=pg;rrect(X,Y,W,H,44);cx.fill();cx.shadowBlur=0;
-  cx.strokeStyle='rgba(255,200,70,.95)';cx.lineWidth=3;cx.stroke();
-  // clip inside panel
-  rrect(X+3,Y+3,W-6,H-6,41);cx.clip();
+function sceneKaya(u,X,Y,W,H,slide){
   // grid
   cx.strokeStyle='rgba('+ACC+',.13)';cx.lineWidth=2;for(let gy=Y+80;gy<Y+H-100;gy+=70){cx.beginPath();cx.moveTo(X+40,gy);cx.lineTo(X+W-40,gy);cx.stroke()}
   // chart: up (gold) then crash (red)
@@ -182,6 +173,55 @@ function intro(t){if(!INTRO)return;const u=t-INTRO.t0,D=INTRO.t1-INTRO.t0;if(u<0
     let x=cxp+vx*Math.min(k,1.1),y=gy-90+vy*Math.min(k,1.1)+150*Math.min(k,1.1)**2;
     if(u>1.3){const f=u-1.3;y+=420*f*f;x+=vx*.3*f}
     note(x,y,rs*k,clamp(k/.15)*clamp(1-(u-1.6)/.4))}
+}
+// scene 'orang_baik': 4 pillars hold a gold roof; the glowing "orang baik" pillar cracks red and vanishes -> roof tilts, cracks, debris
+function sceneOrangBaik(u,X,Y,W,H,slide){
+  const G=Y+H-50,RT=Y+95,RB=RT+70,xs=[290,430,650,790],good=2;
+  cx.strokeStyle='rgba('+ACC+',.35)';cx.lineWidth=3;cx.beginPath();cx.moveTo(X+50,G);cx.lineTo(X+W-50,G);cx.stroke();
+  const rise=eOut(u/.6),gone=clamp((u-1.05)/.3),tilt=eBack(clamp((u-1.25)/.5))*.13,sh=u>1.25&&u<1.75?Math.sin(u*80)*7*(1-(u-1.25)/.5):0;
+  cx.save();cx.translate(sh,0);
+  // pillars
+  xs.forEach((px,i)=>{
+    let a=1,top=RB+(1-rise)*(G-RB);
+    if(i===good){a=1-gone}
+    if(i>=good&&i!==good){top+=tilt*(px-xs[0])*.9}
+    if(a<=0)return;cx.save();cx.globalAlpha*=a;
+    const w=i===good?62:52;
+    if(i===good){cx.shadowColor='rgba(255,210,90,1)';cx.shadowBlur=36+10*Math.sin(u*8)}
+    cx.fillStyle=goldFill(top,G);rrect(px-w/2,top,w,G-top,8);cx.fill();cx.shadowBlur=0;cx.strokeStyle='rgba(60,28,0,.9)';cx.lineWidth=4;cx.stroke();
+    cx.fillStyle='rgba(255,250,220,.5)';rrect(px-w/2+8,top+8,8,G-top-16,4);cx.fill();
+    if(i===good){ // heart on the good pillar
+      const hy=(top+G)/2;cx.fillStyle='rgba(255,255,245,.95)';cx.beginPath();cx.moveTo(px,hy+14);cx.bezierCurveTo(px-26,hy-4,px-12,hy-24,px,hy-10);cx.bezierCurveTo(px+12,hy-24,px+26,hy-4,px,hy+14);cx.fill();
+      const ck=clamp((u-.8)/.3); // red cracks before vanishing
+      if(ck>0){cx.strokeStyle='rgba(255,60,40,'+ck+')';cx.lineWidth=4;cx.beginPath();cx.moveTo(px-20,top+20);cx.lineTo(px+6,top+70);cx.lineTo(px-10,top+120);cx.lineTo(px+14,G-30);cx.stroke()}
+    }
+    cx.restore()});
+  // shards of the vanished pillar
+  if(gone>0&&gone<1||u>1.05&&u<1.9){const r=rng(9);for(let i=0;i<14;i++){const k=u-1.05;const x=xs[good]+(r()-.5)*60+(r()-.5)*260*k,y=(RB+G)/2+(r()-.5)*200+380*k*k-120*k;
+    cx.fillStyle='rgba(255,'+(120+r()*100|0)+',60,'+clamp(1-k/.85)+')';cx.save();cx.translate(x,y);cx.rotate(k*6*(r()-.5));cx.fillRect(-9,-6,18,12);cx.restore()}}
+  // roof (rotates around the left end after the pillar is gone)
+  const ra=rise;cx.save();cx.globalAlpha*=ra;cx.translate(xs[0]-60,RB);cx.rotate(tilt);
+  cx.shadowColor='rgba(255,170,30,.8)';cx.shadowBlur=24;cx.fillStyle=goldFill(-120,0);
+  cx.beginPath();cx.moveTo(-20,0);cx.lineTo(xs[3]-xs[0]+140,0);cx.lineTo(xs[3]-xs[0]+100,-70);cx.lineTo(20,-70);cx.closePath();cx.fill();cx.shadowBlur=0;cx.strokeStyle='rgba(60,28,0,.9)';cx.lineWidth=4;cx.stroke();
+  cx.beginPath();cx.moveTo(20,-70);cx.lineTo((xs[3]-xs[0]+120)/2,-150);cx.lineTo(xs[3]-xs[0]+100,-70);cx.closePath();cx.fillStyle=goldFill(-150,-70);cx.fill();cx.stroke();
+  const cr=clamp((u-1.35)/.35); // roof cracks
+  if(cr>0){cx.strokeStyle='rgba(255,60,40,'+cr+')';cx.lineWidth=5;cx.shadowColor='rgba(255,60,40,1)';cx.shadowBlur=14;
+    [[400,-150],[520,-60]].forEach(([x0,y0],j)=>{cx.beginPath();cx.moveTo(x0,y0);for(let k=1;k<=4;k++)cx.lineTo(x0+(k%2?18:-14)*(j?1:-1),y0+k*20*cr);cx.stroke()});cx.shadowBlur=0}
+  cx.restore();cx.restore();
+  // debris falling from the roof
+  if(u>1.4){const r=rng(21);for(let i=0;i<10;i++){const k=u-1.4-r()*.3;if(k<0)continue;const x=xs[2]+(r()-.3)*300,y=RT+40+420*k*k;cx.fillStyle='rgba(230,170,70,'+clamp(1-k/.9)+')';cx.fillRect(x,y,8+r()*8,8+r()*8)}}
+}
+function intro(t){if(!INTRO)return;const u=t-INTRO.t0,D=INTRO.t1-INTRO.t0;if(u<0||u>D)return;
+  const A=clamp(u/.3)*clamp((D-u)/.3),slide=(1-eOut(u/.45))*60;
+  const X=90,Y=90+slide,W=900,H=470;
+  cx.save();cx.globalAlpha=A;
+  // glass navy panel
+  const pg=cx.createRadialGradient(540,Y,0,540,Y,900);pg.addColorStop(0,'rgba(18,48,92,.88)');pg.addColorStop(.7,'rgba(4,10,26,.92)');
+  cx.shadowColor='rgba(255,170,30,.5)';cx.shadowBlur=40;cx.fillStyle=pg;rrect(X,Y,W,H,44);cx.fill();cx.shadowBlur=0;
+  cx.strokeStyle='rgba(255,200,70,.95)';cx.lineWidth=3;cx.stroke();
+  // clip inside panel
+  rrect(X+3,Y+3,W-6,H-6,41);cx.clip();
+  if(INTRO.scene==='orang_baik')sceneOrangBaik(u,X,Y,W,H,slide);else sceneKaya(u,X,Y,W,H,slide);
   cx.restore();
   sparkles(t,INTRO.t0,1.2,Y+H/2,55,30,450);
 }
