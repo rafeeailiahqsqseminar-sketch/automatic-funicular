@@ -1,0 +1,123 @@
+{
+ "_note": "Contoh sebenar: video 'Kaya Sekejap' (91.67 s, 5 Nov 2026), dengan mukadimah animasi. Masa = saat dalam video sumber.",
+ "duration": 91.6667,
+ "accent": "180,140,255",
+ "head_y": 400,
+ "opening_end": 3.3,
+ "pop_hold": 1.35,
+ "pops": [
+  [
+   6.8,
+   "BERGAYA"
+  ],
+  [
+   11.8,
+   "GOYAH"
+  ],
+  [
+   16.3,
+   "MERANGKAK"
+  ],
+  [
+   32.3,
+   "LOAN GAJAH"
+  ],
+  [
+   39.8,
+   "POKET KOSONG"
+  ],
+  [
+   49.3,
+   "1. BEBAS HUTANG"
+  ],
+  [
+   52.8,
+   "2. BELI TUNAI"
+  ],
+  [
+   59.3,
+   "PUJIAN BODOH"
+  ],
+  [
+   65.8,
+   "TAK MAMPU"
+  ],
+  [
+   72.3,
+   "CERMIN"
+  ],
+  [
+   83.8,
+   "BERANI JUJUR"
+  ]
+ ],
+ "cards": [
+  {
+   "t": 2.45,
+   "d": 2.9,
+   "top": "KENAPA RAMAI",
+   "title": [
+    "KAYA",
+    "SEKEJAP?"
+   ],
+   "sub": "lepas tu merempat balik",
+   "dna": false
+  },
+  {
+   "t": 21.8,
+   "d": 3.0,
+   "top": "RAMAI PANDAI CARI DUIT",
+   "title": [
+    "GAGAL",
+    "KEKAL"
+   ],
+   "sub": "kekayaan",
+   "dna": false
+  },
+  {
+   "t": 42.8,
+   "d": 3.4,
+   "top": "TERPAKSALAH",
+   "title": [
+    "HUTANG"
+   ],
+   "sub": "keliling pinggang",
+   "dna": false
+  },
+  {
+   "t": 46.8,
+   "d": 2.3,
+   "top": "KAYA SEBENARNYA",
+   "title": [
+    "MUDAH"
+   ],
+   "sub": "",
+   "dna": false
+  },
+  {
+   "t": 76.8,
+   "d": 3.6,
+   "top": "TAPI DALAM SENYAP",
+   "title": [
+    "KORANG",
+    "TERSEKSA"
+   ],
+   "sub": "separuh mati bayar ansuran",
+   "dna": false
+  }
+ ],
+ "end": {
+  "t": 86.9,
+  "cta": 87.4,
+  "cta_text": "KOMEN NAK",
+  "label": "KELAS ONLINE",
+  "big": "PERCUMA",
+  "platform": "Web &nbsp;•&nbsp; Telegram",
+  "question": "Ingin meneruskan kelas ini?"
+ },
+ "intro": {
+  "t0": 0.15,
+  "t1": 2.55,
+  "scene": "kaya_sekejap"
+ }
+}
