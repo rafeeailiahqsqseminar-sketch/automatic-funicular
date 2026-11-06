@@ -171,7 +171,7 @@ const SceneCinta: React.FC<{f: number; fps: number; cy: number}> = ({f, fps, cy}
 
 // ---------- scene: kewangan ----------
 const fmtRM = (n: number) => 'RM ' + Math.round(n).toLocaleString('en-US');
-const SceneKewangan: React.FC<{f: number; fps: number; cy: number}> = ({f, fps, cy}) => {
+export const SceneKewangan: React.FC<{f: number; fps: number; cy: number}> = ({f, fps, cy}) => {
   const base = cy + 150;
   const H = [90, 140, 185, 240, 300];
   const crash = spring({frame: f - 40, fps, config: {damping: 12}});
