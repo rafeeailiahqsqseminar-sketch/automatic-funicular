@@ -76,3 +76,10 @@ The HyperFrames MCP `compose` cannot trim or cut his footage. It mutes his video
 - No background music unless asked (an uploaded backsound file counts as asking). Wooshes stay soft.
 - Fonts available: Inter / Inter Display (Black, ExtraBold, Bold…). Poppins is NOT installed.
 - If he says "stop" or "stop dulu": stop the running job (TaskStop) and confirm in one line.
+
+## Remotion (gaya pro, 6 Nov 2026), saved and liked, not yet used on a real video
+- Code: repo folder `remotion-rafee/` (Remotion 4.0.538). `npm install`, then `npx remotion render src/index.ts Cinta|Kewangan out.mp4`. The browser path is set in `remotion.config.ts` (Playwright headless shell).
+- Look: slow camera push-in plus a punch on the title, word-by-word blur-in title, one key word on a coloured box (pink for love, red for money), typewriter sub, gold flash between the illustration and the title, and a vignette.
+- Scenes: `cinta` (man and woman joined by a light thread, beating heart) and `kewangan` (RM counter up to 10,000, then red crash, falling coins, flying RM note). Both sit on the chest (`sceneY`, `cardY`).
+- `CintaOverlay` / `KewanganOverlay` render without footage (transparent, for overlaying in ffmpeg). Put the source clip in `public/` and set `bg`.
+- The title texts are suggestions he has not approved yet. Confirm them before a full render.
