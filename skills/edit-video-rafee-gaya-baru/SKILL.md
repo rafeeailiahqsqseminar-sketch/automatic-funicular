@@ -96,3 +96,6 @@ The HyperFrames MCP `compose` cannot trim or cut his footage. It mutes his video
 
 ## Caption TikTok
 - Every caption ends with the topic hashtags, then a blank line, then `#komuniti` on its own last line (his own format, 6 Nov 2026). Save each caption as `skrip/Caption_<Tajuk>.txt`.
+
+## End card (latest, 6 Nov 2026)
+- Do not use class promos on the end card (not even "KELAS JANJI JIWA / DAFTAR SEKARANG"). Use only **"KLIK LINK DI BIO"**, even when he promotes a class in the video.
