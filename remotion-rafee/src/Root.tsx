@@ -4,6 +4,8 @@ import {FullVideo, FullVideoProps} from './FullVideo';
 import duitData from './data/duit.json';
 import {Quantum, QuantumProps} from './Quantum';
 import quantumData from './data/quantum.json';
+import lepas1Data from './data/lepas_p1.json';
+import lepas2Data from './data/lepas_p2.json';
 
 const FPS = 30;
 const base = {width: 1080, height: 1920, fps: FPS, durationInFrames: Math.round(5.6 * FPS)};
@@ -103,8 +105,48 @@ const quantum: QuantumProps = {
   ],
 };
 
+// Melepaskan Keinginan (IMG_2626, 8.5 min) split into Part 1 (masalah) and Part 2 (jalan keluar); pauses cut by tools/prep_srt.py
+const UNGU = '#7C3AED';
+const lepasBase = {scene: 'none' as const, sceneY: 0, cardY: 440, zoomY: 820, captionY: 1500};
+const lepas1: FullVideoProps = {
+  ...lepasBase,
+  src: 'bg_lepas_p1.mp4',
+  fg: 'fg_lepas_p1.webm',
+  words: lepas1Data.words,
+  header: {top: 'PART 1', title: ['MELEPASKAN', 'KEINGINAN'], y: 850, fs: 128, accent: UNGU},
+  intro: {t: 7.0, d: 6.5, top: 'PERNAHKAH ANDA RASA', title: ['TERPERANGKAP?'], accent: UNGU},
+  cards: [
+    {t: 39.0, d: 5.8, top: 'TAPI ADAKAH MUNGKIN', title: ['KEINGINAN INI', 'MENAMBAH SAKIT?'], hl: 'SAKIT', accent: UNGU},
+    {t: 64.5, d: 6.0, top: 'TAHUKAH ANDA', title: ['DINDING', 'EMOSI'], hl: 'EMOSI', accent: UNGU},
+    {t: 85.3, d: 6.6, top: 'TANPA SEDAR KITA JADI', title: ['TAWANAN', 'KEINGINAN'], hl: 'TAWANAN', accent: UNGU},
+    {t: 105.1, d: 7.6, top: 'SEMAKIN LARI DARI DERITA', title: ['SEMAKIN', 'TERPERANGKAP'], hl: 'TERPERANGKAP', accent: UNGU},
+    {t: 143.7, d: 5.8, top: 'BERSAMBUNG', title: ['PART 2'], sub: 'Rahsia kebebasan sejati', hl: '2', accent: UNGU},
+  ],
+};
+const lepas2: FullVideoProps = {
+  ...lepasBase,
+  src: 'bg_lepas_p2.mp4',
+  fg: 'fg_lepas_p2.webm',
+  words: lepas2Data.words,
+  header: {top: 'PART 2', title: ['KUNCI', 'PENERIMAAN'], y: 850, fs: 128, accent: UNGU},
+  intro: {t: 4.4, d: 6.0, top: 'RAHSIA KEBEBASAN SEJATI', title: ['PENERIMAAN'], accent: UNGU},
+  cards: [
+    {t: 20.5, d: 7.0, top: 'TAPI DENGAN', title: ['MENERIMA', 'DIRI KITA'], hl: 'MENERIMA', accent: UNGU},
+    {t: 43.1, d: 8.6, top: 'KETENANGAN', title: ['SUDAH ADA', 'DALAM DIRI'], hl: 'ADA', accent: UNGU},
+    {t: 63.3, d: 5.6, top: 'ITULAH KUNCI KEPADA', title: ['KEBEBASAN', 'EMOSI'], hl: 'KEBEBASAN', accent: UNGU},
+    {t: 71.9, d: 7.0, top: 'KELAS JANJI JIWA', title: ['SENI', 'MELEPASKAN'], hl: 'MELEPASKAN', accent: UNGU},
+    {t: 114.5, d: 6.2, top: 'KETENANGAN SEJATI DATANG DARI', title: ['PENERIMAAN', 'DIRI'], hl: 'PENERIMAAN', accent: UNGU},
+    {t: 136.3, d: 10.5, top: '', title: ['KLIK LINK', 'DI BIO'], hl: 'BIO', accent: '#E8312A'},
+  ],
+};
+const noCards = {words: undefined, cards: [], intro: {t: 999, d: 1, top: '', title: ['']}};
+
 export const Root: React.FC = () => (
   <>
+    <Composition id="Lepas1" component={FullVideo} defaultProps={lepas1} width={1080} height={1920} fps={30} durationInFrames={Math.floor(lepas1Data.duration * 30)} />
+    <Composition id="Lepas2" component={FullVideo} defaultProps={lepas2} width={1080} height={1920} fps={30} durationInFrames={Math.floor(lepas2Data.duration * 30)} />
+    <Composition id="Lepas1Cover" component={FullVideo} defaultProps={{...lepas1, ...noCards, coverText: 'Tawanan kepada keinginan?'}} width={1080} height={1920} fps={30} durationInFrames={Math.floor(lepas1Data.duration * 30)} />
+    <Composition id="Lepas2Cover" component={FullVideo} defaultProps={{...lepas2, ...noCards, coverText: 'Rahsia kebebasan sejati'}} width={1080} height={1920} fps={30} durationInFrames={Math.floor(lepas2Data.duration * 30)} />
     <Composition id="DuniaQuantum" component={Quantum} defaultProps={quantum} width={1080} height={1920} fps={25} durationInFrames={Math.round(quantumData.duration * 25)} />
     <Composition id="DuitCepatHabis" component={FullVideo} defaultProps={duit} width={1080} height={1920} fps={30} durationInFrames={Math.floor(duitData.duration * 30)} />
     <Composition id="Memaafkan" component={FullVideo} defaultProps={memaafkan} width={1080} height={1920} fps={30} durationInFrames={3836} />
