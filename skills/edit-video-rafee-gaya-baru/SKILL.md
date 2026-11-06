@@ -77,9 +77,14 @@ The HyperFrames MCP `compose` cannot trim or cut his footage. It mutes his video
 - Fonts available: Inter / Inter Display (Black, ExtraBold, Bold…). Poppins is NOT installed.
 - If he says "stop" or "stop dulu": stop the running job (TaskStop) and confirm in one line.
 
-## Remotion (gaya pro, 6 Nov 2026), saved and liked, not yet used on a real video
+## Remotion (gaya pro), APPROVED on a full video ("3 Tanda Kau Memaafkan", 6 Nov 2026: "ok semua")
+- Full-video workflow: `remotion-rafee/src/FullVideo.tsx` (composition `Memaafkan` in `Root.tsx`). Copy the source .MOV to `remotion-rafee/public/`, then copy the `memaafkan` props and change `src`, `intro` and `cards`. Set `durationInFrames` = duration × 30.
+- When he sends an .srt, use it for the card times (no caption strips needed). Card text = his own words. Use `top` for "TANDA PERTAMA/KEDUA…", a 1–2 line `title`, and `hl` for the key word on the coloured box. Add a card at the "klik link bio" CTA and at "komen …".
+- Placement for a seated chest shot: `sceneY 1130`, `cardY 1190`. Keep cards above his captions (top ≈1420).
+- Audio: `mix_music.sh` (music at -22 dB), then `make_sfx.py` with a small json (`cards[].t` = each card time, `end.t` = the CTA card time), then amix both. Render with `--muted`, then mux the audio with ffmpeg. Make a 720p `_tg.mp4` under 9 MB. A 2-minute render takes about 5 minutes with 4 cores.
+- Default for his next videos: Remotion gaya pro. Use the old overlay.html pipeline only if he asks for it.
 - Code: repo folder `remotion-rafee/` (Remotion 4.0.538). `npm install`, then `npx remotion render src/index.ts Cinta|Kewangan out.mp4`. The browser path is set in `remotion.config.ts` (Playwright headless shell).
 - Look: slow camera push-in plus a punch on the title, word-by-word blur-in title, one key word on a coloured box (pink for love, red for money), typewriter sub, gold flash between the illustration and the title, and a vignette.
 - Scenes: `cinta` (man and woman joined by a light thread, beating heart) and `kewangan` (RM counter up to 10,000, then red crash, falling coins, flying RM note). Both sit on the chest (`sceneY`, `cardY`).
 - `CintaOverlay` / `KewanganOverlay` render without footage (transparent, for overlaying in ffmpeg). Put the source clip in `public/` and set `bg`.
-- The title texts are suggestions he has not approved yet. Confirm them before a full render.
+- New title texts that are not his own words need his OK before a full render.
