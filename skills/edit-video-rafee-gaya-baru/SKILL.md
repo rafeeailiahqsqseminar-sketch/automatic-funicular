@@ -88,3 +88,8 @@ The HyperFrames MCP `compose` cannot trim or cut his footage. It mutes his video
 - Scenes: `cinta` (man and woman joined by a light thread, beating heart) and `kewangan` (RM counter up to 10,000, then red crash, falling coins, flying RM note). Both sit on the chest (`sceneY`, `cardY`).
 - `CintaOverlay` / `KewanganOverlay` render without footage (transparent, for overlaying in ffmpeg). Put the source clip in `public/` and set `bg`.
 - New title texts that are not his own words need his OK before a full render.
+
+## Footage WITHOUT burned captions (Kenapa Duit Cepat Habis, 6 Nov 2026)
+- Cut long pauses first, because there are no burned captions to desync. Run `ffmpeg silencedetect=noise=-35dB:d=1.0`, trim each pause over 1.4 s down to about 0.8 s, and cut dead air (smiling, waiting). Then run `remotion-rafee/tools/prep_srt.py SRT OUT.json DUR "a-b,..." "Rafi Alia=>Rafee Ailiah" audio.f32` to get word timing on the new timeline (spread over voiced time) plus the cut points. Jump cuts alternate the framing between 1.0 and 1.07.
+- Karaoke captions (`src/Captions.tsx`): white Inter Display 900 with a black outline, the spoken word turns yellow, 3 words per chunk, about y 1470.
+- He said "bahagian kepala macam kosong": when no card is on screen, keep a header above the head with a badge, a 1-2-3 step tracker and a BIG 2-line title (fs 128) set BEHIND his head. Make the person cutout with `tools/person_matte.py` (MediaPipe selfie_multiclass model, needs `apt-get install libegl1 libgles2`; it takes about 5 min for 100 s of footage). Then pass `fg: 'fg_x.webm'` and `header.y` (the centre of the last line, so his hair covers its bottom).
