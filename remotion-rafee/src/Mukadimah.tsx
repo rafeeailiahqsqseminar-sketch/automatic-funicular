@@ -30,9 +30,9 @@ const CARD_T0 = 2.45;
 const CARD_T1 = 5.35;
 
 const GOLD = ['#FFF6C8', '#FFD45A', '#F2B023', '#B86A00'];
-const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
+export const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
 
-const GoldDefs: React.FC = () => (
+export const GoldDefs: React.FC = () => (
   <defs>
     <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stopColor={GOLD[0]} />
@@ -59,10 +59,10 @@ const GoldDefs: React.FC = () => (
   </defs>
 );
 
-const HEART = 'M0,-30 C-12,-66 -80,-52 -76,-10 C-72,22 -26,42 0,70 C26,42 72,22 76,-10 C80,-52 12,-66 0,-30 Z';
+export const HEART = 'M0,-30 C-12,-66 -80,-52 -76,-10 C-72,22 -26,42 0,70 C26,42 72,22 76,-10 C80,-52 12,-66 0,-30 Z';
 
 // ---------- soft navy glow so gold reads on a white shirt / bright wall ----------
-const Backdrop: React.FC<{y: number; h: number; o: number}> = ({y, h, o}) => (
+export const Backdrop: React.FC<{y: number; h: number; o: number}> = ({y, h, o}) => (
   <div
     style={{
       position: 'absolute',
@@ -77,7 +77,7 @@ const Backdrop: React.FC<{y: number; h: number; o: number}> = ({y, h, o}) => (
 );
 
 // ---------- sparkles ----------
-const Sparkles: React.FC<{f: number; cy: number; seed: string; n?: number; spread?: number}> = ({f, cy, seed, n = 40, spread = 460}) => (
+export const Sparkles: React.FC<{f: number; cy: number; seed: string; n?: number; spread?: number}> = ({f, cy, seed, n = 40, spread = 460}) => (
   <g>
     {new Array(n).fill(0).map((_, i) => {
       const x = 540 + (random(seed + 'x' + i) - 0.5) * spread * 2;
@@ -243,7 +243,7 @@ const SceneKewangan: React.FC<{f: number; fps: number; cy: number}> = ({f, fps, 
 };
 
 // ---------- title card: kinetic words, highlight box, typewriter sub ----------
-const TitleCard: React.FC<{
+export const TitleCard: React.FC<{
   f: number; fps: number; dur: number; y: number; top: string; title: string[]; sub: string; hl: string; accent: string;
 }> = ({f, fps, dur, y, top, title, sub, hl, accent}) => {
   const out = interpolate(f, [dur - 9, dur], [0, 1], clamp);
