@@ -22,6 +22,7 @@ The HyperFrames MCP `compose` cannot trim or cut his footage. It mutes his video
 - `final_render.sh SRC SEQ voice.wav sfx.wav DUR OUTBASE`: scale/crop to 1080×1920, overlay, mix, crf 20, plus a `_tg.mp4` under 9 MB (720p, bitrate set from the duration).
 - `assets/timeline_example.json`: the real Ilmu Leluhur timeline. Copy it and edit it for each video.
 - `assets/timeline_kaya_sekejap.json`: a real timeline WITH the animated intro (`intro` + first card at ~2.45 s).
+- `assets/timeline_orang_baik.json`: intro scene `orang_baik` + compact end card ("KOMUNITI KAMI").
 - `assets/timeline_memaafkan.json`: intro + title on the CHEST, no box, no pops, no end card (the latest approved look).
 - `assets/timeline_cover_memaafkan.json`: timeline for the cover photo (one frame).
 - `mix_music.sh SRC MUSIC DUR OUT.wav [dB]`: cleaned voice + background music at -22 dB (fade in 1 s, out 3 s). Use its output as voice.wav.
@@ -36,7 +37,7 @@ The HyperFrames MCP `compose` cannot trim or cut his footage. It mutes his video
 - **Placement:** he wants the intro animation AND the title **in the middle of the chest** (`intro.y≈1060, h≈340, box:false`; card `y≈1270`). No black box: `box:false` draws only a small soft navy glow (`backdrop(Y+H*.62,H*.75,.7)`) so it reads on his white shirt without darkening his face. Keep everything above his burned-in captions (top ≈1450).
 - **Title size:** smaller than before, `fs:100` (cover 110). He said "kecilkan".
 - **Timing:** intro 0.15–2.6 s, then title card at 2.45 s for 2.9 s, at the same chest spot.
-- **Illustration:** simple story figures tied to the topic. Built-in scenes: `kaya_sekejap`, `memaafkan` (gold heart cracks, fog, kintsugi seal), `minta_maaf` (gold man walks in, bows with hands together, "Maaf..." bubble; woman in pink tudung crosses arms, turns her face away, grey cloud). Pass extra config with `intro.y`, `intro.h`, `intro.box`.
+- **Illustration:** simple story figures tied to the topic. Built-in scenes: `kaya_sekejap`, `orang_baik` (4 gold pillars hold a roof; the glowing "orang baik" pillar cracks red and vanishes, the roof tilts and cracks), `memaafkan` (gold heart cracks, fog, kintsugi seal), `minta_maaf` (gold man walks in, bows with hands together, "Maaf..." bubble; woman in pink tudung crosses arms, turns her face away, grey cloud). Pass extra config with `intro.y`, `intro.h`, `intro.box`.
 - Card config now takes `y` (centre y) and `fs` (max title font size).
 - If he asks for only "cover + mukadimah", do NOT add pops/cards/end card unless he asks (`pops:[]`, `end.t:999`).
 
@@ -56,7 +57,7 @@ The HyperFrames MCP `compose` cannot trim or cut his footage. It mutes his video
 3. **Transcript:** run `caption_strips.sh`, then Read each capN.png. Choose:
    - **Pop words** (8–12): words he stresses, highlighted words that matter, numbered points. Keep about 4–5 s or more between them.
    - **Cards** (3–5): key sentences as `top` (small gold) + `title` (1–2 big gold lines) + `sub` (white). Use `dna:true` for heritage, memory or generation ideas.
-   - **End card:** start it just before he says the CTA. Use the CTA he actually says (e.g. "KLIK DI LINK BIO"); otherwise use "KOMEN NAK".
+   - **End card (since 5 Nov 2026):** NO class promo. He said "KELAS ONLINE PERCUMA" looks cheap ("nampak murahan"). Use the compact card: `label:"BERGABUNG BERSAMA"`, `big:"KOMUNITI KAMI"`, `platform:""`, `question:""`, `cta_text:"KLIK LINK BIO"` (empty platform and question switch to the shorter 380 px panel). Start it just before "Saya Rafee Ailiah", or before the CTA he actually says. See `assets/timeline_orang_baik.json`.
    - Skip pops over an inserted image or cover that already has its own title.
 4. **Refine times** at 10 fps (16×1 strips around each target). A pop starts when the yellow highlight lands on the word, or about 0.1 s before.
 5. **Timeline JSON:** set duration, pops, cards, end, `accent` (rgb; change the palette per video so it differs from the last one: cyan `110,215,255`, violet `180,140,255`, red `255,110,90`…), and `head_y`.
@@ -75,3 +76,23 @@ The HyperFrames MCP `compose` cannot trim or cut his footage. It mutes his video
 - No background music unless asked (an uploaded backsound file counts as asking). Wooshes stay soft.
 - Fonts available: Inter / Inter Display (Black, ExtraBold, Bold…). Poppins is NOT installed.
 - If he says "stop" or "stop dulu": stop the running job (TaskStop) and confirm in one line.
+
+## Remotion (gaya pro), APPROVED on a full video ("3 Tanda Kau Memaafkan", 6 Nov 2026: "ok semua")
+- Full-video workflow: `remotion-rafee/src/FullVideo.tsx` (composition `Memaafkan` in `Root.tsx`). Copy the source .MOV to `remotion-rafee/public/`, then copy the `memaafkan` props and change `src`, `intro` and `cards`. Set `durationInFrames` = duration × 30.
+- When he sends an .srt, use it for the card times (no caption strips needed). Card text = his own words. Use `top` for "TANDA PERTAMA/KEDUA…", a 1–2 line `title`, and `hl` for the key word on the coloured box. Add a card at the "klik link bio" CTA and at "komen …".
+- Placement for a seated chest shot: `sceneY 1130`, `cardY 1190`. Keep cards above his captions (top ≈1420).
+- Audio: `mix_music.sh` (music at -22 dB), then `make_sfx.py` with a small json (`cards[].t` = each card time, `end.t` = the CTA card time), then amix both. Render with `--muted`, then mux the audio with ffmpeg. Make a 720p `_tg.mp4` under 9 MB. A 2-minute render takes about 5 minutes with 4 cores.
+- Default for his next videos: Remotion gaya pro. Use the old overlay.html pipeline only if he asks for it.
+- Code: repo folder `remotion-rafee/` (Remotion 4.0.538). `npm install`, then `npx remotion render src/index.ts Cinta|Kewangan out.mp4`. The browser path is set in `remotion.config.ts` (Playwright headless shell).
+- Look: slow camera push-in plus a punch on the title, word-by-word blur-in title, one key word on a coloured box (pink for love, red for money), typewriter sub, gold flash between the illustration and the title, and a vignette.
+- Scenes: `cinta` (man and woman joined by a light thread, beating heart) and `kewangan` (RM counter up to 10,000, then red crash, falling coins, flying RM note). Both sit on the chest (`sceneY`, `cardY`).
+- `CintaOverlay` / `KewanganOverlay` render without footage (transparent, for overlaying in ffmpeg). Put the source clip in `public/` and set `bg`.
+- New title texts that are not his own words need his OK before a full render.
+
+## Footage WITHOUT burned captions (Kenapa Duit Cepat Habis, 6 Nov 2026)
+- Cut long pauses first, because there are no burned captions to desync. Run `ffmpeg silencedetect=noise=-35dB:d=1.0`, trim each pause over 1.4 s down to about 0.8 s, and cut dead air (smiling, waiting). Then run `remotion-rafee/tools/prep_srt.py SRT OUT.json DUR "a-b,..." "Rafi Alia=>Rafee Ailiah" audio.f32` to get word timing on the new timeline (spread over voiced time) plus the cut points. Jump cuts alternate the framing between 1.0 and 1.07.
+- Karaoke captions (`src/Captions.tsx`): white Inter Display 900 with a black outline, the spoken word turns yellow, 3 words per chunk, about y 1470.
+- He said "bahagian kepala macam kosong": when no card is on screen, keep a header above the head with a badge, a 1-2-3 step tracker and a BIG 2-line title (fs 128) set BEHIND his head. Make the person cutout with `tools/person_matte.py` (MediaPipe selfie_multiclass model, needs `apt-get install libegl1 libgles2`; it takes about 5 min for 100 s of footage). Then pass `fg: 'fg_x.webm'` and `header.y` (the centre of the last line, so his hair covers its bottom).
+
+## Caption TikTok
+- Every caption ends with the topic hashtags, then a blank line, then `#komuniti` on its own last line (his own format, 6 Nov 2026). Save each caption as `skrip/Caption_<Tajuk>.txt`.
