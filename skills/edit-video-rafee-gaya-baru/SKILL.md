@@ -95,4 +95,4 @@ The HyperFrames MCP `compose` cannot trim or cut his footage. It mutes his video
 - He said "bahagian kepala macam kosong": when no card is on screen, keep a header above the head with a badge, a 1-2-3 step tracker and a BIG 2-line title (fs 128) set BEHIND his head. Make the person cutout with `tools/person_matte.py` (MediaPipe selfie_multiclass model, needs `apt-get install libegl1 libgles2`; it takes about 5 min for 100 s of footage). Then pass `fg: 'fg_x.webm'` and `header.y` (the centre of the last line, so his hair covers its bottom).
 
 ## Caption TikTok
-- Every caption ends with hashtags that START with `#komuniti` (he asked for it on 6 Nov 2026). Save each caption as `skrip/Caption_<Tajuk>.txt`.
+- Every caption ends with the topic hashtags, then a blank line, then `#komuniti` on its own last line (his own format, 6 Nov 2026). Save each caption as `skrip/Caption_<Tajuk>.txt`.
