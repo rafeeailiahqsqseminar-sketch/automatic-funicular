@@ -4,7 +4,7 @@ import {Backdrop, GoldDefs, HEART, SceneKewangan, Sparkles, TitleCard, clamp} fr
 import {Captions, Word} from './Captions';
 
 export type Card = {t: number; d: number; top: string; title: string[]; sub?: string; hl?: string; accent?: string};
-export type Header = {top: string; title: string; y: number; stepLabel?: string; steps?: number[]; accent?: string};
+export type Header = {top: string; title: string | string[]; y: number; fs?: number; stepLabel?: string; steps?: number[]; accent?: string};
 export type FullVideoProps = {
   src: string; // footage in public/
   scene: 'maaf' | 'kewangan';
@@ -14,6 +14,7 @@ export type FullVideoProps = {
   words?: Word[]; // karaoke captions (when the footage has no burned captions)
   captionY?: number;
   header?: Header; // stays above the head whenever no card is on screen
+  fg?: string; // person cutout with alpha (tools/person_matte.py): header goes BEHIND the head
   cardY: number;
   intro: Card; // title card after the illustration
   cards: Card[];
@@ -103,46 +104,43 @@ const SceneMaaf: React.FC<{f: number; fps: number; cy: number}> = ({f, fps, cy})
   );
 };
 
-// ---------- persistent header above the head: topic, step tracker, progress bar ----------
-const HeaderBar: React.FC<{h: Header; frame: number; fps: number; total: number; vis: number}> = ({h, frame, fps, total, vis}) => {
+// ---------- persistent header: badge + step tracker, then the BIG 2-line title (behind the head when fg is set) ----------
+const HeaderBar: React.FC<{h: Header; frame: number; fps: number; vis: number}> = ({h, frame, fps, vis}) => {
   const t = frame / fps;
   const acc = h.accent ?? '#E8312A';
   const steps = h.steps ?? [];
   const cur = steps.filter((s) => t >= s).length;
+  const lines = Array.isArray(h.title) ? h.title : [h.title];
+  const fs = h.fs ?? 150;
   const goldBg = 'linear-gradient(180deg,#FFF6C8 0%,#FFD45A 38%,#F2B023 70%,#B86A00 100%)';
+  const top = h.y - fs / 2 - (lines.length - 1) * fs * 0.98 - 96; // h.y = centre of the LAST line
   return (
     <AbsoluteFill style={{opacity: vis, transform: `translateY(${(1 - vis) * -30}px)`}}>
-      <Backdrop y={h.y} h={420} o={0.75} />
-      <div style={{position: 'absolute', top: h.y - 150, width: 1080, textAlign: 'center'}}>
-        <div style={{display: 'inline-block', fontFamily: 'Inter Display', fontWeight: 800, fontSize: 30, letterSpacing: 6, color: '#FFE9A0',
-          padding: '5px 18px', border: '2px solid rgba(255,212,90,.85)', borderRadius: 30, background: 'rgba(4,14,36,.55)'}}>{h.top}</div>
-        <div style={{marginTop: 10, fontFamily: 'Inter Display', fontWeight: 900, fontSize: 72, lineHeight: 1.05, backgroundImage: goldBg,
-          WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent',
-          filter: 'drop-shadow(0 3px 0 #5A2E00) drop-shadow(0 0 14px rgba(255,170,30,.45))'}}>{h.title}</div>
-        {steps.length ? (
-          <div style={{marginTop: 16, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 14}}>
-            <span style={{fontFamily: 'Inter Display', fontWeight: 800, fontSize: 30, letterSpacing: 4, color: 'white', textShadow: '0 2px 8px rgba(0,0,0,.8)'}}>
-              {h.stepLabel}
-            </span>
-            {steps.map((s, i) => {
-              const on = i < cur;
-              const now = i === cur - 1;
-              const k = spring({frame: frame - Math.round(s * fps), fps, config: {damping: 9}});
-              const pulse = now ? 1 + 0.06 * Math.sin(frame / 5) : 1;
-              return (
-                <div key={i} style={{width: 58, height: 58, borderRadius: 29, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontFamily: 'Inter Display', fontWeight: 900, fontSize: 34,
-                  background: on ? acc : 'rgba(4,14,36,.6)', color: on ? 'white' : 'rgba(255,233,160,.8)',
-                  border: `3px solid ${on ? '#FFE9A0' : 'rgba(255,212,90,.6)'}`,
-                  boxShadow: on ? `0 0 ${18 * k}px ${acc}` : 'none', transform: `scale(${(on ? interpolate(k, [0, 1], [0.6, 1]) : 1) * pulse})`}}>
-                  {i + 1}
-                </div>
-              );
-            })}
-          </div>
-        ) : null}
-        <div style={{margin: '18px auto 0', width: 560, height: 8, borderRadius: 4, background: 'rgba(255,255,255,.25)', overflow: 'hidden'}}>
-          <div style={{width: `${(100 * frame) / total}%`, height: '100%', background: 'linear-gradient(90deg,#F2B023,#FFE9A0)'}} />
+      <Backdrop y={h.y - fs * 0.4} h={560} o={0.6} />
+      <div style={{position: 'absolute', top, width: 1080, textAlign: 'center'}}>
+        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 12, height: 70}}>
+          <div style={{fontFamily: 'Inter Display', fontWeight: 800, fontSize: 30, letterSpacing: 5, color: '#FFE9A0',
+            padding: '6px 18px', border: '2px solid rgba(255,212,90,.85)', borderRadius: 30, background: 'rgba(4,14,36,.6)'}}>{h.top}</div>
+          {steps.map((s, i) => {
+            const on = i < cur;
+            const now = i === cur - 1;
+            const k = spring({frame: frame - Math.round(s * fps), fps, config: {damping: 9}});
+            const pulse = now ? 1 + 0.06 * Math.sin(frame / 5) : 1;
+            return (
+              <div key={i} style={{width: 54, height: 54, borderRadius: 27, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontFamily: 'Inter Display', fontWeight: 900, fontSize: 32,
+                background: on ? acc : 'rgba(4,14,36,.6)', color: on ? 'white' : 'rgba(255,233,160,.8)',
+                border: `3px solid ${on ? '#FFE9A0' : 'rgba(255,212,90,.6)'}`,
+                boxShadow: on ? `0 0 ${18 * k}px ${acc}` : 'none', transform: `scale(${(on ? interpolate(k, [0, 1], [0.6, 1]) : 1) * pulse})`}}>
+                {i + 1}
+              </div>
+            );
+          })}
+        </div>
+        <div style={{marginTop: 26, fontFamily: 'Inter Display', fontWeight: 900, fontSize: fs, lineHeight: 0.98, letterSpacing: -2,
+          backgroundImage: goldBg, WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent',
+          filter: 'drop-shadow(0 5px 0 #5A2E00) drop-shadow(0 0 22px rgba(255,170,30,.5))'}}>
+          {lines.map((l, i) => <div key={i}>{l}</div>)}
         </div>
       </div>
     </AbsoluteFill>
@@ -152,9 +150,9 @@ const HeaderBar: React.FC<{h: Header; frame: number; fps: number; total: number;
 const SCENE_T0 = 0.15;
 const SCENE_T1 = 2.6;
 
-export const FullVideo: React.FC<FullVideoProps> = ({src, scene, sceneY, cardY, intro, cards, zoomY = 700, cuts = [], words, captionY = 1480, header}) => {
+export const FullVideo: React.FC<FullVideoProps> = ({src, scene, sceneY, cardY, intro, cards, zoomY = 700, cuts = [], words, captionY = 1480, header, fg}) => {
   const frame = useCurrentFrame();
-  const {fps, durationInFrames} = useVideoConfig();
+  const {fps} = useVideoConfig();
   const s0 = Math.round(SCENE_T0 * fps);
   const s1 = Math.round(SCENE_T1 * fps);
   const all = [intro, ...cards];
@@ -177,12 +175,23 @@ export const FullVideo: React.FC<FullVideoProps> = ({src, scene, sceneY, cardY, 
     ...win.map(([a, b]) => interpolate(frame, [a - 4, a + 4, b - 4, b + 6], [0, 1, 1, 0], clamp)),
   );
   const flash = Math.max(...win.map(([a]) => interpolate(frame, [a - 2, a, a + 6], [0, 0.7, 0], clamp)));
+  const busy = (fr: number) => fr <= win[0][1] || win.some(([a, b]) => fr >= a - 6 && fr <= b + 6);
+  let hv = 0;
+  for (let d = -8; d <= 8; d++) hv += busy(frame + d) ? 0 : 1;
+  const headerVis = header ? Easing.inOut(Easing.cubic)(hv / 17) : 0;
+  const headerEl = headerVis > 0 && header ? <HeaderBar h={header} frame={frame} fps={fps} vis={headerVis} /> : null;
   const sceneA = interpolate(frame, [s0, s0 + 8, s1 - 8, s1], [0, 1, 1, 0], clamp);
 
   return (
     <AbsoluteFill style={{backgroundColor: 'black', overflow: 'hidden'}}>
       <AbsoluteFill style={{transform: `scale(${zoom})`, transformOrigin: `540px ${zoomY}px`}}>
         <OffthreadVideo src={staticFile(src)} muted style={{width: 1080, height: 1920, objectFit: 'cover'}} />
+        {fg ? headerEl : null}
+        {fg && headerVis > 0 ? (
+          <AbsoluteFill>
+            <OffthreadVideo src={staticFile(fg)} muted transparent style={{width: 1080, height: 1920, objectFit: 'cover'}} />
+          </AbsoluteFill>
+        ) : null}
       </AbsoluteFill>
       <AbsoluteFill
         style={{opacity: active ? vig : 0, background: 'radial-gradient(ellipse 75% 60% at 50% 45%, rgba(0,0,0,0) 55%, rgba(2,8,22,.6) 100%)'}}
@@ -209,15 +218,7 @@ export const FullVideo: React.FC<FullVideoProps> = ({src, scene, sceneY, cardY, 
           </svg>
         </AbsoluteFill>
       ) : null}
-      {header
-        ? (() => {
-            const busy = (fr: number) => fr <= win[0][1] || win.some(([a, b]) => fr >= a - 6 && fr <= b + 6);
-            let v = 0;
-            for (let d = -8; d <= 8; d++) v += busy(frame + d) ? 0 : 1;
-            const vis = Easing.inOut(Easing.cubic)(v / 17);
-            return vis > 0 ? <HeaderBar h={header} frame={frame} fps={fps} total={durationInFrames} vis={vis} /> : null;
-          })()
-        : null}
+      {fg ? null : headerEl}
       {words ? <Captions words={words} y={captionY} /> : null}
       {all.map((c, i) => {
         const [a, b] = win[i];

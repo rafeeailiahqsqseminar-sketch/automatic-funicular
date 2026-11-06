@@ -56,7 +56,8 @@ const duit: FullVideoProps = {
   cuts: duitData.cuts,
   words: duitData.words,
   captionY: 1470,
-  header: {top: 'PSIKOLOGI KEWANGAN', title: 'KENAPA DUIT CEPAT HABIS?', y: 360, stepLabel: 'PERANGKAP', steps: [24.6, 41.0, 57.5], accent: R},
+  fg: 'fg_duit.webm',
+  header: {top: 'PSIKOLOGI KEWANGAN', title: ['KENAPA DUIT', 'CEPAT HABIS?'], y: 655, fs: 128, stepLabel: 'PERANGKAP', steps: [24.6, 41.0, 57.5], accent: R},
   intro: {t: 2.45, d: 2.9, top: 'PSIKOLOGI KEWANGAN', title: ['KENAPA DUIT', 'CEPAT HABIS?'], sub: 'Bukan gaji kecil, tapi tabiat', accent: R},
   cards: [
     {t: 17.6, d: 3.6, top: 'BUKAN GAJI KECIL', title: ['OTAK KITA', 'TIPU KITA'], hl: 'TIPU', accent: R},

@@ -2,3 +2,4 @@ node_modules/
 out/
 public/bg_*.mov
 public/bg_*.mp4
+public/fg_*.webm
