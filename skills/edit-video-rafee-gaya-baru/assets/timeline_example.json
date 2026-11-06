@@ -1,0 +1,18 @@
+{
+  "_note": "Contoh sebenar: video 'Ilmu Leluhur' (176.47 s, 3 Nov 2026). Masa = saat dalam video sumber.",
+  "duration": 176.4667,
+  "accent": "110,215,255",
+  "head_y": 400,
+  "opening_end": 3.3,
+  "pop_hold": 1.35,
+  "pops": [[3.3,"BAYANGKAN"],[5.8,"PENGSAN"],[15.4,"1 SOALAN"],[35.45,"TERINGAT"],[54.2,"IBU JARI DATUK"],
+           [76.1,"ILMU"],[85.0,"BERTAHUN-TAHUN"],[96.2,"TERMENUNG"],[138.5,"DIAKTIFKAN"],[150.0,"TANPA BELAJAR"]],
+  "cards": [
+    {"t":22.1,"d":3.3,"top":"SEBIJI MACAM","title":["ARWAH","DATUK"],"sub":"cara usap dahi yang sama","dna":true},
+    {"t":66.4,"d":3.4,"top":"ITU ADALAH","title":["SENTUHAN"],"sub":"YANG SAMA","dna":false},
+    {"t":110.35,"d":3.2,"top":"TANGAN KAU","title":["BERGERAK","DULU"],"sub":"sebelum sempat teringat","dna":true},
+    {"t":127.95,"d":4.6,"top":"WARISAN MEMORI","title":["PRIVILEGE","DNA"],"sub":"tersimpan rapat dalam jasad","dna":true}
+  ],
+  "end": {"t":165.3,"cta":165.8,"cta_text":"KLIK DI LINK BIO","label":"KELAS ONLINE","big":"PERCUMA",
+          "platform":"Web &nbsp;•&nbsp; Telegram","question":"Ingin meneruskan kelas ini?"}
+}

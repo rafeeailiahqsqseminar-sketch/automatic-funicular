@@ -1,0 +1,36 @@
+{
+ "_note": "Contoh sebenar: '3 Tanda Kau Memaafkan' (127.87 s, 6 Nov 2026). Mukadimah di DADA tanpa kotak (intro.box=false), tajuk kad di dada (cards[].y, fs kecil), tiada pop, tiada end card (end.t=999), muzik latar penuh.",
+ "duration": 127.8667,
+ "accent": "255,120,150",
+ "head_y": 240,
+ "opening_end": 3.3,
+ "pop_hold": 1.35,
+ "pops": [],
+ "cards": [
+  {
+   "t": 2.45,
+   "d": 2.9,
+   "top": "3 TANDA KAU",
+   "title": [
+    "MEMAAFKAN"
+   ],
+   "sub": "atau sekadar melupakan?",
+   "dna": false,
+   "fs": 100,
+   "y": 1270
+  }
+ ],
+ "end": {
+  "t": 999,
+  "cta": 999.5,
+  "cta_text": "KLIK LINK BIO"
+ },
+ "intro": {
+  "t0": 0.15,
+  "t1": 2.6,
+  "scene": "minta_maaf",
+  "y": 1060,
+  "h": 340,
+  "box": false
+ }
+}

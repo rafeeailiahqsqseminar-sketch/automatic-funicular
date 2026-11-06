@@ -1,0 +1,36 @@
+{
+ "_note": "Timeline untuk FOTO COVER (render satu frame t=1.6): intro.t0=-2 supaya animasi sudah di keadaan akhir; kad t=0,d=99; opening_end=0.",
+ "duration": 5.6,
+ "accent": "255,120,150",
+ "head_y": 240,
+ "opening_end": 0,
+ "pop_hold": 1.35,
+ "pops": [],
+ "cards": [
+  {
+   "t": 0,
+   "d": 99,
+   "top": "3 TANDA KAU",
+   "title": [
+    "MEMAAFKAN"
+   ],
+   "sub": "atau sekadar melupakan?",
+   "dna": false,
+   "fs": 110,
+   "y": 1520
+  }
+ ],
+ "end": {
+  "t": 99,
+  "cta": 99.5,
+  "cta_text": "KLIK LINK BIO"
+ },
+ "intro": {
+  "t0": -2,
+  "t1": 50,
+  "scene": "minta_maaf",
+  "y": 990,
+  "h": 330,
+  "box": false
+ }
+}
