@@ -260,7 +260,7 @@ export const TitleCard: React.FC<{
       <Backdrop y={y} h={h + 300} o={interpolate(f, [0, 6], [0, 1], clamp)} />
       <div style={{position: 'absolute', top: y0, width: 1080, textAlign: 'center'}}>
         {/* label with gold lines growing out to the sides */}
-        <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 18, height: 56}}>
+        <div style={{display: top ? 'flex' : 'none', alignItems: 'center', justifyContent: 'center', gap: 18, height: 56}}>
           <div style={{height: 4, width: 120 * lineGrow, background: 'linear-gradient(90deg, rgba(255,212,90,0), #FFD45A)'}} />
           <div
             style={{

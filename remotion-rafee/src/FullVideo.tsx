@@ -2,18 +2,22 @@ import React from 'react';
 import {AbsoluteFill, Easing, OffthreadVideo, interpolate, random, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {Backdrop, GoldDefs, HEART, SceneKewangan, Sparkles, TitleCard, clamp} from './Mukadimah';
 import {Captions, Word} from './Captions';
+import {AnimName, Ilustrasi} from './Ilustrasi';
 
-export type Card = {t: number; d: number; top: string; title: string[]; sub?: string; hl?: string; accent?: string};
+export type Card = {t: number; d: number; top: string; title: string[]; sub?: string; hl?: string; accent?: string; anim?: AnimName};
 export type Header = {top: string; title: string | string[]; y: number; fs?: number; stepLabel?: string; steps?: number[]; accent?: string};
 export type FullVideoProps = {
   src: string; // footage in public/
-  scene: 'maaf' | 'kewangan';
+  scene: 'maaf' | 'kewangan' | 'none';
   sceneY: number;
   zoomY?: number; // y the camera zooms around (keep the top of his head still when cards sit above it)
   cuts?: number[]; // jump-cut points (s): alternate framing 1.0 / 1.06 so cuts look intentional
   words?: Word[]; // karaoke captions (when the footage has no burned captions)
   captionY?: number;
   header?: Header; // stays above the head whenever no card is on screen
+  animY?: number; // centre of the card animations
+  srcBox?: [number, number, number]; // source width, height, black rows on top to hide (CapCut export)
+  coverText?: string; // big pill on the chest (cover photo)
   fg?: string; // person cutout with alpha (tools/person_matte.py): header goes BEHIND the head
   cardY: number;
   intro: Card; // title card after the illustration
@@ -150,9 +154,16 @@ const HeaderBar: React.FC<{h: Header; frame: number; fps: number; vis: number}> 
 const SCENE_T0 = 0.15;
 const SCENE_T1 = 2.6;
 
-export const FullVideo: React.FC<FullVideoProps> = ({src, scene, sceneY, cardY, intro, cards, zoomY = 700, cuts = [], words, captionY = 1480, header, fg}) => {
+export const FullVideo: React.FC<FullVideoProps> = ({src, scene, sceneY, cardY, intro, cards, zoomY = 700, cuts = [], words, captionY = 1480, header, fg, coverText, animY = 680, srcBox}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
+  const vStyle: React.CSSProperties = srcBox
+    ? (() => {
+        const [sw, sh, top] = srcBox;
+        const k = 1920 / (sh - top);
+        return {position: 'absolute', width: sw * k, height: sh * k, top: -top * k, left: (1080 - sw * k) / 2};
+      })()
+    : {width: 1080, height: 1920, objectFit: 'cover'};
   const s0 = Math.round(SCENE_T0 * fps);
   const s1 = Math.round(SCENE_T1 * fps);
   const all = [intro, ...cards];
@@ -175,7 +186,7 @@ export const FullVideo: React.FC<FullVideoProps> = ({src, scene, sceneY, cardY, 
     ...win.map(([a, b]) => interpolate(frame, [a - 4, a + 4, b - 4, b + 6], [0, 1, 1, 0], clamp)),
   );
   const flash = Math.max(...win.map(([a]) => interpolate(frame, [a - 2, a, a + 6], [0, 0.7, 0], clamp)));
-  const busy = (fr: number) => fr <= win[0][1] || win.some(([a, b]) => fr >= a - 6 && fr <= b + 6);
+  const busy = (fr: number) => (scene !== 'none' && fr <= win[0][1]) || win.some(([a, b]) => fr >= a - 6 && fr <= b + 6);
   let hv = 0;
   for (let d = -8; d <= 8; d++) hv += busy(frame + d) ? 0 : 1;
   const headerVis = header ? Easing.inOut(Easing.cubic)(hv / 17) : 0;
@@ -185,18 +196,18 @@ export const FullVideo: React.FC<FullVideoProps> = ({src, scene, sceneY, cardY, 
   return (
     <AbsoluteFill style={{backgroundColor: 'black', overflow: 'hidden'}}>
       <AbsoluteFill style={{transform: `scale(${zoom})`, transformOrigin: `540px ${zoomY}px`}}>
-        <OffthreadVideo src={staticFile(src)} muted style={{width: 1080, height: 1920, objectFit: 'cover'}} />
+        <OffthreadVideo src={staticFile(src)} muted style={vStyle} />
         {fg ? headerEl : null}
         {fg && headerVis > 0 ? (
           <AbsoluteFill>
-            <OffthreadVideo src={staticFile(fg)} muted transparent style={{width: 1080, height: 1920, objectFit: 'cover'}} />
+            <OffthreadVideo src={staticFile(fg)} muted transparent style={vStyle} />
           </AbsoluteFill>
         ) : null}
       </AbsoluteFill>
       <AbsoluteFill
         style={{opacity: active ? vig : 0, background: 'radial-gradient(ellipse 75% 60% at 50% 45%, rgba(0,0,0,0) 55%, rgba(2,8,22,.6) 100%)'}}
       />
-      {frame >= s0 && frame <= s1 ? (
+      {scene !== 'none' && frame >= s0 && frame <= s1 ? (
         <AbsoluteFill style={{opacity: sceneA}}>
           <Backdrop y={sceneY} h={640} o={0.85} />
           <svg width={1080} height={1920} style={{position: 'absolute'}}>
@@ -219,6 +230,11 @@ export const FullVideo: React.FC<FullVideoProps> = ({src, scene, sceneY, cardY, 
         </AbsoluteFill>
       ) : null}
       {fg ? null : headerEl}
+      {all.map((c, i) => {
+        const [a, b] = win[i];
+        if (!c.anim || frame < a || frame > b) return null;
+        return <Ilustrasi key={'il' + i} name={c.anim} f={frame - a} fps={fps} dur={b - a} x={540} y={animY} scale={1.15} />;
+      })}
       {words ? <Captions words={words} y={captionY} /> : null}
       {all.map((c, i) => {
         const [a, b] = win[i];
@@ -242,6 +258,13 @@ export const FullVideo: React.FC<FullVideoProps> = ({src, scene, sceneY, cardY, 
       <AbsoluteFill
         style={{opacity: flash, background: 'radial-gradient(circle at 50% 62%, rgba(255,240,190,1) 0%, rgba(255,200,90,.45) 35%, rgba(255,200,90,0) 70%)'}}
       />
+      {coverText ? (
+        <div style={{position: 'absolute', top: 1380, width: 1080, textAlign: 'center'}}>
+          <span style={{display: 'inline-block', fontFamily: 'Inter Display', fontWeight: 900, fontSize: 74, color: 'white', lineHeight: 1.15,
+            background: header?.accent ?? '#E8312A', borderRadius: 22, padding: '14px 34px', maxWidth: 940,
+            boxShadow: `0 0 40px ${header?.accent ?? '#E8312A'}, 0 8px 0 rgba(0,0,0,.35)`, transform: 'rotate(-2deg)'}}>{coverText}</span>
+        </div>
+      ) : null}
     </AbsoluteFill>
   );
 };
