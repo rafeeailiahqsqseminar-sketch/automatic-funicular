@@ -1,12 +1,14 @@
 import React from 'react';
-import {AbsoluteFill, Easing, OffthreadVideo, interpolate, random, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, Easing, Freeze, OffthreadVideo, interpolate, random, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {clamp} from './Mukadimah';
+import {Captions, Word} from './Captions';
 
 // "Selamat Datang ke Dunia Quantum": vertical layout around a landscape zoom-into-hair clip.
 // Top: fixed title. Middle: the clip (square crop) on a blurred copy of itself. Bottom: Malay stage label + powers-of-ten meter.
 
 export type Stage = {t: number; name: string; size?: string; note: string; exp: number}; // exp = log10(size in metres)
-export type QuantumProps = {src: string; stages: Stage[]; endT: number; titleTop: string; title: string; badge: string};
+export type QuantumProps = {src: string; stages: Stage[]; endT: number; titleTop: string; title: string; badge: string;
+  words?: Word[]; captionY?: number; lastFrame?: number}; // lastFrame: freeze the clip there (VO runs longer than the clip)
 
 const GOLD = 'linear-gradient(180deg,#FFF6C8 0%,#FFD45A 38%,#F2B023 70%,#B86A00 100%)';
 const CYAN = '#38E1FF';
@@ -142,7 +144,7 @@ const EndCard: React.FC<{f: number; fps: number}> = ({f, fps}) => {
   );
 };
 
-export const Quantum: React.FC<QuantumProps> = ({src, stages, endT, titleTop, title, badge}) => {
+export const Quantum: React.FC<QuantumProps> = ({src, stages, endT, titleTop, title, badge, words, captionY = 1400, lastFrame = 1e9}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const t = frame / fps;
@@ -163,14 +165,18 @@ export const Quantum: React.FC<QuantumProps> = ({src, stages, endT, titleTop, ti
     <AbsoluteFill style={{backgroundColor: '#02060E', overflow: 'hidden'}}>
       {/* blurred copy fills the frame */}
       <AbsoluteFill style={{filter: 'blur(36px) brightness(.38) saturate(1.3)', transform: 'scale(1.25)'}}>
-        <OffthreadVideo src={staticFile(src)} muted style={{width: 1080, height: 1920, objectFit: 'cover'}} />
+        <Freeze frame={lastFrame} active={(f) => f >= lastFrame}>
+          <OffthreadVideo src={staticFile(src)} muted style={{width: 1080, height: 1920, objectFit: 'cover'}} />
+        </Freeze>
       </AbsoluteFill>
       <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(2,6,14,.75) 0%, rgba(2,6,14,0) 26%, rgba(2,6,14,0) 78%, rgba(2,6,14,.8) 100%)'}} />
       <Particles frame={frame} />
       {/* main clip: square crop */}
       <div style={{position: 'absolute', top: SQ_TOP, left: 0, width: SQ, height: SQ, overflow: 'hidden',
         boxShadow: `0 0 0 3px rgba(56,225,255,.55), 0 0 60px rgba(56,225,255,.35)`}}>
-        <OffthreadVideo src={staticFile(src)} style={{width: SQ, height: SQ, objectFit: 'cover'}} />
+        <Freeze frame={lastFrame} active={(f) => f >= lastFrame}>
+          <OffthreadVideo src={staticFile(src)} muted style={{width: SQ, height: SQ, objectFit: 'cover'}} />
+        </Freeze>
         <AbsoluteFill style={{background: 'radial-gradient(ellipse at center, rgba(0,0,0,0) 60%, rgba(2,6,14,.55) 100%)'}} />
         <AbsoluteFill style={{background: 'white', opacity: flash}} />
       </div>
@@ -178,6 +184,7 @@ export const Quantum: React.FC<QuantumProps> = ({src, stages, endT, titleTop, ti
       {t < endT + 0.2 ? (
         <StageLabel s={cur} f={frame - Math.round(cur.t * fps)} fps={fps} idx={si} n={stages.length} out={labelOut} key={si} />
       ) : null}
+      {words && t < endT + 0.1 ? <Captions words={words} y={captionY} /> : null}
       <Meter exp={exp} />
       {t >= endT ? <EndCard f={frame - endF} fps={fps} /> : null}
     </AbsoluteFill>
