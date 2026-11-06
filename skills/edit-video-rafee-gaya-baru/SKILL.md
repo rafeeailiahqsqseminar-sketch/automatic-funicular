@@ -22,6 +22,7 @@ The HyperFrames MCP `compose` cannot trim or cut his footage. It mutes his video
 - `final_render.sh SRC SEQ voice.wav sfx.wav DUR OUTBASE`: scale/crop to 1080×1920, overlay, mix, crf 20, plus a `_tg.mp4` under 9 MB (720p, bitrate set from the duration).
 - `assets/timeline_example.json`: the real Ilmu Leluhur timeline. Copy it and edit it for each video.
 - `assets/timeline_kaya_sekejap.json`: a real timeline WITH the animated intro (`intro` + first card at ~2.45 s).
+- `assets/timeline_orang_baik.json`: intro scene `orang_baik` + compact end card ("KOMUNITI KAMI").
 - `assets/timeline_memaafkan.json`: intro + title on the CHEST, no box, no pops, no end card (the latest approved look).
 - `assets/timeline_cover_memaafkan.json`: timeline for the cover photo (one frame).
 - `mix_music.sh SRC MUSIC DUR OUT.wav [dB]`: cleaned voice + background music at -22 dB (fade in 1 s, out 3 s). Use its output as voice.wav.
@@ -36,7 +37,7 @@ The HyperFrames MCP `compose` cannot trim or cut his footage. It mutes his video
 - **Placement:** he wants the intro animation AND the title **in the middle of the chest** (`intro.y≈1060, h≈340, box:false`; card `y≈1270`). No black box: `box:false` draws only a small soft navy glow (`backdrop(Y+H*.62,H*.75,.7)`) so it reads on his white shirt without darkening his face. Keep everything above his burned-in captions (top ≈1450).
 - **Title size:** smaller than before, `fs:100` (cover 110). He said "kecilkan".
 - **Timing:** intro 0.15–2.6 s, then title card at 2.45 s for 2.9 s, at the same chest spot.
-- **Illustration:** simple story figures tied to the topic. Built-in scenes: `kaya_sekejap`, `memaafkan` (gold heart cracks, fog, kintsugi seal), `minta_maaf` (gold man walks in, bows with hands together, "Maaf..." bubble; woman in pink tudung crosses arms, turns her face away, grey cloud). Pass extra config with `intro.y`, `intro.h`, `intro.box`.
+- **Illustration:** simple story figures tied to the topic. Built-in scenes: `kaya_sekejap`, `orang_baik` (4 gold pillars hold a roof; the glowing "orang baik" pillar cracks red and vanishes, the roof tilts and cracks), `memaafkan` (gold heart cracks, fog, kintsugi seal), `minta_maaf` (gold man walks in, bows with hands together, "Maaf..." bubble; woman in pink tudung crosses arms, turns her face away, grey cloud). Pass extra config with `intro.y`, `intro.h`, `intro.box`.
 - Card config now takes `y` (centre y) and `fs` (max title font size).
 - If he asks for only "cover + mukadimah", do NOT add pops/cards/end card unless he asks (`pops:[]`, `end.t:999`).
 
@@ -56,7 +57,7 @@ The HyperFrames MCP `compose` cannot trim or cut his footage. It mutes his video
 3. **Transcript:** run `caption_strips.sh`, then Read each capN.png. Choose:
    - **Pop words** (8–12): words he stresses, highlighted words that matter, numbered points. Keep about 4–5 s or more between them.
    - **Cards** (3–5): key sentences as `top` (small gold) + `title` (1–2 big gold lines) + `sub` (white). Use `dna:true` for heritage, memory or generation ideas.
-   - **End card:** start it just before he says the CTA. Use the CTA he actually says (e.g. "KLIK DI LINK BIO"); otherwise use "KOMEN NAK".
+   - **End card (since 5 Nov 2026):** NO class promo. He said "KELAS ONLINE PERCUMA" looks cheap ("nampak murahan"). Use the compact card: `label:"BERGABUNG BERSAMA"`, `big:"KOMUNITI KAMI"`, `platform:""`, `question:""`, `cta_text:"KLIK LINK BIO"` (empty platform and question switch to the shorter 380 px panel). Start it just before "Saya Rafee Ailiah", or before the CTA he actually says. See `assets/timeline_orang_baik.json`.
    - Skip pops over an inserted image or cover that already has its own title.
 4. **Refine times** at 10 fps (16×1 strips around each target). A pop starts when the yellow highlight lands on the word, or about 0.1 s before.
 5. **Timeline JSON:** set duration, pops, cards, end, `accent` (rgb; change the palette per video so it differs from the last one: cyan `110,215,255`, violet `180,140,255`, red `255,110,90`…), and `head_y`.
