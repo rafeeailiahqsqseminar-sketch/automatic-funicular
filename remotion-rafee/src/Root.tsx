@@ -111,9 +111,8 @@ const lepasBase = {scene: 'none' as const, sceneY: 0, cardY: 440, zoomY: 820, ca
 const lepas1: FullVideoProps = {
   ...lepasBase,
   src: 'bg_lepas_p1.mp4',
-  fg: 'fg_lepas_p1.webm',
   words: lepas1Data.words,
-  header: {top: 'PART 1', title: ['MELEPASKAN', 'KEINGINAN'], y: 850, fs: 128, accent: UNGU},
+  header: {top: 'PART 1', title: ['MELEPASKAN', 'KEINGINAN'], y: 690, fs: 120, accent: UNGU},
   intro: {t: 7.0, d: 6.5, top: 'PERNAHKAH ANDA RASA', title: ['TERPERANGKAP?'], accent: UNGU},
   cards: [
     {t: 39.0, d: 5.8, top: 'TAPI ADAKAH MUNGKIN', title: ['KEINGINAN INI', 'MENAMBAH SAKIT?'], hl: 'SAKIT', accent: UNGU},
@@ -126,9 +125,8 @@ const lepas1: FullVideoProps = {
 const lepas2: FullVideoProps = {
   ...lepasBase,
   src: 'bg_lepas_p2.mp4',
-  fg: 'fg_lepas_p2.webm',
   words: lepas2Data.words,
-  header: {top: 'PART 2', title: ['KUNCI', 'PENERIMAAN'], y: 850, fs: 128, accent: UNGU},
+  header: {top: 'PART 2', title: ['KUNCI', 'PENERIMAAN'], y: 690, fs: 120, accent: UNGU},
   intro: {t: 4.4, d: 6.0, top: 'RAHSIA KEBEBASAN SEJATI', title: ['PENERIMAAN'], accent: UNGU},
   cards: [
     {t: 20.5, d: 7.0, top: 'TAPI DENGAN', title: ['MENERIMA', 'DIRI KITA'], hl: 'MENERIMA', accent: UNGU},
