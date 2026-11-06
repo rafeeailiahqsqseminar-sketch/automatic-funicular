@@ -2,6 +2,8 @@ import {Composition} from 'remotion';
 import {Mukadimah, MukadimahProps} from './Mukadimah';
 import {FullVideo, FullVideoProps} from './FullVideo';
 import duitData from './data/duit.json';
+import {Quantum, QuantumProps} from './Quantum';
+import quantumData from './data/quantum.json';
 
 const FPS = 30;
 const base = {width: 1080, height: 1920, fps: FPS, durationInFrames: Math.round(5.6 * FPS)};
@@ -73,8 +75,37 @@ const duit: FullVideoProps = {
   ],
 };
 
+// Selamat Datang ke Dunia Quantum: stage times read from the clip's own labels
+const quantum: QuantumProps = {
+  src: 'bg_quantum.mp4',
+  badge: 'SAINS · FIZIK QUANTUM',
+  titleTop: 'SELAMAT DATANG KE',
+  title: 'DUNIA QUANTUM',
+  endT: 117.4,
+  words: quantumData.words,
+  lastFrame: 3025,
+  stages: [
+    {t: 0, name: 'JOM ZOOM', note: 'masuk ke dalam sehelai rambut', exp: 0},
+    {t: 16.3, name: 'RAMBUT', size: '100 µm', note: 'Setebal 0.1 milimeter sahaja', exp: -4},
+    {t: 22.7, name: 'SEL', size: '10 µm', note: '10 kali lebih kecil daripada rambut', exp: -5},
+    {t: 29.75, name: 'MAKROFIBRIL', size: '1 µm', note: 'Gentian halus dalam setiap sel', exp: -6},
+    {t: 36.75, name: 'MIKROFIBRIL', size: '10 nm', note: '100 kali lebih halus lagi', exp: -8},
+    {t: 44.25, name: 'PROTOFIBRIL', size: '2.8 nm', note: 'Lilitan protein yang bersambung', exp: -8.55},
+    {t: 51.75, name: 'KERATIN', size: '2 nm', note: 'Protein utama yang membina rambut', exp: -8.7},
+    {t: 59.25, name: 'ATOM', size: '50–90 pm', note: 'Karbon, oksigen, nitrogen dan sulfur', exp: -10.1},
+    {t: 70.65, name: 'KARBON', size: '67 pm', note: 'Asas kepada semua kehidupan', exp: -10.2},
+    {t: 75.5, name: 'ORBITAL ELEKTRON', note: 'Elektron bukan bola, tapi awan kebarangkalian', exp: -10.4},
+    {t: 84.1, name: 'RUANG KOSONG', note: 'Atom hampir 100% ruang kosong', exp: -11.5},
+    {t: 91.35, name: 'NUKLEUS', note: '100,000 kali lebih kecil daripada atom', exp: -14},
+    {t: 98.8, name: 'PROTON & NEUTRON', note: 'Penghuni nukleus atom', exp: -14.6},
+    {t: 101.9, name: 'PROTON', size: '1 fm', note: '0.000 000 000 000 001 meter', exp: -15},
+    {t: 112.25, name: 'KUARK', note: '2 Up + 1 Down. Inilah dunia quantum!', exp: -15},
+  ],
+};
+
 export const Root: React.FC = () => (
   <>
+    <Composition id="DuniaQuantum" component={Quantum} defaultProps={quantum} width={1080} height={1920} fps={25} durationInFrames={Math.round(quantumData.duration * 25)} />
     <Composition id="DuitCepatHabis" component={FullVideo} defaultProps={duit} width={1080} height={1920} fps={30} durationInFrames={Math.floor(duitData.duration * 30)} />
     <Composition id="Memaafkan" component={FullVideo} defaultProps={memaafkan} width={1080} height={1920} fps={30} durationInFrames={3836} />
     <Composition id="Cinta" component={Mukadimah} defaultProps={cinta} {...base} />
