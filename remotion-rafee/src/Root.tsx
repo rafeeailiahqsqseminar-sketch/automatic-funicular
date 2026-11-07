@@ -143,7 +143,7 @@ const noCards = {words: undefined, cards: [], intro: {t: 999, d: 1, top: '', tit
 
 export const Root: React.FC = () => (
   <>
-    <Composition id="BebasMasaLalu" component={BebasMasaLalu} defaultProps={{beats: bebasBeats, audio: 'bebas_ambient.wav'}} width={1080} height={1920} fps={30} durationInFrames={Math.round(beatsTotal(bebasBeats) * 30)} />
+    <Composition id="BebasMasaLalu" component={BebasMasaLalu} defaultProps={{beats: bebasBeats, audio: 'bebas_vo_mix.wav'}} width={1080} height={1920} fps={30} durationInFrames={Math.round(beatsTotal(bebasBeats) * 30)} />
     <Composition id="Lepas1" component={FullVideo} defaultProps={lepas1} width={1080} height={1920} fps={30} durationInFrames={Math.floor(lepas1Data.duration * 30)} />
     <Composition id="Lepas2" component={FullVideo} defaultProps={lepas2} width={1080} height={1920} fps={30} durationInFrames={Math.floor(lepas2Data.duration * 30)} />
     <Composition id="Lepas1Cover" component={FullVideo} defaultProps={{...lepas1, ...noCards, coverText: 'Tawanan kepada keinginan?'}} width={1080} height={1920} fps={30} durationInFrames={Math.floor(lepas1Data.duration * 30)} />

@@ -15,7 +15,7 @@ if (typeof FontFace !== 'undefined') {
 } else continueRender(amiri);
 
 export type Vis = 'bismillah' | 'renung' | 'dna' | 'akbar' | 'hati' | 'beban' | 'mutmainnah' | 'zero' | 'radar' | 'kanvas' | 'fitrah' | 'jemput' | 'akhir';
-export type Beat = {d: number; vis: Vis; text: string; hl?: string[]};
+export type Beat = {d: number; r?: number; vis: Vis; text: string; hl?: string[]}; // r = seconds until the last word is spoken
 export type BebasProps = {beats: Beat[]; audio?: string};
 
 const GOLD = 'linear-gradient(180deg,#FFF6C8 0%,#FFD45A 38%,#F2B023 70%,#B86A00 100%)';
@@ -159,8 +159,8 @@ const Visual: React.FC<{vis: Vis; f: number; fps: number; dur: number}> = ({vis,
       );
     }
     case 'dna': {
-      const solid = interpolate(t, [6.5, 9.5], [1, 0], clamp);
-      const ghost = interpolate(t, [6.0, 10.0], [0, 1], clamp);
+      const solid = interpolate(t, [12.5, 15.5], [1, 0], clamp);
+      const ghost = interpolate(t, [12.0, 16.0], [0, 1], clamp);
       const shimmer = 0.6 + 0.4 * Math.sin(f / 6);
       return (
         <g>
@@ -311,7 +311,7 @@ const Visual: React.FC<{vis: Vis; f: number; fps: number; dur: number}> = ({vis,
     }
     case 'kanvas': {
       const shadowO = interpolate(t, [0, 3, 6.5], [0, 0.7, 0.12], clamp);
-      const canvasK = sp(f - Math.round(5.5 * fps), fps, 16, 90);
+      const canvasK = sp(f - Math.round(7.6 * fps), fps, 16, 90);
       return (
         <g>
           <g transform="translate(-300,40)" opacity={shadowO} filter="url(#bmBlur)">
@@ -332,7 +332,7 @@ const Visual: React.FC<{vis: Vis; f: number; fps: number; dur: number}> = ({vis,
       );
     }
     case 'fitrah': {
-      const clean = interpolate(t, [0.5, 6], [0, 1], {...clamp, easing: ease});
+      const clean = interpolate(t, [4.5, 9], [0, 1], {...clamp, easing: ease});
       const beat = 1 + 0.04 * Math.sin(f / 7);
       return (
         <g>
@@ -391,7 +391,7 @@ const BeatText: React.FC<{b: Beat; f: number; fps: number; dur: number; y: numbe
   const on = markHl(words, b.hl);
   const len = b.text.length;
   const fs = len < 14 ? 104 : len < 40 ? 76 : len < 80 ? 64 : len < 115 ? 58 : 54;
-  const per = Math.min(5, (dur * fps * 0.45) / words.length);
+  const per = b.r ? Math.max(1, (b.r * fps - 4) / Math.max(1, words.length - 1)) : Math.min(5, (dur * fps * 0.45) / words.length);
   const out = interpolate(f, [dur * fps - 10, dur * fps], [1, 0], clamp);
   return (
     <div style={{position: 'absolute', top: y, left: 60, width: 960, textAlign: 'center', opacity: out,
@@ -423,9 +423,9 @@ const Badge: React.FC<{o: number}> = ({o}) => (
 
 const EndCard: React.FC<{f: number; fps: number}> = ({f, fps}) => {
   const k = sp(f, fps, 14, 110);
-  const k2 = sp(f - 14, fps, 10, 160);
-  const k3 = sp(f - 40, fps, 16, 100);
-  const k4 = sp(f - 75, fps, 16, 100);
+  const k2 = sp(f - 70, fps, 10, 160);
+  const k3 = sp(f - 150, fps, 16, 100);
+  const k4 = sp(f - 300, fps, 16, 100);
   const pulse = 1 + 0.035 * Math.sin(f / 6);
   return (
     <AbsoluteFill>
