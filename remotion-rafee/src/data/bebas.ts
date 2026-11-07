@@ -1,0 +1,31 @@
+import {Beat} from '../BebasMasaLalu';
+
+// "Bebas dari Masa Lalu" — the written script, split into beats (text kept word for word).
+export const bebasBeats: Beat[] = [
+  {d: 4.5, vis: 'bismillah', text: 'Bismillahirrahmanirrahim...', hl: ['Bismillahirrahmanirrahim...']},
+  {d: 5, vis: 'renung', text: 'Pernahkah kita merenung sejenak, wahai sahabat...', hl: ['merenung']},
+  {d: 6, vis: 'renung', text: 'di manakah letaknya diri kita yang sebenar di sebalik sibuknya dunia ini?', hl: ['diri kita yang sebenar']},
+  {d: 6.5, vis: 'dna', text: 'Dunia sains hari ini, melalui kajian tentang Efek Fantom DNA, baru sahaja mencakar permukaan sebuah rahsia besar.', hl: ['Efek Fantom DNA', 'rahsia besar.']},
+  {d: 6.5, vis: 'dna', text: 'Saintis terkejut apabila mendapati, walaupun bentuk fizikalnya telah tiada di dalam ruang,', hl: ['telah tiada']},
+  {d: 6.5, vis: 'dna', text: 'gelombang dan jejak tenaga cahaya itu tetap ada, seolah-olah ia masih di situ.', hl: ['jejak tenaga cahaya', 'tetap ada,']},
+  {d: 3.5, vis: 'akbar', text: 'Allahu Akbar...', hl: ['Allahu Akbar...']},
+  {d: 5.5, vis: 'akbar', text: 'Bukankah hakikat ini telah lama diajar oleh para arif billah?', hl: ['arif billah?']},
+  {d: 7, vis: 'hati', text: 'Apa sahaja yang pernah hadir, apa sahaja beban, luka, dan sejarah silam yang pernah singgah di ruang hati kita,', hl: ['beban,', 'luka,', 'sejarah silam']},
+  {d: 5.5, vis: 'hati', text: 'ia meninggalkan bayang dan jejak yang tidak nampak pada mata kasar.', hl: ['bayang', 'jejak']},
+  {d: 7, vis: 'hati', text: "Sesiapa yang masih memikul saki-baki masa lalu, jiwanya akan terus dihantui oleh 'fantom' emosi itu.", hl: ['masa lalu,', "'fantom' emosi"]},
+  {d: 7, vis: 'beban', text: 'Sebab itulah, seribu kali kita berikhtiar dengan akal yang penat, rezeki dan ketenangan tetap terasa jauh.', hl: ['rezeki', 'ketenangan', 'terasa jauh.']},
+  {d: 2.5, vis: 'beban', text: 'Mengapa?', hl: ['Mengapa?']},
+  {d: 5, vis: 'beban', text: 'Kerana kita sedang melangkah dengan beban masa semalam.', hl: ['beban masa semalam.']},
+  {d: 6, vis: 'mutmainnah', text: "Wahai jiwa yang tenang... An-Nafsu Al-Mutma'innah...", hl: ['jiwa yang tenang...', "An-Nafsu Al-Mutma'innah..."]},
+  {d: 4.5, vis: 'mutmainnah', text: 'Usah disiksa dirimu dengan logik dunia yang sempit.', hl: ['logik dunia yang sempit.']},
+  {d: 4, vis: 'zero', text: 'Padamkan sebentar bisingnya kepala.', hl: ['Padamkan']},
+  {d: 7.5, vis: 'zero', text: 'Masuklah ke dalam ruang Zero Thinking—ruang fana di mana engkau melepaskan segala sandaran selain Allah.', hl: ['Zero Thinking—ruang fana', 'selain Allah.']},
+  {d: 4, vis: 'radar', text: 'Di situlah terletaknya Radar Jiwa.', hl: ['Radar Jiwa.']},
+  {d: 7, vis: 'radar', text: 'Di situlah pintu Privilege DNA yang Allah kurniakan kepada hamba-hamba-Nya yang suci dibuka kembali.', hl: ['Privilege DNA', 'dibuka kembali.']},
+  {d: 6, vis: 'kanvas', text: 'Engkau akan melihat, dengan izin-Nya, bahawa masa lalu itu hanyalah bayang-bayang,', hl: ['hanyalah bayang-bayang,']},
+  {d: 5.5, vis: 'kanvas', text: 'dan masa depan adalah kanvas suci yang menunggu takdir-Nya.', hl: ['kanvas suci']},
+  {d: 5, vis: 'fitrah', text: 'Jangan biarkan bayang semalam merampas kedamaian hari ini.', hl: ['kedamaian hari ini.']},
+  {d: 5, vis: 'fitrah', text: 'Bersihkan qolbu, kembali kepada fitrah asalmu.', hl: ['Bersihkan qolbu,', 'fitrah asalmu.']},
+  {d: 7.5, vis: 'jemput', text: 'Jika hatimu terpanggil untuk merungkai jalan pulang ini, jemputlah sertai majlis ilmu kita secara percuma,', hl: ['jalan pulang', 'percuma,']},
+  {d: 9.5, vis: 'akhir', text: ''},
+];
