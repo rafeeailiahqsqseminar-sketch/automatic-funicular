@@ -1,5 +1,5 @@
 import React from 'react';
-import {AbsoluteFill, Audio, Easing, continueRender, delayRender, interpolate, random, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, Audio, Easing, OffthreadVideo, Sequence, continueRender, delayRender, interpolate, random, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {HEART, clamp} from './Mukadimah';
 import {IlDefs} from './Ilustrasi';
 
@@ -14,8 +14,8 @@ if (typeof FontFace !== 'undefined') {
   }).catch(() => continueRender(amiri));
 } else continueRender(amiri);
 
-export type Vis = 'bismillah' | 'renung' | 'dna' | 'akbar' | 'hati' | 'beban' | 'mutmainnah' | 'zero' | 'radar' | 'kanvas' | 'fitrah' | 'jemput' | 'akhir';
-export type Beat = {d: number; r?: number; vis: Vis; text: string; hl?: string[]}; // r = seconds until the last word is spoken
+export type Vis = 'bismillah' | 'renung' | 'dna' | 'akbar' | 'hati' | 'beban' | 'mutmainnah' | 'zero' | 'radar' | 'kanvas' | 'fitrah' | 'jemput' | 'akhir' | 'klip';
+export type Beat = {d: number; r?: number; vis: Vis; text: string; hl?: string[]; clip?: {src: string; from: number}}; // clip: real session footage (vis 'klip'), from = seconds into the file // r = seconds until the last word is spoken
 export type BebasProps = {beats: Beat[]; audio?: string};
 
 const GOLD = 'linear-gradient(180deg,#FFF6C8 0%,#FFD45A 38%,#F2B023 70%,#B86A00 100%)';
@@ -249,8 +249,8 @@ const Visual: React.FC<{vis: Vis; f: number; fps: number; dur: number}> = ({vis,
       );
     }
     case 'zero': {
-      const calm = interpolate(t, [0.5, 4.5], [1, 0], {...clamp, easing: ease});
-      const ring = interpolate(t, [5, 8], [0, 1], {...clamp, easing: ease});
+      const calm = interpolate(t, [0.2, 1.9], [1, 0], {...clamp, easing: ease});
+      const ring = interpolate(t, [1.6, 2.9], [0, 1], {...clamp, easing: ease});
       const pts = new Array(121).fill(0).map((_, i) => {
         const x = -440 + i * (880 / 120);
         const y = calm * (Math.sin(i * 0.7 + f * 0.9) * 60 + Math.sin(i * 1.9 - f * 1.3) * 45 + (random('zn' + i + Math.floor(f / 2)) - 0.5) * 90);
@@ -269,7 +269,7 @@ const Visual: React.FC<{vis: Vis; f: number; fps: number; dur: number}> = ({vis,
     }
     case 'radar': {
       const ang = f * 3;
-      const gate = interpolate(t, [4.4, 7], [0, 1], {...clamp, easing: ease});
+      const gate = interpolate(t, [0.9, 3.2], [0, 1], {...clamp, easing: ease});
       return (
         <g>
           {[110, 210, 310, 410].map((r) => (
@@ -332,7 +332,7 @@ const Visual: React.FC<{vis: Vis; f: number; fps: number; dur: number}> = ({vis,
       );
     }
     case 'fitrah': {
-      const clean = interpolate(t, [4.5, 9], [0, 1], {...clamp, easing: ease});
+      const clean = interpolate(t, [0.6, 4.2], [0, 1], {...clamp, easing: ease});
       const beat = 1 + 0.04 * Math.sin(f / 7);
       return (
         <g>
@@ -414,6 +414,23 @@ const BeatText: React.FC<{b: Beat; f: number; fps: number; dur: number; y: numbe
   );
 };
 
+// real session footage: full frame, slow push-in, warm grade, dark bands so badge + text stay readable
+const Footage: React.FC<{src: string; from: number; o: number; len: number}> = ({src, from, o, len}) => {
+  const f = useCurrentFrame();
+  const {fps} = useVideoConfig();
+  const z = interpolate(f, [0, len], [1.0, 1.07]);
+  return (
+    <AbsoluteFill style={{opacity: o}}>
+      <AbsoluteFill style={{transform: `scale(${z})`, filter: 'saturate(1.05) contrast(1.04) brightness(.92)'}}>
+        <OffthreadVideo src={staticFile(src)} startFrom={Math.round(from * fps)} muted style={{width: 1080, height: 1920, objectFit: 'cover'}} />
+      </AbsoluteFill>
+      <AbsoluteFill style={{background: 'linear-gradient(180deg, rgba(5,4,18,.7) 0%, rgba(5,4,18,0) 16%, rgba(5,4,18,0) 58%, rgba(5,4,18,.88) 72%, rgba(5,4,18,.92) 100%)'}} />
+      <AbsoluteFill style={{background: 'radial-gradient(ellipse at 50% 40%, rgba(255,200,90,0) 55%, rgba(60,30,0,.35) 100%)', mixBlendMode: 'multiply'}} />
+      <div style={{position: 'absolute', inset: 28, borderRadius: 34, border: '3px solid rgba(255,212,90,.75)', boxShadow: '0 0 30px rgba(255,190,70,.45), inset 0 0 30px rgba(255,190,70,.25)'}} />
+    </AbsoluteFill>
+  );
+};
+
 const Badge: React.FC<{o: number}> = ({o}) => (
   <div style={{position: 'absolute', top: 150, width: 1080, textAlign: 'center', opacity: o}}>
     <div style={{display: 'inline-block', fontFamily: 'Inter Display', fontWeight: 800, fontSize: 32, letterSpacing: 8, color: '#FFE9A0',
@@ -489,8 +506,13 @@ export const BebasMasaLalu: React.FC<BebasProps> = ({beats, audio}) => {
     <AbsoluteFill style={{backgroundColor: '#03030C', overflow: 'hidden'}}>
       <AbsoluteFill style={{opacity: fadeAll}}>
         <Sky frame={frame} warm={warm} />
+        {b.vis === 'klip' && beats[ri].clip ? (
+          <Sequence from={runStart} durationInFrames={runEnd - runStart}>
+            <Footage src={beats[ri].clip!.src} from={beats[ri].clip!.from} o={vIn * vOut} len={runEnd - runStart} />
+          </Sequence>
+        ) : null}
         <Badge o={badgeO} />
-        {!isEnd ? (
+        {!isEnd && b.vis !== 'klip' ? (
           <svg width={1080} height={1920} style={{position: 'absolute'}}>
             <IlDefs />
             <defs>
@@ -502,9 +524,8 @@ export const BebasMasaLalu: React.FC<BebasProps> = ({beats, audio}) => {
               <Visual vis={b.vis} f={vf} fps={fps} dur={(runEnd - runStart) / fps} />
             </g>
           </svg>
-        ) : (
-          <EndCard f={bf} fps={fps} />
-        )}
+        ) : null}
+        {isEnd ? <EndCard f={bf} fps={fps} /> : null}
         {!isEnd ? <BeatText key={bi} b={b} f={bf} fps={fps} dur={b.d} y={1470} /> : null}
       </AbsoluteFill>
       {audio ? <Audio src={staticFile(audio)} /> : null}
