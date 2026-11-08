@@ -6,6 +6,8 @@ import {Quantum, QuantumProps} from './Quantum';
 import quantumData from './data/quantum.json';
 import lepas1Data from './data/lepas_p1.json';
 import lepas2Data from './data/lepas_p2.json';
+import {Jantung, JantungProps} from './Jantung';
+import jantungData from './data/jantung.json';
 
 const FPS = 30;
 const base = {width: 1080, height: 1920, fps: FPS, durationInFrames: Math.round(5.6 * FPS)};
@@ -137,10 +139,27 @@ const lepas2: FullVideoProps = {
     {t: 136.3, d: 10.5, top: '', title: ['KLIK LINK', 'DI BIO'], hl: 'BIO', accent: '#E8312A'},
   ],
 };
+// Otak di Dalam Jantung: voice-over only (Jantung.mp3 + SRT), fully animated; stage times from the SRT
+const jantung: JantungProps = {
+  audio: 'jantung.mp3',
+  words: jantungData.words,
+  endT: 55.1,
+  fastT: [46.6, 53.8],
+  stages: [
+    {t: 0, name: 'DARI KEPALA?', hl: 'KEPALA?', note: 'Anda fikir keputusan datang dari sini'},
+    {t: 4.3, name: 'OTAK KEDUA', hl: 'KEDUA', note: 'Terletak di dada anda'},
+    {t: 11.6, name: 'SISTEM SARAF', hl: 'SARAF', note: 'Rumit dan berdikari'},
+    {t: 18.9, name: '40,000 NEURON', note: 'Otak di dalam jantung'},
+    {t: 26.5, name: 'JANTUNG → OTAK', hl: 'OTAK', note: 'Lebih banyak maklumat dihantar ke otak'},
+    {t: 36.2, name: 'KEPUTUSAN MIKRO', hl: 'MIKRO', note: 'Sebelum akal logik sempat mentafsir'},
+    {t: 45.8, name: 'DEGUP KENCANG', hl: 'KENCANG', note: 'Mungkin ia cuba beritahu sesuatu'},
+  ],
+};
 const noCards = {words: undefined, cards: [], intro: {t: 999, d: 1, top: '', title: ['']}};
 
 export const Root: React.FC = () => (
   <>
+    <Composition id="Jantung" component={Jantung} defaultProps={jantung} width={1080} height={1920} fps={30} durationInFrames={Math.floor(jantungData.duration * 30)} />
     <Composition id="Lepas1" component={FullVideo} defaultProps={lepas1} width={1080} height={1920} fps={30} durationInFrames={Math.floor(lepas1Data.duration * 30)} />
     <Composition id="Lepas2" component={FullVideo} defaultProps={lepas2} width={1080} height={1920} fps={30} durationInFrames={Math.floor(lepas2Data.duration * 30)} />
     <Composition id="Lepas1Cover" component={FullVideo} defaultProps={{...lepas1, ...noCards, coverText: 'Tawanan kepada keinginan?'}} width={1080} height={1920} fps={30} durationInFrames={Math.floor(lepas1Data.duration * 30)} />
