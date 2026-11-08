@@ -4,6 +4,8 @@ import {FullVideo, FullVideoProps} from './FullVideo';
 import duitData from './data/duit.json';
 import {Quantum, QuantumProps} from './Quantum';
 import quantumData from './data/quantum.json';
+import {Jantung, JantungProps} from './Jantung';
+import jantungData from './data/jantung.json';
 import lepas1Data from './data/lepas_p1.json';
 import lepas2Data from './data/lepas_p2.json';
 
@@ -77,6 +79,29 @@ const duit: FullVideoProps = {
   ],
 };
 
+// Jantung: Radar Jiwa (VO mp3 + SRT, no footage)
+const jantung: JantungProps = {
+  audio: 'jantung.wav',
+  words: jantungData.words,
+  badge: 'SAINS · JANTUNG',
+  titleTop: 'TAHUKAH ANDA?',
+  title: 'RADAR JIWA',
+  radarT: [36.5, 53.7],
+  finalT: 53.76,
+  endT: 61.7,
+  broll: {src: 'broll_jantung.mp4', t: 41.92, d: 10.6},
+  cards: [
+    {t: 1.94, d: 6.4, top: 'PUSAT KOMANDO SEBENAR', big: 'BUKAN SEMATA-MATA', sub: 'terletak di kepala'},
+    {t: 8.52, d: 4.3, top: 'JANTUNG BUKAN SEKADAR', big: 'PAM MEKANIKAL', sub: 'yang mengalirkan darah'},
+    {t: 12.94, d: 6.5, top: 'MEDAN ELEKTRIK', big: '60×', sub: 'lebih kuat berbanding otak', bar: 60},
+    {t: 19.54, d: 5.5, top: 'MEDAN MAGNET', big: '5,000×', sub: 'lebih kuat berbanding otak', bar: 5000},
+    {t: 25.6, d: 10.8, top: 'MEMANCAR KELUAR', big: 'BEBERAPA KAKI', sub: 'tidak terkunci di dalam dada'},
+    {t: 36.5, d: 5.4, top: 'DALAM BAHASA KUANTUM', big: 'ANTENA RADAR', sub: 'jantung bertindak sebagai radar utama'},
+    {t: 41.92, d: 11.8, top: 'IA MENGESAN', big: 'SEBELUM MATA MELIHAT', sub: 'frekuensi, getaran orang lain, anomali situasi'},
+    {t: 57.56, d: 4.1, top: 'JANGAN DIREDAMKAN', big: 'APA YANG DIKESAN', sub: 'oleh jantung anda'},
+  ],
+};
+
 // Selamat Datang ke Dunia Quantum: stage times read from the clip's own labels
 const quantum: QuantumProps = {
   src: 'bg_quantum.mp4',
@@ -145,6 +170,7 @@ export const Root: React.FC = () => (
     <Composition id="Lepas2" component={FullVideo} defaultProps={lepas2} width={1080} height={1920} fps={30} durationInFrames={Math.floor(lepas2Data.duration * 30)} />
     <Composition id="Lepas1Cover" component={FullVideo} defaultProps={{...lepas1, ...noCards, coverText: 'Tawanan kepada keinginan?'}} width={1080} height={1920} fps={30} durationInFrames={Math.floor(lepas1Data.duration * 30)} />
     <Composition id="Lepas2Cover" component={FullVideo} defaultProps={{...lepas2, ...noCards, coverText: 'Rahsia kebebasan sejati'}} width={1080} height={1920} fps={30} durationInFrames={Math.floor(lepas2Data.duration * 30)} />
+    <Composition id="Jantung" component={Jantung} defaultProps={jantung} width={1080} height={1920} fps={30} durationInFrames={66 * 30} />
     <Composition id="DuniaQuantum" component={Quantum} defaultProps={quantum} width={1080} height={1920} fps={25} durationInFrames={Math.round(quantumData.duration * 25)} />
     <Composition id="DuitCepatHabis" component={FullVideo} defaultProps={duit} width={1080} height={1920} fps={30} durationInFrames={Math.floor(duitData.duration * 30)} />
     <Composition id="Memaafkan" component={FullVideo} defaultProps={memaafkan} width={1080} height={1920} fps={30} durationInFrames={3836} />
