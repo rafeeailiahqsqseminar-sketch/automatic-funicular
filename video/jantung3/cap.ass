@@ -1,0 +1,59 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 2
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: C,Inter Display Black,82,&H00FFFFFF,&H0000D7FF,&H00301A0A,&H96000000,-1,0,0,0,100,100,1,0,1,6,3,5,60,60,0,1
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.10,0:00:01.72,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}TAHUKAH ANDA,
+Dialogue: 0,0:00:01.72,0:00:03.57,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}JANTUNG ANDA MUNGKIN
+Dialogue: 0,0:00:03.57,0:00:05.33,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}TAHU DAHULU SEBELUM
+Dialogue: 0,0:00:05.33,0:00:06.37,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}ANDA TAHU.
+Dialogue: 0,0:00:06.37,0:00:08.62,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}KAJIAN DARIPADA INSTITUSI
+Dialogue: 0,0:00:08.62,0:00:10.18,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}SEPERTI HEARTMATH
+Dialogue: 0,0:00:10.18,0:00:12.06,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}INSTITUTE MENUNJUKKAN
+Dialogue: 0,0:00:12.06,0:00:13.93,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}JANTUNG MANUSIA MAMPU
+Dialogue: 0,0:00:13.93,0:00:15.34,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}BERTINDAK BALAS
+Dialogue: 0,0:00:15.34,0:00:16.83,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}TERHADAP RANGSANGAN
+Dialogue: 0,0:00:16.83,0:00:18.24,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}MASA DEPAN SEPERTI
+Dialogue: 0,0:00:18.24,0:00:19.87,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}IMEJ YANG MENGEJUTKAN
+Dialogue: 0,0:00:19.87,0:00:21.42,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}ATAU EMOSI TERTENTU.
+Dialogue: 0,0:00:21.42,0:00:23.23,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}BEBERAPA SAAT SEBELUM
+Dialogue: 0,0:00:23.23,0:00:25.34,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}PERISTIWA ITU BENAR-BENAR
+Dialogue: 0,0:00:25.34,0:00:26.17,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}BERLAKU.
+Dialogue: 0,0:00:26.17,0:00:27.38,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}PARA PENGKAJI
+Dialogue: 0,0:00:27.38,0:00:28.94,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}MENYEBUTNYA SATU
+Dialogue: 0,0:00:28.94,0:00:30.58,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}BENTUK PREKOGNISI
+Dialogue: 0,0:00:30.58,0:00:31.48,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}BIOLOGI.
+Dialogue: 0,0:00:31.48,0:00:33.28,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}INILAH TERAS KEPADA
+Dialogue: 0,0:00:33.28,0:00:34.02,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}KONSEP
+Dialogue: 0,0:00:34.02,0:00:36.00,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}GERAK SEBELUM GERAK.
+Dialogue: 0,0:00:36.00,0:00:37.64,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}RADAR JIWA ANDA.
+Dialogue: 0,0:00:37.64,0:00:39.37,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}JANTUNG MENANGKAP
+Dialogue: 0,0:00:39.37,0:00:40.92,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}FLUKTUASI HALUS
+Dialogue: 0,0:00:40.92,0:00:42.25,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}PADA MEDAN TENAGA
+Dialogue: 0,0:00:42.25,0:00:43.71,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}DI SEKELILING ANDA,
+Dialogue: 0,0:00:43.71,0:00:45.44,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}LALU MENGHANTAR ISYARAT
+Dialogue: 0,0:00:45.44,0:00:46.57,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}ITU KE SELURUH
+Dialogue: 0,0:00:46.57,0:00:47.10,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}TUBUH
+Dialogue: 0,0:00:47.10,0:00:48.39,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}SEBAGAI RASA,
+Dialogue: 0,0:00:48.39,0:00:50.48,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}SEBAGAI GETARAN SEBELUM
+Dialogue: 0,0:00:50.48,0:00:52.17,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}MINDA SEDAR SEMPAT
+Dialogue: 0,0:00:52.17,0:00:53.46,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}MENTAFSIRNYA.
+Dialogue: 0,0:00:53.46,0:00:54.10,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}JADI,
+Dialogue: 0,0:00:54.10,0:00:55.35,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}BILA HATI ANDA
+Dialogue: 0,0:00:55.35,0:00:56.54,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}RASA SESUATU,
+Dialogue: 0,0:00:56.54,0:00:58.53,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}JANGAN CEPAT DIREDAMKAN.
+Dialogue: 0,0:00:58.53,0:01:00.00,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}DENGAR DAHULU APA
+Dialogue: 0,0:01:00.00,0:01:00.52,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}YANG
+Dialogue: 0,0:01:00.52,0:01:01.67,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}JANTUNG ANDA SUDAH
+Dialogue: 0,0:01:01.67,0:01:02.78,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}KESAN.
+Dialogue: 0,0:01:02.78,0:01:04.20,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}SAYA RAFEE AILIAH,
+Dialogue: 0,0:01:04.20,0:01:05.48,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}SAHABAT HATI DAN
+Dialogue: 0,0:01:05.48,0:01:06.56,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}FIKIRAN ANDA.
+Dialogue: 0,0:01:06.56,0:01:07.91,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}BERGABUNG BERSAMA
+Dialogue: 0,0:01:07.91,0:01:09.06,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}KOMUNITI KAMI.
+Dialogue: 0,0:01:09.06,0:01:10.16,C,,0,0,0,,{\pos(540,1640)\fad(60,0)\t(0,120,\fscx100\fscy100)\fscx88\fscy88}KLIK LINK BIO.
