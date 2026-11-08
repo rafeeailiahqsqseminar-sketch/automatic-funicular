@@ -6,6 +6,8 @@ import {Quantum, QuantumProps} from './Quantum';
 import quantumData from './data/quantum.json';
 import lepas1Data from './data/lepas_p1.json';
 import lepas2Data from './data/lepas_p2.json';
+import {Ayat, ayatDuration} from './Ayat';
+import {ubun, dengar, sulbi} from './data/ayat';
 
 const FPS = 30;
 const base = {width: 1080, height: 1920, fps: FPS, durationInFrames: Math.round(5.6 * FPS)};
@@ -141,6 +143,9 @@ const noCards = {words: undefined, cards: [], intro: {t: 999, d: 1, top: '', tit
 
 export const Root: React.FC = () => (
   <>
+    <Composition id="UbunUbun" component={Ayat} defaultProps={ubun} width={1080} height={1920} fps={30} durationInFrames={Math.round(ayatDuration(4) * 30)} />
+    <Composition id="Pendengaran" component={Ayat} defaultProps={dengar} width={1080} height={1920} fps={30} durationInFrames={Math.round(ayatDuration(4) * 30)} />
+    <Composition id="Sulbi" component={Ayat} defaultProps={sulbi} width={1080} height={1920} fps={30} durationInFrames={Math.round(ayatDuration(4) * 30)} />
     <Composition id="Lepas1" component={FullVideo} defaultProps={lepas1} width={1080} height={1920} fps={30} durationInFrames={Math.floor(lepas1Data.duration * 30)} />
     <Composition id="Lepas2" component={FullVideo} defaultProps={lepas2} width={1080} height={1920} fps={30} durationInFrames={Math.floor(lepas2Data.duration * 30)} />
     <Composition id="Lepas1Cover" component={FullVideo} defaultProps={{...lepas1, ...noCards, coverText: 'Tawanan kepada keinginan?'}} width={1080} height={1920} fps={30} durationInFrames={Math.floor(lepas1Data.duration * 30)} />
