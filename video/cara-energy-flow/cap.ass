@@ -1,0 +1,24 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: C,Inter Display Black,66,&H00FFFFFF,&H0000E1FF,&H00000000,&H64000000,-1,0,0,0,100,100,0,0,1,5,2,2,60,60,230,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.30,0:00:01.70,C,,0,0,0,,Otak kita sebab kita ada {\c&H00E1FF&}banyak maklumat.
+Dialogue: 0,0:00:01.70,0:00:03.08,C,,0,0,0,,Ya betul.
+Dialogue: 0,0:00:03.14,0:00:05.00,C,,0,0,0,,Jadi maklumat tu dia mesti bagi arahan.
+Dialogue: 0,0:00:05.00,0:00:06.98,C,,0,0,0,,Dia {\c&H00E1FF&}tapis{\c&HFFFFFF&} dulu sebab dia celik.
+Dialogue: 0,0:00:07.00,0:00:07.90,C,,0,0,0,,Haa {\c&H00E1FF&}celik.
+Dialogue: 0,0:00:08.64,0:00:11.30,C,,0,0,0,,Dia {\c&H00E1FF&}tahan.{\c&HFFFFFF&} Baru dia tak rasa.
+Dialogue: 0,0:00:11.30,0:00:14.22,C,,0,0,0,,Tapi bila buang, {\c&H00E1FF&}baru nampaklah.
+Dialogue: 0,0:00:14.22,0:00:18.00,C,,0,0,0,,Ini sebab kenapa orang buat {\c&H00E1FF&}rawatan,
+Dialogue: 0,0:00:18.86,0:00:20.60,C,,0,0,0,,energy dia tak dapat nak {\c&H00E1FF&}flow.
+Dialogue: 0,0:00:21.78,0:00:23.40,C,,0,0,0,,Sebab
+Dialogue: 0,0:00:23.52,0:00:25.60,C,,0,0,0,,terikat dalam {\c&H00E1FF&}sistem saraf
+Dialogue: 0,0:00:25.60,0:00:27.74,C,,0,0,0,,dia ada {\c&H00E1FF&}trauma{\c&HFFFFFF&} yang terikat.

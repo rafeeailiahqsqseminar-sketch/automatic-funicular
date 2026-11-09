@@ -5,7 +5,7 @@
  "opening_end": 2.6,
  "pop_hold": 1.35,
  "intro": {
-  "t0": 0.15,
+  "t0": -0.3,
   "t1": 5.35,
   "scene": "energy_flow",
   "y": 1020,
@@ -35,8 +35,8 @@
  ],
  "cards": [
   {
-   "t": 0.4,
-   "d": 4.9,
+   "t": -0.5,
+   "d": 5.8,
    "top": "RAHSIA",
    "title": [
     "CARA",
@@ -85,10 +85,10 @@
   "t": 27.9,
   "cta": 28.4,
   "cta_text": "KLIK LINK BIO",
-  "label": "KELAS",
-  "big": "BEBAS",
-  "platform": "Dari Masa Lalu",
-  "question": "Untuk maklumat lanjut",
+  "label": "SUKA VIDEO INI?",
+  "big": "FOLLOW",
+  "platform": "Saya kongsikan video menarik lagi",
+  "question": "Jangan lepaskan &mdash;",
   "dy": 560
  }
 }
