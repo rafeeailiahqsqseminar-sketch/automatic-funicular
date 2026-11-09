@@ -3,6 +3,7 @@ import ubunVo from './ubun_vo.json';
 import dengarVo from './dengar_vo.json';
 import sulbiVo from './sulbi_vo.json';
 import tubuh1Vo from './tubuh1_vo.json';
+import tubuh2Vo from './tubuh2_vo.json';
 
 // Siri "Keajaiban Al-Quran": teks terjemahan & keterangan ikut nota Cikgu Rafee.
 export const ubun: AyatProps = {
@@ -132,4 +133,11 @@ export const tubuh2: AyatProps = {
   ],
   endBig: 'KAU BUKAN LEMAH',
   endLine: 'Kau cuma terlalu lama jadi kuat.',
+};
+
+// Tubuh & Tanda 2 dengan suara ElevenLabs (Peta_Emosi_2.mp3, 52.6 s)
+export const tubuh2VO: AyatProps = {
+  ...tubuh2,
+  words: tubuh2Vo.words,
+  timing: {ayat: 3.6, tr0: 4.14, tr1: 8.92, points: [9.62, 21.64, 31.46, 38.77], end: 46.04, total: 52.61},
 };
