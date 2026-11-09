@@ -6,6 +6,8 @@ import {Quantum, QuantumProps} from './Quantum';
 import quantumData from './data/quantum.json';
 import lepas1Data from './data/lepas_p1.json';
 import lepas2Data from './data/lepas_p2.json';
+import {Ayat, ayatDuration} from './Ayat';
+import {ubun, ubunVO, dengar, dengarVO, sulbi, sulbiVO, tubuh1VO, tubuh2, tubuh2VO, tubuh3VO} from './data/ayat';
 
 const FPS = 30;
 const base = {width: 1080, height: 1920, fps: FPS, durationInFrames: Math.round(5.6 * FPS)};
@@ -141,6 +143,16 @@ const noCards = {words: undefined, cards: [], intro: {t: 999, d: 1, top: '', tit
 
 export const Root: React.FC = () => (
   <>
+    <Composition id="UbunUbunVO" component={Ayat} defaultProps={ubunVO} width={1080} height={1920} fps={30} durationInFrames={Math.round(66.7 * 30)} />
+    <Composition id="PendengaranVO" component={Ayat} defaultProps={dengarVO} width={1080} height={1920} fps={30} durationInFrames={Math.round(80.1 * 30)} />
+    <Composition id="SulbiVO" component={Ayat} defaultProps={sulbiVO} width={1080} height={1920} fps={30} durationInFrames={Math.round(78.3 * 30)} />
+    <Composition id="Tubuh1VO" component={Ayat} defaultProps={tubuh1VO} width={1080} height={1920} fps={30} durationInFrames={Math.round(61.15 * 30)} />
+    <Composition id="Tubuh2" component={Ayat} defaultProps={tubuh2} width={1080} height={1920} fps={30} durationInFrames={Math.round(ayatDuration(4) * 30)} />
+    <Composition id="Tubuh2VO" component={Ayat} defaultProps={tubuh2VO} width={1080} height={1920} fps={30} durationInFrames={Math.round(52.61 * 30)} />
+    <Composition id="Tubuh3VO" component={Ayat} defaultProps={tubuh3VO} width={1080} height={1920} fps={30} durationInFrames={Math.round(63.01 * 30)} />
+    <Composition id="UbunUbun" component={Ayat} defaultProps={ubun} width={1080} height={1920} fps={30} durationInFrames={Math.round(ayatDuration(4) * 30)} />
+    <Composition id="Pendengaran" component={Ayat} defaultProps={dengar} width={1080} height={1920} fps={30} durationInFrames={Math.round(ayatDuration(4) * 30)} />
+    <Composition id="Sulbi" component={Ayat} defaultProps={sulbi} width={1080} height={1920} fps={30} durationInFrames={Math.round(ayatDuration(4) * 30)} />
     <Composition id="Lepas1" component={FullVideo} defaultProps={lepas1} width={1080} height={1920} fps={30} durationInFrames={Math.floor(lepas1Data.duration * 30)} />
     <Composition id="Lepas2" component={FullVideo} defaultProps={lepas2} width={1080} height={1920} fps={30} durationInFrames={Math.floor(lepas2Data.duration * 30)} />
     <Composition id="Lepas1Cover" component={FullVideo} defaultProps={{...lepas1, ...noCards, coverText: 'Tawanan kepada keinginan?'}} width={1080} height={1920} fps={30} durationInFrames={Math.floor(lepas1Data.duration * 30)} />
