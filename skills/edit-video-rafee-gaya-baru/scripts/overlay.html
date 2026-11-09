@@ -14,6 +14,10 @@ html,body{margin:0;width:1080px;height:1920px;background:transparent;overflow:hi
   text-shadow:0 0 12px rgba(255,170,30,.8),0 3px 3px rgba(0,0,0,.8)}
 .white{font-family:'Inter Display';font-weight:700;color:#fff;font-size:52px;
   text-shadow:0 0 10px rgba(var(--acc),.6),0 3px 4px rgba(0,0,0,.9)}
+.cap{font-family:'Inter Display';font-weight:900;font-size:70px;color:#fff;line-height:1.1;
+  -webkit-text-stroke:3px #000;paint-order:stroke fill;text-shadow:0 4px 6px rgba(0,0,0,.85)}
+.cap span{display:inline-block;margin:0 9px}
+.cap span.on{color:#FFD83A}
 .panel{position:absolute;left:60px;width:960px;border-radius:44px;opacity:0;
   background:radial-gradient(120% 90% at 50% 0%,rgba(18,48,92,.86),rgba(4,10,26,.90) 70%);
   border:3px solid rgba(255,200,70,.95);
@@ -22,6 +26,7 @@ html,body{margin:0;width:1080px;height:1920px;background:transparent;overflow:hi
 <body>
 <canvas id="fx" width="1080" height="1920"></canvas>
 <div class="layer" id="root"></div>
+<img id="bub" style="position:absolute;width:480px;height:480px;left:300px;top:520px;border-radius:50%;object-fit:cover;opacity:0">
 <script>
 // ---------- deterministic helpers ----------
 function rng(seed){let s=seed>>>0||1;return()=>{s^=s<<13;s>>>=0;s^=s>>17;s^=s<<5;s>>>=0;return s/4294967296}}
@@ -41,7 +46,8 @@ const POP_HOLD=CFG.pop_hold||1.35;
 const ACC=CFG.accent||'110,215,255';   // accent rgb (2nd DNA strand, cool sparkles, glow)
 const HEADY=CFG.head_y||400;           // centre of text zone (keep on empty wall above head)
 const INTRO=CFG.intro||null;
-window.WINDOWS=[[0,Math.max(OPEN_END,INTRO?INTRO.t1+.1:0)]].concat(POPS.map(p=>[p[0]-.02,p[0]+POP_HOLD+.25]),CARDS.map(c=>[c.t-.02,c.t+c.d+.3]),[[END.t-.02,1e9]]);
+const CAPS=CFG.caps||[];const CAPY=CFG.cap_y||1600;const OUT=CFG.outro||null;
+window.WINDOWS=(OUT?[[OUT.t-.02,1e9]]:[]).concat(CAPS.map(c=>[c[0]-.02,c[1]+.02])).concat([[0,Math.max(OPEN_END,INTRO?INTRO.t1+.1:0)]].concat(POPS.map(p=>[p[0]-.02,p[0]+POP_HOLD+.25]),CARDS.map(c=>[c.t-.02,c.t+c.d+.3]),[[END.t-.02,1e9]]));
 
 // ---------- build DOM ----------
 document.documentElement.style.setProperty('--acc',ACC);
@@ -66,6 +72,12 @@ const e3=mk('white',COMPACT?'':END.platform||'Web &nbsp;•&nbsp; Telegram',332,
 const e4=mk('white',COMPACT?'':END.question||'Ingin meneruskan kelas ini?',430,'font-size:44px;font-weight:500');
 const e5=mk('gold',END.cta_text||'KOMEN NAK',COMPACT?318:496,'font-size:'+fit(END.cta_text||'KOMEN NAK',118)+'px');
 
+const capEls=CAPS.map(([a,b,ws])=>{const e=mk('cap',ws.map(w=>'<span>'+w[1]+'</span>').join(''),CAPY);return {a,b,ws,e,sp:[...e.children]}});
+const bub=document.getElementById('bub');
+const o1=OUT?mk('small',OUT.top||'TERIMA KASIH',1090):null;
+const o2=OUT?mk('gold',OUT.l1||'SILA FOLLOW',1150,'font-size:'+fit(OUT.l1||'SILA FOLLOW',140)+'px'):null;
+const o3=OUT?mk('white','&amp;',1300,'font-size:60px'):null;
+const o4=OUT?mk('gold',OUT.l2||'KLIK LINK BIO',1380,'font-size:'+fit(OUT.l2||'KLIK LINK BIO',130)+'px'):null;
 // ---------- canvas fx ----------
 const cv=document.getElementById('fx'),cx=cv.getContext('2d');
 function sparkles(t,t0,dur,cy,seed,n=46,spread=470){
@@ -388,6 +400,31 @@ window.render=function(t){
     g.title.style.opacity=clamp(a*clamp((u-.08)/.12));g.title.style.transform='scale('+popScale(u-.08)+')';
     g.sub.style.opacity=clamp(a*clamp((u-.4)/.3));g.sub.style.transform='translateY('+ty*(u<.4?1:1-eOut((u-.4)/.35))+'px)';
   });
+  // outro: bubble photo + follow / link bio
+  if(OUT){const u=t-OUT.t;
+    if(u>=0){const a=clamp(u/.35);
+      cx.save();cx.globalAlpha=a;const vg=cx.createRadialGradient(540,900,100,540,900,1300);vg.addColorStop(0,'rgba(14,32,70,.86)');vg.addColorStop(1,'rgba(3,7,20,.96)');cx.fillStyle=vg;cx.fillRect(0,0,1080,1920);cx.restore();
+      // floating bubbles
+      const r=rng(909);for(let i=0;i<26;i++){const bx=r()*1080,sp=60+r()*110,rad=10+r()*38,ph=r()*20;const y=1980-((u+ph)*sp)%2100;const x=bx+Math.sin(u*1.3+i)*22;
+        cx.save();cx.globalAlpha=a*.7;cx.strokeStyle=i%3?'rgba(255,215,110,.75)':'rgba('+ACC+',.8)';cx.lineWidth=2.5;cx.beginPath();cx.arc(x,y,rad,0,7);cx.stroke();
+        cx.fillStyle='rgba(255,255,255,.55)';cx.beginPath();cx.arc(x-rad*.35,y-rad*.35,rad*.18,0,7);cx.fill();cx.restore()}
+      // bubble ring
+      const sc=eBack(clamp((u-.1)/.5)),bob=Math.sin(u*2.2)*10,cy=760+bob;
+      cx.save();cx.globalAlpha=clamp((u-.1)/.25);cx.translate(540,cy);cx.scale(sc,sc);
+      cx.shadowColor='rgba(255,170,30,.9)';cx.shadowBlur=50;cx.strokeStyle='#FFC83A';cx.lineWidth=14;cx.beginPath();cx.arc(0,0,252,0,7);cx.stroke();
+      cx.shadowColor='rgba('+ACC+',1)';cx.shadowBlur=30;cx.strokeStyle='rgba('+ACC+',.9)';cx.lineWidth=4;cx.beginPath();cx.arc(0,0,276,-1.2+u*1.5,1.6+u*1.5);cx.stroke();cx.beginPath();cx.arc(0,0,276,2+u*1.5,4.6+u*1.5);cx.stroke();cx.restore();
+      {const fi=Math.min(125,Math.max(0,Math.round(u*30)));const src='bf/'+String(fi).padStart(4,'0')+'.jpg';if(!bub.src.endsWith(src))bub.src=src;}
+      bub.style.opacity=clamp((u-.1)/.25);bub.style.transform='translateY('+bob+'px) scale('+sc+')';
+      // glossy highlight on bubble
+      cx.save();cx.globalAlpha=clamp((u-.3)/.3)*.5;cx.fillStyle='rgba(255,255,255,.6)';cx.beginPath();cx.ellipse(540-120*sc,cy-150*sc,60*sc,26*sc,-.6,0,7);cx.fill();cx.restore();
+      sparkles(t,OUT.t+.2,30,760,707,40,420);
+      [o1,o2,o3,o4].forEach((e,i)=>{const v=clamp((u-.45-i*.18)/.3);e.style.opacity=v;e.style.transform='translateY('+(1-eOut(v))*30+'px)'+(i===3&&u>1.4?' scale('+(1+.04*Math.sin((u-1.4)*5))+')':'')});
+      if(u>1.2)sweep(t,OUT.t+1.2,1.0,1150,330);
+    }else{bub.style.opacity=0;[o1,o2,o3,o4].forEach(e=>e.style.opacity=0)}}
+  // captions (word highlight)
+  capEls.forEach(c=>{const on=t>=c.a&&t<=c.b;c.e.style.opacity=on?1:0;if(!on)return;
+    const u=t-c.a;c.e.style.transform='scale('+(u<.12?.9+.1*eOut(u/.12):1)+')';
+    let k=-1;c.ws.forEach((w,i)=>{if(t>=w[0]-.05)k=i});c.sp.forEach((s,i)=>s.className=i===k?'on':'')});
   // end card
   const u=t-END.t;
   if(u>=0){

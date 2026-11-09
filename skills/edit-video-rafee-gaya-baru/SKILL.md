@@ -99,3 +99,13 @@ The HyperFrames MCP `compose` cannot trim or cut his footage. It mutes his video
 
 ## End card (latest, 6 Nov 2026)
 - Do not use class promos on the end card (not even "KELAS JANJI JIWA / DAFTAR SEKARANG"). Use only **"KLIK LINK DI BIO"**, even when he promotes a class in the video.
+
+## Penutup Bubble (APPROVED, "Menerima Kemiskinan", 9 Nov 2026)
+Use this when he says "bubble", "foto bulat", "penutup bubble", or "card follow & klik link bio". It replaces the end card.
+- Look: a dark navy veil over a frozen last frame, his video playing inside a gold ring with a turning accent arc and a gloss highlight, floating bubbles, then "TERIMA KASIH", "SILA FOLLOW", "&", "KLIK LINK BIO" (the last line pulses).
+- Bubble video: `assets/penutup_bubble/bubble_clip.mp4` (4.2 s, 480×480, Cikgu in an orange shirt, no sound). It comes from Drive `copy_EF0E144F-F799-4778-9988-AFCE2969150E.mov`. If he names another Drive video, download it (`curl -sSL "https://drive.usercontent.google.com/download?id=ID&export=download&confirm=t"`), then crop a square on his face, 480×480, 30 fps.
+- Setup: `mkdir scripts/bf && ffmpeg -i ../assets/penutup_bubble/bubble_clip.mp4 -q:v 3 -start_number 0 scripts/bf/%04d.jpg` (the frames must sit in `scripts/bf/` beside overlay.html).
+- Timeline: `"outro":{"t":<just after his last word>,"top":"TERIMA KASIH","l1":"SILA FOLLOW","l2":"KLIK LINK BIO"}`, set `end.t` and `end.cta` to 999, and set `duration` to the source length + about 3 s. Make a copy for make_sfx with `end.t` equal to the outro t (this keeps the woosh).
+- Audio: pad the voice to the new duration (`apad=whole_dur=DUR` after loudnorm). `final_render.sh` already freezes the last frame (tpad) and uses only the first video stream (`v:0`).
+- Captions for footage with no burned captions (simple ffmpeg/overlay path, no Remotion): `"caps":[[t0,t1,[[t,"word"],…]],…]`, `"cap_y":1600`. Use white Inter Display 900, outlined, with the spoken word in yellow. Get word timing with `pip install faster-whisper` (pass numpy audio; the av.open bug) using the `medium` model, `language="ms"`.
+- Full example: `assets/penutup_bubble/timeline_menerima_kemiskinan.json`.

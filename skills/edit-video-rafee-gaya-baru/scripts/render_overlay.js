@@ -16,6 +16,6 @@ const {chromium}=require('playwright');const fs=require('fs');const path=require
  else{const N=Math.ceil(cfg.duration*30)+1,W=await p.evaluate(()=>WINDOWS);
   for(let i=0;i<N;i++){const t=i/30;if(W.some(([a,b])=>t>=a&&t<=b))frames.push({t,n:String(i).padStart(5,'0')})}}
  console.log('frames',frames.length);
- for(const f of frames){await p.evaluate(t=>render(t),f.t);await p.screenshot({path:path.join(out,f.n+'.png'),omitBackground:true})}
+ for(const f of frames){await p.evaluate(async t=>{render(t);const b=document.getElementById('bub');if(b&&b.src){try{await b.decode()}catch(e){}}},f.t);await p.screenshot({path:path.join(out,f.n+'.png'),omitBackground:true})}
  await b.close();
 })();
