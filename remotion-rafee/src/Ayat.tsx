@@ -1,6 +1,7 @@
 import React from 'react';
-import {AbsoluteFill, Easing, continueRender, delayRender, interpolate, random, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, Audio, Easing, continueRender, delayRender, interpolate, random, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {clamp} from './Mukadimah';
+import {Captions, Word} from './Captions';
 
 // "Keajaiban Al-Quran & Sains" siri 3 video (tanpa footage): hook -> ayat (Arab + terjemahan) -> ilustrasi + 4 kad -> end card.
 // Amiri (Arabic subset) served from public/fonts: the render browser cannot reach Google Fonts here.
@@ -32,7 +33,12 @@ export type AyatProps = {
   anim: 'otak' | 'janin' | 'sulbi';
   points: Point[];
   endLine: string;
+  // optional voice-over sync (seconds): when given, scenes follow the VO instead of the fixed timing
+  timing?: Timing;
+  words?: Word[];
+  audio?: string;
 };
+export type Timing = {ayat: number; points: number[]; end: number; total: number; tr0?: number; tr1?: number};
 
 export const FPS = 30;
 export const T_AYAT = 5.2;
@@ -40,6 +46,8 @@ export const T_POINTS = 17.5;
 export const POINT_D = 7.2;
 export const endT = (n: number) => T_POINTS + n * POINT_D;
 export const ayatDuration = (n: number) => endT(n) + 7.5;
+const timingOf = (p: AyatProps): Timing =>
+  p.timing ?? {ayat: T_AYAT, points: p.points.map((_, i) => T_POINTS + i * POINT_D), end: endT(p.points.length), total: ayatDuration(p.points.length)};
 
 const GOLD = 'linear-gradient(180deg,#FFF6C8 0%,#FFD45A 38%,#F2B023 70%,#B86A00 100%)';
 const EMERALD = '#34D399';
@@ -88,7 +96,8 @@ const Badge: React.FC<{part: string; o: number}> = ({part, o}) => (
 
 // ---------- scene 1: hook ----------
 const Hook: React.FC<{p: AyatProps; f: number; fps: number}> = ({p, f, fps}) => {
-  const out = interpolate(f, [T_AYAT * fps - 10, T_AYAT * fps], [0, 1], clamp);
+  const tm = timingOf(p);
+  const out = interpolate(f, [tm.ayat * fps - 10, tm.ayat * fps], [0, 1], clamp);
   const a = sp(f - 2, fps);
   return (
     <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', opacity: 1 - out, filter: `blur(${out * 12}px)`}}>
@@ -125,10 +134,12 @@ const Hook: React.FC<{p: AyatProps; f: number; fps: number}> = ({p, f, fps}) => 
 // ---------- scene 2: ayat ----------
 const AyatCard: React.FC<{p: AyatProps; f: number; fps: number}> = ({p, f, fps}) => {
   const k = sp(f, fps, 14);
-  const out = interpolate(f, [(T_POINTS - T_AYAT) * fps - 10, (T_POINTS - T_AYAT) * fps], [0, 1], clamp);
+  const tm = timingOf(p);
+  const out = interpolate(f, [(tm.points[0] - tm.ayat) * fps - 10, (tm.points[0] - tm.ayat) * fps], [0, 1], clamp);
   const arabO = interpolate(f, [8, 40], [0, 1], clamp);
-  const t0 = 2.6 * fps;
-  const chars = Math.floor(interpolate(f, [t0, t0 + p.terjemahan.length * 0.85], [0, p.terjemahan.length], clamp));
+  const t0 = (tm.tr0 !== undefined ? tm.tr0 - tm.ayat : 2.6) * fps;
+  const t1 = tm.tr1 !== undefined ? (tm.tr1 - tm.ayat) * fps : t0 + p.terjemahan.length * 0.85;
+  const chars = Math.floor(interpolate(f, [t0, t1], [0, p.terjemahan.length], clamp));
   const shine = ((f % 120) / 120) * 260 - 80;
   return (
     <AbsoluteFill style={{alignItems: 'center', opacity: 1 - out, filter: `blur(${out * 10}px)`}}>
@@ -386,13 +397,13 @@ const Sulbi: React.FC<{f: number; fps: number; st: number; sf: number}> = ({f, f
   );
 };
 
-const PointCard: React.FC<{pt: Point; f: number; fps: number; idx: number; n: number}> = ({pt, f, fps, idx, n}) => {
+const PointCard: React.FC<{pt: Point; f: number; fps: number; idx: number; n: number; dur: number; hideNote?: boolean}> = ({pt, f, fps, idx, n, dur, hideNote}) => {
   const k = sp(f, fps, 13, 160);
-  const out = interpolate(f, [POINT_D * fps - 8, POINT_D * fps], [0, 1], clamp);
+  const out = interpolate(f, [dur * fps - 8, dur * fps], [0, 1], clamp);
   const chars = Math.floor(interpolate(f, [14, 14 + pt.note.length * 0.9], [0, pt.note.length], clamp));
   const hl = pt.hl ?? pt.title[pt.title.length - 1].split(' ').pop();
   return (
-    <div style={{position: 'absolute', top: 1230, width: 1080, textAlign: 'center', opacity: k * (1 - out),
+    <div style={{position: 'absolute', top: hideNote ? 1170 : 1230, width: 1080, textAlign: 'center', opacity: k * (1 - out),
       filter: `blur(${(1 - k) * 12 + out * 10}px)`, transform: `translateY(${(1 - k) * 50 - out * 30}px)`}}>
       <div style={{fontFamily: 'Inter Display', fontWeight: 800, fontSize: 34, letterSpacing: 6, color: '#FFE9A0'}}>
         <span style={{color: EMERALD}}>{String(idx + 1).padStart(2, '0')}/{String(n).padStart(2, '0')}</span>  {pt.top}
@@ -416,7 +427,7 @@ const PointCard: React.FC<{pt: Point; f: number; fps: number; idx: number; n: nu
         ))}
       </div>
       <div style={{marginTop: 22, fontFamily: 'Inter Display', fontWeight: 600, fontSize: 44, lineHeight: 1.3, color: 'white', minHeight: 120,
-        textShadow: '0 2px 12px rgba(0,0,0,.9)', padding: '0 70px'}}>{pt.note.slice(0, chars)}</div>
+        textShadow: '0 2px 12px rgba(0,0,0,.9)', padding: '0 70px'}}>{hideNote ? null : pt.note.slice(0, chars)}</div>
     </div>
   );
 };
@@ -461,17 +472,23 @@ const EndCard: React.FC<{p: AyatProps; f: number; fps: number}> = ({p, f, fps}) 
 export const Ayat: React.FC<AyatProps & {cover?: boolean}> = (p) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
-  const fA = Math.round(T_AYAT * fps);
-  const fP = Math.round(T_POINTS * fps);
-  const fE = Math.round(endT(p.points.length) * fps);
+  const tm = timingOf(p);
+  const fA = Math.round(tm.ayat * fps);
+  const fP = Math.round(tm.points[0] * fps);
+  const fE = Math.round(tm.end * fps);
   const pf = frame - fP;
-  const st = pf < 0 ? -1 : Math.min(p.points.length - 1, Math.floor(pf / (POINT_D * fps)));
-  const sf = pf - Math.max(0, st) * Math.round(POINT_D * fps);
+  let st = -1;
+  tm.points.forEach((t, i) => {
+    if (frame >= Math.round(t * fps)) st = i;
+  });
+  const sf = frame - Math.round(tm.points[Math.max(0, st)] * fps);
+  const dur = (st + 1 < tm.points.length ? tm.points[st + 1] : tm.end) - tm.points[Math.max(0, st)];
   const illusOut = interpolate(frame, [fE - 10, fE], [0, 1], clamp);
   const Il = p.anim === 'otak' ? Otak : p.anim === 'janin' ? Janin : Sulbi;
   return (
     <AbsoluteFill style={{overflow: 'hidden'}}>
       <Background frame={frame} />
+      {p.audio ? <Audio src={staticFile(p.audio)} /> : null}
       {frame < fA ? <Hook p={p} f={frame} fps={fps} /> : null}
       {frame >= fA && frame < fP ? <AyatCard p={p} f={frame - fA} fps={fps} /> : null}
       {frame >= fP && frame < fE ? (
@@ -481,7 +498,8 @@ export const Ayat: React.FC<AyatProps & {cover?: boolean}> = (p) => {
             <Defs />
             <Il f={pf} fps={fps} st={st} sf={sf} />
           </svg>
-          <PointCard key={st} pt={p.points[st]} f={sf} fps={fps} idx={st} n={p.points.length} />
+          <PointCard key={st} pt={p.points[st]} f={sf} fps={fps} idx={st} n={p.points.length} dur={dur} hideNote={!!p.words} />
+          {p.words ? <Captions words={p.words.filter((w) => w.s >= tm.points[0] - 0.3 && w.s < tm.end - 0.2)} y={1600} /> : null}
         </>
       ) : null}
       {frame >= fE ? <EndCard p={p} f={frame - fE} fps={fps} /> : null}

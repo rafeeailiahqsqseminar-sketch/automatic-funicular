@@ -1,4 +1,5 @@
 import {AyatProps} from '../Ayat';
+import ubunVo from './ubun_vo.json';
 
 // Siri "Keajaiban Al-Quran": teks terjemahan & keterangan ikut nota Cikgu Rafee.
 export const ubun: AyatProps = {
@@ -57,4 +58,11 @@ export const sulbi: AyatProps = {
     {top: 'KEMUDIAN', title: ['TURUN KE', 'KEDUDUKAN KEKAL'], hl: 'KEKAL', note: 'Titik asal biologi manusia yang sangat tersembunyi'},
   ],
   endLine: 'Perincian embriologi yang tersembunyi, disebut dalam Al-Quran',
+};
+
+// Ubun-Ubun dengan suara ElevenLabs (ubun_ubun.mp3, 66.7 s): babak ikut masa perkataan dalam SRT
+export const ubunVO: AyatProps = {
+  ...ubun,
+  words: ubunVo.words,
+  timing: {ayat: 7.3, tr0: 11.7, tr1: 23.4, points: [23.9, 30.75, 38.2, 45.1], end: 55.0, total: 66.7},
 };
