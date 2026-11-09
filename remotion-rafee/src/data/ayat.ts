@@ -2,6 +2,7 @@ import {AyatProps} from '../Ayat';
 import ubunVo from './ubun_vo.json';
 import dengarVo from './dengar_vo.json';
 import sulbiVo from './sulbi_vo.json';
+import tubuh1Vo from './tubuh1_vo.json';
 
 // Siri "Keajaiban Al-Quran": teks terjemahan & keterangan ikut nota Cikgu Rafee.
 export const ubun: AyatProps = {
@@ -81,4 +82,30 @@ export const sulbiVO: AyatProps = {
   ...sulbi,
   words: sulbiVo.words,
   timing: {ayat: 4.4, tr0: 10.7, tr1: 20.6, points: [21.5, 29.55, 45.8, 54.85], end: 58.3, total: 78.3},
+};
+
+// Siri "Tubuh & Tanda" (peta emosi tubuh), gaya Keajaiban: teks ikut skrip VO Cikgu Rafee
+export const tubuh1VO: AyatProps = {
+  part: '1/3',
+  badge: 'TUBUH & TANDA',
+  hookTop: 'PERNAH TAK KAU BANGUN PAGI',
+  hook: ['BADAN RASA', 'PENAT?'],
+  hl: 'PENAT?',
+  hookSub: 'macam tak tidur langsung',
+  arab: '',
+  surah: 'Peta Emosi Tubuh',
+  kadLabel: 'PETA EMOSI TUBUH',
+  image: 'peta_emosi.jpg',
+  terjemahan: '"Mungkin bukan badan kau yang letih, tapi hati kau yang dah terlalu lama menahan."',
+  anim: 'tubuh',
+  points: [
+    {top: 'KEPALA BERAT', title: ['TERTEKAN'], hl: 'TERTEKAN', note: 'Fikiran yang tak pernah berhenti'},
+    {top: 'LEHER TEGANG', title: ['SUKAR', 'MEMAAFKAN'], hl: 'MEMAAFKAN', note: 'Ada nama yang belum mampu dimaafkan'},
+    {top: 'BAHU SAKIT', title: ['BEBAN', 'EMOSI'], hl: 'EMOSI', note: 'Memikul semuanya sorang-sorang'},
+    {top: 'BELAKANG LENGUH', title: ['KURANG', 'PERHATIAN'], hl: 'PERHATIAN', note: 'Terlalu lama rasa tak dihargai'},
+  ],
+  endBig: 'BADAN KAU TAK MENIPU',
+  endLine: 'Dia cuma sedang bercakap.',
+  words: tubuh1Vo.words,
+  timing: {ayat: 3.2, tr0: 7.18, tr1: 12.96, points: [14.2, 25.02, 35.84, 48.91], end: 54.05, total: 61.15},
 };

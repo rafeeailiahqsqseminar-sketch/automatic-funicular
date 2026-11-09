@@ -1,5 +1,5 @@
 import React from 'react';
-import {AbsoluteFill, Audio, Easing, continueRender, delayRender, interpolate, random, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, Audio, Easing, Img, continueRender, delayRender, interpolate, random, spring, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
 import {clamp} from './Mukadimah';
 import {Captions, Word} from './Captions';
 
@@ -30,13 +30,18 @@ export type AyatProps = {
   surah: string;
   surah2?: string;
   terjemahan: string;
-  anim: 'otak' | 'janin' | 'sulbi';
+  anim: 'otak' | 'janin' | 'sulbi' | 'tubuh';
   points: Point[];
   endLine: string;
   // optional voice-over sync (seconds): when given, scenes follow the VO instead of the fixed timing
   timing?: Timing;
   words?: Word[];
   audio?: string;
+  // optional, for series outside Keajaiban Al-Quran
+  badge?: string; // default 'KEAJAIBAN AL-QURAN'
+  kadLabel?: string; // default 'FIRMAN ALLAH SWT'
+  image?: string; // staticFile path shown in the kad instead of the Arabic ayat
+  endBig?: string; // big end-card text instead of سُبْحَانَ اللّٰه
 };
 export type Timing = {ayat: number; points: number[]; end: number; total: number; tr0?: number; tr1?: number};
 
@@ -88,10 +93,10 @@ const Background: React.FC<{frame: number}> = ({frame}) => {
   );
 };
 
-const Badge: React.FC<{part: string; o: number}> = ({part, o}) => (
+const Badge: React.FC<{part: string; o: number; label?: string}> = ({part, o, label = 'KEAJAIBAN AL-QURAN'}) => (
   <div style={{display: 'inline-block', fontFamily: 'Inter Display', fontWeight: 800, fontSize: 30, letterSpacing: 6, color: EMERALD,
     padding: '7px 22px', border: `2px solid ${EMERALD}`, borderRadius: 30, background: 'rgba(2,14,18,.6)', opacity: o,
-    boxShadow: '0 0 18px rgba(52,211,153,.45)'}}>KEAJAIBAN AL-QURAN · {part}</div>
+    boxShadow: '0 0 18px rgba(52,211,153,.45)'}}>{label} · {part}</div>
 );
 
 // ---------- scene 1: hook ----------
@@ -102,7 +107,7 @@ const Hook: React.FC<{p: AyatProps; f: number; fps: number}> = ({p, f, fps}) => 
   return (
     <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', opacity: 1 - out, filter: `blur(${out * 12}px)`}}>
       <div style={{textAlign: 'center', marginTop: -160}}>
-        <Badge part={p.part} o={a} />
+        <Badge part={p.part} o={a} label={p.badge} />
         <div style={{marginTop: 46, fontFamily: 'Inter Display', fontWeight: 800, fontSize: p.hookTop.length > 24 ? 40 : 52, letterSpacing: 4, color: '#FFE9A0',
           opacity: a, transform: `translateY(${(1 - a) * -30}px)`}}>{p.hookTop}</div>
         <div style={{marginTop: 22}}>
@@ -146,15 +151,18 @@ const AyatCard: React.FC<{p: AyatProps; f: number; fps: number}> = ({p, f, fps})
       <div style={{position: 'absolute', top: 360, left: 70, width: 940, borderRadius: 44, padding: '54px 46px 50px',
         background: 'radial-gradient(ellipse at 50% 0%, rgba(16,70,64,.92), rgba(3,16,24,.94))', border: '3px solid rgba(255,200,70,.9)',
         boxShadow: '0 0 60px rgba(255,170,30,.35)', textAlign: 'center', opacity: k, transform: `scale(${interpolate(k, [0, 1], [0.88, 1])})`}}>
-        <div style={{fontFamily: 'Inter Display', fontWeight: 800, fontSize: 30, letterSpacing: 7, color: EMERALD}}>FIRMAN ALLAH SWT</div>
-        <div style={{marginTop: 30, direction: 'rtl', fontFamily: AMIRI, fontWeight: 700, fontSize: 76, lineHeight: 1.75, opacity: arabO,
+        <div style={{fontFamily: 'Inter Display', fontWeight: 800, fontSize: 30, letterSpacing: 7, color: EMERALD}}>{p.kadLabel ?? 'FIRMAN ALLAH SWT'}</div>
+        {p.image ? (
+          <Img src={staticFile(p.image)} style={{marginTop: 26, height: 760, borderRadius: 24, border: '2px solid rgba(255,212,90,.7)', opacity: arabO,
+            transform: `scale(${interpolate(f, [0, 400], [0.97, 1.03], clamp)})`, boxShadow: '0 10px 40px rgba(0,0,0,.6)'}} />
+        ) : <div style={{marginTop: 30, direction: 'rtl', fontFamily: AMIRI, fontWeight: 700, fontSize: 76, lineHeight: 1.75, opacity: arabO,
           backgroundImage: `linear-gradient(100deg, rgba(255,255,255,0) ${shine - 10}%, rgba(255,255,255,.9) ${shine}%, rgba(255,255,255,0) ${shine + 10}%), ${GOLD}`,
           WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent', filter: 'drop-shadow(0 3px 0 #3A1E00)',
-          transform: `translateY(${(1 - arabO) * 20}px)`}}>{p.arab}</div>
+          transform: `translateY(${(1 - arabO) * 20}px)`}}>{p.arab}</div>}
         <div style={{margin: '26px auto 0', width: 520, height: 3, background: 'linear-gradient(90deg, transparent, #FFD45A, transparent)'}} />
-        <div style={{marginTop: 22, fontFamily: 'Inter Display', fontWeight: 800, fontSize: 40, color: '#FFE9A0', opacity: arabO}}>{p.surah}</div>
+        <div style={{marginTop: 22, fontFamily: 'Inter Display', fontWeight: 800, fontSize: 40, color: '#FFE9A0', opacity: arabO}}>{p.image ? null : p.surah}</div>
         {p.surah2 ? <div style={{marginTop: 6, fontFamily: 'Inter Display', fontWeight: 600, fontSize: 32, color: 'rgba(255,255,255,.75)', opacity: arabO}}>{p.surah2}</div> : null}
-        <div style={{marginTop: 30, minHeight: 300, fontFamily: 'Inter Display', fontWeight: 600, fontStyle: 'italic', fontSize: 44, lineHeight: 1.35,
+        <div style={{marginTop: p.image ? 4 : 30, minHeight: p.image ? 130 : 300, fontFamily: 'Inter Display', fontWeight: 600, fontStyle: 'italic', fontSize: 44, lineHeight: 1.35,
           color: 'white', textShadow: '0 2px 10px rgba(0,0,0,.8)'}}>
           {p.terjemahan.slice(0, chars)}
           <span style={{opacity: chars < p.terjemahan.length ? 1 : 0}}>▍</span>
@@ -397,6 +405,56 @@ const Sulbi: React.FC<{f: number; fps: number; st: number; sf: number}> = ({f, f
   );
 };
 
+
+// 4) upper body, front view: emotion map points light up one by one (kepala, leher, bahu, belakang atas)
+const BODY = 'M495,262 L495,300 C420,305 340,320 310,380 C290,430 285,560 290,820 L790,820 C795,560 790,430 770,380 C740,320 660,305 585,300 L585,262 Z';
+const TUBUH_PTS: {x: number; y: number; x2?: number; label: string; lx: number; ly: number}[] = [
+  {x: 540, y: 150, label: 'KEPALA', lx: 900, ly: 150},
+  {x: 540, y: 282, label: 'LEHER', lx: 900, ly: 282},
+  {x: 380, y: 352, x2: 700, label: 'BAHU', lx: 900, ly: 440},
+  {x: 540, y: 470, label: 'BELAKANG ATAS', lx: 540, ly: 720},
+];
+const Tubuh: React.FC<{f: number; fps: number; st: number; sf: number}> = ({f, fps, st, sf}) => {
+  const k = sp(f, fps, 14);
+  const draw = interpolate(f, [0, 40], [1, 0], clamp);
+  const pulse = 0.7 + 0.3 * Math.sin(f / 6);
+  return (
+    <g opacity={k}>
+      <ellipse cx={540} cy={165} rx={88} ry={105} fill="rgba(255,233,190,.07)" stroke="url(#ayGold)" strokeWidth={7}
+        strokeDasharray={620} strokeDashoffset={620 * draw} filter="url(#ayBlur)" />
+      <path d={BODY} fill="rgba(255,233,190,.07)" stroke="url(#ayGold)" strokeWidth={7} strokeLinejoin="round"
+        strokeDasharray={2200} strokeDashoffset={2200 * draw} filter="url(#ayBlur)" />
+      {TUBUH_PTS.map((p, i) => {
+        const on = i === st;
+        const done = i < st;
+        const a = on ? sp(sf, fps) : 0;
+        const xs = p.x2 ? [p.x, p.x2] : [p.x];
+        return (
+          <g key={i}>
+            {xs.map((x, j) => (
+              <g key={j}>
+                {on ? <circle cx={x} cy={p.y} r={95 * pulse * a} fill="url(#ayHot)" opacity={0.85} /> : null}
+                {on ? [0, 1, 2].map((r) => {
+                  const q = ((sf + r * 18) % 54) / 54;
+                  return <circle key={r} cx={x} cy={p.y} r={30 + q * 150} fill="none" stroke="#FFD45A" strokeWidth={5 * (1 - q)} opacity={(1 - q) * 0.8 * a} />;
+                }) : null}
+                <circle cx={x} cy={p.y} r={on ? 18 : 12} fill={on || done ? '#FFD45A' : 'rgba(255,255,255,.35)'} stroke="#3C1C00" strokeWidth={3} />
+              </g>
+            ))}
+            {on ? (
+              <g opacity={a}>
+                {p.lx === p.x ? <line x1={p.x} y1={p.y + 24} x2={p.x} y2={p.ly - 50} stroke="#FFD45A" strokeWidth={4} />
+                  : <line x1={xs[xs.length - 1] + 20} y1={p.y} x2={p.lx - 100} y2={p.ly} stroke="#FFD45A" strokeWidth={4} />}
+                <Label x={p.lx} y={p.ly + 14} text={p.label} o={1} fs={44} />
+              </g>
+            ) : null}
+          </g>
+        );
+      })}
+    </g>
+  );
+};
+
 const PointCard: React.FC<{pt: Point; f: number; fps: number; idx: number; n: number; dur: number; hideNote?: boolean}> = ({pt, f, fps, idx, n, dur, hideNote}) => {
   const k = sp(f, fps, 13, 160);
   const out = interpolate(f, [dur * fps - 8, dur * fps], [0, 1], clamp);
@@ -436,7 +494,7 @@ const Header: React.FC<{p: AyatProps; f: number; fps: number}> = ({p, f, fps}) =
   const k = sp(f, fps);
   return (
     <div style={{position: 'absolute', top: 110, width: 1080, textAlign: 'center', opacity: k}}>
-      <Badge part={p.part} o={1} />
+      <Badge part={p.part} o={1} label={p.badge} />
       <div style={{marginTop: 14, fontFamily: 'Inter Display', fontWeight: 800, fontSize: 40, color: 'white', letterSpacing: 2,
         textShadow: '0 2px 10px rgba(0,0,0,.8)'}}>{p.surah}</div>
     </div>
@@ -451,9 +509,11 @@ const EndCard: React.FC<{p: AyatProps; f: number; fps: number}> = ({p, f, fps}) 
   return (
     <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center'}}>
       <div style={{textAlign: 'center', marginTop: -140}}>
-        <div style={{opacity: k, transform: `scale(${interpolate(k, [0, 1], [0.8, 1])})`, direction: 'rtl', fontFamily: AMIRI, fontWeight: 700, fontSize: 150,
+        {p.endBig ? (
+          <div style={{opacity: k, transform: `scale(${interpolate(k, [0, 1], [0.8, 1])})`, padding: '0 60px', ...goldText(110, {lineHeight: 1.1})}}>{p.endBig}</div>
+        ) : <div style={{opacity: k, transform: `scale(${interpolate(k, [0, 1], [0.8, 1])})`, direction: 'rtl', fontFamily: AMIRI, fontWeight: 700, fontSize: 150,
           lineHeight: 1.5, backgroundImage: `linear-gradient(100deg, rgba(255,255,255,0) ${shine - 10}%, rgba(255,255,255,.9) ${shine}%, rgba(255,255,255,0) ${shine + 10}%), ${GOLD}`,
-          WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent', filter: 'drop-shadow(0 5px 0 #3A1E00) drop-shadow(0 0 30px rgba(255,200,80,.45))'}}>سُبْحَانَ اللّٰه</div>
+          WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent', filter: 'drop-shadow(0 5px 0 #3A1E00) drop-shadow(0 0 30px rgba(255,200,80,.45))'}}>سُبْحَانَ اللّٰه</div>}
         <div style={{marginTop: 10, fontFamily: 'Inter Display', fontWeight: 700, fontSize: 46, color: 'white', padding: '0 80px', lineHeight: 1.3,
           opacity: k2, textShadow: '0 2px 12px rgba(0,0,0,.9)'}}>{p.endLine}</div>
         <div style={{margin: '60px auto 0', width: 840, borderRadius: 40, padding: '40px 0 46px', opacity: k3, transform: `scale(${interpolate(k3, [0, 1], [0.85, 1])})`,
@@ -484,7 +544,7 @@ export const Ayat: React.FC<AyatProps & {cover?: boolean}> = (p) => {
   const sf = frame - Math.round(tm.points[Math.max(0, st)] * fps);
   const dur = (st + 1 < tm.points.length ? tm.points[st + 1] : tm.end) - tm.points[Math.max(0, st)];
   const illusOut = interpolate(frame, [fE - 10, fE], [0, 1], clamp);
-  const Il = p.anim === 'otak' ? Otak : p.anim === 'janin' ? Janin : Sulbi;
+  const Il = p.anim === 'otak' ? Otak : p.anim === 'janin' ? Janin : p.anim === 'tubuh' ? Tubuh : Sulbi;
   return (
     <AbsoluteFill style={{overflow: 'hidden'}}>
       <Background frame={frame} />
