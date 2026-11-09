@@ -30,7 +30,7 @@ export type AyatProps = {
   surah: string;
   surah2?: string;
   terjemahan: string;
-  anim: 'otak' | 'janin' | 'sulbi' | 'tubuh' | 'tubuh2';
+  anim: 'otak' | 'janin' | 'sulbi' | 'tubuh' | 'tubuh2' | 'tubuh3';
   points: Point[];
   endLine: string;
   // optional voice-over sync (seconds): when given, scenes follow the VO instead of the fixed timing
@@ -441,6 +441,31 @@ const Tubuh2: React.FC<{f: number; fps: number; st: number; sf: number}> = (pr) 
     </TubuhBase>
   );
 };
+// part 3: legs, front view (lutut, paha & betis, buku lali, tapak kaki)
+const LEGS: {d: string; w: number}[] = [
+  {d: 'M447,120 C444,220 441,320 440,390', w: 150}, {d: 'M633,120 C636,220 639,320 640,390', w: 150},
+  {d: 'M440,390 C440,500 445,620 450,700', w: 112}, {d: 'M640,390 C640,500 635,620 630,700', w: 112},
+  {d: 'M452,745 L385,762', w: 62}, {d: 'M628,745 L695,762', w: 62},
+];
+const TUBUH3_PTS: TPt[] = [
+  {x: 440, y: 390, x2: 640, label: 'LUTUT', lx: 900, ly: 390},
+  {x: 444, y: 240, x2: 636, label: 'PAHA & BETIS', lx: 880, ly: 240},
+  {x: 450, y: 700, x2: 630, label: 'BUKU LALI', lx: 900, ly: 620},
+  {x: 405, y: 760, x2: 675, label: 'TAPAK KAKI', lx: 900, ly: 770},
+];
+const Tubuh3: React.FC<{f: number; fps: number; st: number; sf: number}> = (pr) => {
+  const draw = interpolate(pr.f, [0, 40], [1, 0], clamp);
+  return (
+    <TubuhBase {...pr} pts={TUBUH3_PTS}>
+      <path d="M360,40 L720,40 C732,100 722,140 700,165 L380,165 C358,140 348,100 360,40 Z" fill="rgba(255,233,190,.07)" stroke="url(#ayGold)" strokeWidth={7}
+        strokeDasharray={1100} strokeDashoffset={1100 * draw} filter="url(#ayBlur)" />
+      <g opacity={1 - draw}>
+        {LEGS.map((l, i) => <path key={'o' + i} d={l.d} fill="none" stroke="url(#ayGold)" strokeWidth={l.w + 14} strokeLinecap="round" />)}
+        {LEGS.map((l, i) => <path key={'i' + i} d={l.d} fill="none" stroke="#0A2A30" strokeWidth={l.w} strokeLinecap="round" />)}
+      </g>
+    </TubuhBase>
+  );
+};
 const Tubuh: React.FC<{f: number; fps: number; st: number; sf: number}> = (pr) => {
   const draw = interpolate(pr.f, [0, 40], [1, 0], clamp);
   return (
@@ -578,7 +603,7 @@ export const Ayat: React.FC<AyatProps & {cover?: boolean}> = (p) => {
   const sf = frame - Math.round(tm.points[Math.max(0, st)] * fps);
   const dur = (st + 1 < tm.points.length ? tm.points[st + 1] : tm.end) - tm.points[Math.max(0, st)];
   const illusOut = interpolate(frame, [fE - 10, fE], [0, 1], clamp);
-  const Il = p.anim === 'otak' ? Otak : p.anim === 'janin' ? Janin : p.anim === 'tubuh' ? Tubuh : p.anim === 'tubuh2' ? Tubuh2 : Sulbi;
+  const Il = p.anim === 'otak' ? Otak : p.anim === 'janin' ? Janin : p.anim === 'tubuh' ? Tubuh : p.anim === 'tubuh2' ? Tubuh2 : p.anim === 'tubuh3' ? Tubuh3 : Sulbi;
   return (
     <AbsoluteFill style={{overflow: 'hidden'}}>
       <Background frame={frame} />

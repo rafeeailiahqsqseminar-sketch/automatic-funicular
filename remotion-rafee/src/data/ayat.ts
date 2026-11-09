@@ -4,6 +4,7 @@ import dengarVo from './dengar_vo.json';
 import sulbiVo from './sulbi_vo.json';
 import tubuh1Vo from './tubuh1_vo.json';
 import tubuh2Vo from './tubuh2_vo.json';
+import tubuh3Vo from './tubuh3_vo.json';
 
 // Siri "Keajaiban Al-Quran": teks terjemahan & keterangan ikut nota Cikgu Rafee.
 export const ubun: AyatProps = {
@@ -140,4 +141,30 @@ export const tubuh2VO: AyatProps = {
   ...tubuh2,
   words: tubuh2Vo.words,
   timing: {ayat: 3.6, tr0: 4.14, tr1: 8.92, points: [9.62, 21.64, 31.46, 38.77], end: 46.04, total: 52.61},
+};
+
+// Tubuh & Tanda 3 (kaki) dengan suara ElevenLabs (Peta_emosi_3.mp3, 63.0 s)
+export const tubuh3VO: AyatProps = {
+  part: '3/3',
+  badge: 'TUBUH & TANDA',
+  hookTop: 'KAKI NI YANG BAWA KAU',
+  hook: ['SEJAUH', 'INI'],
+  hl: 'SEJAUH',
+  hookSub: 'dari lutut hingga tapak kaki',
+  arab: '',
+  surah: 'Peta Emosi Tubuh',
+  kadLabel: 'PETA EMOSI TUBUH',
+  image: 'peta_emosi.jpg',
+  terjemahan: '"Tapi pernah tak kau tanya apa yang dia tanggung?"',
+  anim: 'tubuh3',
+  points: [
+    {top: 'LUTUT SAKIT', title: ['TERLAMPAU', 'EGO'], hl: 'EGO', note: 'Susah nak tunduk, susah mengaku salah'},
+    {top: 'PAHA & BETIS TEGANG', title: ['TEKANAN', 'CEMBURU'], hl: 'CEMBURU', note: 'Asyik bandingkan diri dengan orang'},
+    {top: 'BUKU LALI SAKIT', title: ['TEKANAN HIDUP', 'TERLAMPAU'], hl: 'TERLAMPAU', note: 'Beban hidup terlalu berat'},
+    {top: 'TAPAK KAKI', title: ['DEPRESI'], hl: 'DEPRESI', note: 'Sedih yang tak pernah diceritakan'},
+  ],
+  endBig: 'PELUK DIRI SENDIRI',
+  endLine: '"Terima kasih sebab tak pernah tinggalkan aku." Jaga badan, jaga hati.',
+  words: tubuh3Vo.words,
+  timing: {ayat: 3.1, tr0: 3.54, tr1: 6.64, points: [7.44, 17.38, 27.62, 35.34], end: 45.6, total: 63.01},
 };
