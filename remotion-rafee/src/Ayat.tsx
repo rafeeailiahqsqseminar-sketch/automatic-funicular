@@ -30,7 +30,7 @@ export type AyatProps = {
   surah: string;
   surah2?: string;
   terjemahan: string;
-  anim: 'otak' | 'janin' | 'sulbi' | 'tubuh';
+  anim: 'otak' | 'janin' | 'sulbi' | 'tubuh' | 'tubuh2';
   points: Point[];
   endLine: string;
   // optional voice-over sync (seconds): when given, scenes follow the VO instead of the fixed timing
@@ -408,23 +408,57 @@ const Sulbi: React.FC<{f: number; fps: number; st: number; sf: number}> = ({f, f
 
 // 4) upper body, front view: emotion map points light up one by one (kepala, leher, bahu, belakang atas)
 const BODY = 'M495,262 L495,300 C420,305 340,320 310,380 C290,430 285,560 290,820 L790,820 C795,560 790,430 770,380 C740,320 660,305 585,300 L585,262 Z';
-const TUBUH_PTS: {x: number; y: number; x2?: number; label: string; lx: number; ly: number}[] = [
+type TPt = {x: number; y: number; x2?: number; label: string; lx: number; ly: number};
+const TUBUH_PTS: TPt[] = [
   {x: 540, y: 150, label: 'KEPALA', lx: 900, ly: 150},
   {x: 540, y: 282, label: 'LEHER', lx: 900, ly: 282},
   {x: 380, y: 352, x2: 700, label: 'BAHU', lx: 900, ly: 440},
   {x: 540, y: 470, label: 'BELAKANG ATAS', lx: 540, ly: 720},
 ];
-const Tubuh: React.FC<{f: number; fps: number; st: number; sf: number}> = ({f, fps, st, sf}) => {
-  const k = sp(f, fps, 14);
-  const draw = interpolate(f, [0, 40], [1, 0], clamp);
-  const pulse = 0.7 + 0.3 * Math.sin(f / 6);
+// part 2: full figure with arms (pinggang, pinggul, siku, pergelangan tangan)
+const BODY2 = 'M510,160 L510,185 C460,188 420,195 405,225 L400,520 C405,560 420,600 425,640 C420,700 430,760 440,820 M655,640 C660,700 650,760 640,820 M425,640 L655,640 M570,160 L570,185 C620,188 660,195 675,225 L680,520 C675,560 660,600 655,640 M540,700 L540,820';
+const ARM_L = 'M392,240 C360,290 330,380 305,470 C290,540 280,600 270,650';
+const ARM_R = 'M688,240 C720,290 750,380 775,470 C790,540 800,600 810,650';
+const TUBUH2_PTS: TPt[] = [
+  {x: 540, y: 520, label: 'PINGGANG', lx: 950, ly: 380},
+  {x: 450, y: 640, x2: 630, label: 'PINGGUL', lx: 950, ly: 560},
+  {x: 305, y: 470, x2: 775, label: 'SIKU', lx: 950, ly: 470},
+  {x: 272, y: 640, x2: 808, label: 'TANGAN', lx: 950, ly: 720},
+];
+const Tubuh2: React.FC<{f: number; fps: number; st: number; sf: number}> = (pr) => {
+  const draw = interpolate(pr.f, [0, 40], [1, 0], clamp);
   return (
-    <g opacity={k}>
+    <TubuhBase {...pr} pts={TUBUH2_PTS}>
+      <ellipse cx={540} cy={90} rx={62} ry={74} fill="rgba(255,233,190,.07)" stroke="url(#ayGold)" strokeWidth={7} strokeDasharray={440} strokeDashoffset={440 * draw} filter="url(#ayBlur)" />
+      {[ARM_L, ARM_R].map((d, i) => (
+        <g key={i}>
+          <path d={d} fill="none" stroke="url(#ayGold)" strokeWidth={58} strokeLinecap="round" strokeDasharray={480} strokeDashoffset={480 * draw} />
+          <path d={d} fill="none" stroke="#0A2A30" strokeWidth={44} strokeLinecap="round" />
+        </g>
+      ))}
+      <path d={BODY2} fill="rgba(255,233,190,.07)" stroke="url(#ayGold)" strokeWidth={7} strokeLinejoin="round" strokeLinecap="round"
+        strokeDasharray={2600} strokeDashoffset={2600 * draw} filter="url(#ayBlur)" />
+    </TubuhBase>
+  );
+};
+const Tubuh: React.FC<{f: number; fps: number; st: number; sf: number}> = (pr) => {
+  const draw = interpolate(pr.f, [0, 40], [1, 0], clamp);
+  return (
+    <TubuhBase {...pr} pts={TUBUH_PTS}>
       <ellipse cx={540} cy={165} rx={88} ry={105} fill="rgba(255,233,190,.07)" stroke="url(#ayGold)" strokeWidth={7}
         strokeDasharray={620} strokeDashoffset={620 * draw} filter="url(#ayBlur)" />
       <path d={BODY} fill="rgba(255,233,190,.07)" stroke="url(#ayGold)" strokeWidth={7} strokeLinejoin="round"
         strokeDasharray={2200} strokeDashoffset={2200 * draw} filter="url(#ayBlur)" />
-      {TUBUH_PTS.map((p, i) => {
+    </TubuhBase>
+  );
+};
+const TubuhBase: React.FC<{f: number; fps: number; st: number; sf: number; pts: TPt[]; children: React.ReactNode}> = ({f, fps, st, sf, pts, children}) => {
+  const k = sp(f, fps, 14);
+  const pulse = 0.7 + 0.3 * Math.sin(f / 6);
+  return (
+    <g opacity={k}>
+      {children}
+      {pts.map((p, i) => {
         const on = i === st;
         const done = i < st;
         const a = on ? sp(sf, fps) : 0;
@@ -544,7 +578,7 @@ export const Ayat: React.FC<AyatProps & {cover?: boolean}> = (p) => {
   const sf = frame - Math.round(tm.points[Math.max(0, st)] * fps);
   const dur = (st + 1 < tm.points.length ? tm.points[st + 1] : tm.end) - tm.points[Math.max(0, st)];
   const illusOut = interpolate(frame, [fE - 10, fE], [0, 1], clamp);
-  const Il = p.anim === 'otak' ? Otak : p.anim === 'janin' ? Janin : p.anim === 'tubuh' ? Tubuh : Sulbi;
+  const Il = p.anim === 'otak' ? Otak : p.anim === 'janin' ? Janin : p.anim === 'tubuh' ? Tubuh : p.anim === 'tubuh2' ? Tubuh2 : Sulbi;
   return (
     <AbsoluteFill style={{overflow: 'hidden'}}>
       <Background frame={frame} />

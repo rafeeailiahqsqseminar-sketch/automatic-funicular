@@ -1,0 +1,11 @@
+Ada sakit... <break time="0.5s" /> yang doktor tak jumpa puncanya. <break time="0.6s" /> Sebab puncanya... <break time="0.4s" /> bukan dalam darah. <break time="0.5s" /> Tapi dalam hati. <break time="1.5s" />
+
+Pinggang yang sakit... <break time="0.5s" /> selalu datang waktu malam. <break time="0.4s" /> Bila kau baring... <break time="0.4s" /> dan mula kira... <break time="0.4s" /> duit cukup ke bulan ni? <break time="0.6s" /> Hutang macam mana? <break time="0.4s" /> Anak-anak nanti macam mana? <break time="1.2s" />
+
+Pinggul yang tegang... <break time="0.5s" /> sebab kau takut melangkah. <break time="0.4s" /> Takut berubah... <break time="0.4s" /> walaupun kau tahu... <break time="0.4s" /> tempat sekarang dah tak sesuai untuk kau. <break time="1.2s" />
+
+Siku dan lengan yang sakit... <break time="0.5s" /> sebab kau terpaksa ikut arus... <break time="0.4s" /> yang hati kau sendiri tak setuju. <break time="1.2s" />
+
+Pergelangan tangan yang lemah... <break time="0.5s" /> macam tangan yang diikat. <break time="0.4s" /> Nak buat apa pun... <break time="0.4s" /> rasa tak bebas. <break time="1.5s" />
+
+Kau bukan lemah. <break time="0.6s" /> Kau cuma... <break time="0.4s" /> terlalu lama jadi kuat.

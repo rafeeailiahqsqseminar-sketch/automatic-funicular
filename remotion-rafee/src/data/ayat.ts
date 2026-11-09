@@ -109,3 +109,27 @@ export const tubuh1VO: AyatProps = {
   words: tubuh1Vo.words,
   timing: {ayat: 3.2, tr0: 7.18, tr1: 12.96, points: [14.2, 25.02, 35.84, 48.91], end: 54.05, total: 61.15},
 };
+
+// Tubuh & Tanda 2 (badan & tangan). Tanpa suara dahulu; tambah words + timing bila MP3 + SRT ElevenLabs sampai.
+export const tubuh2: AyatProps = {
+  part: '2/3',
+  badge: 'TUBUH & TANDA',
+  hookTop: 'ADA SAKIT YANG DOKTOR',
+  hook: ['TAK JUMPA', 'PUNCANYA?'],
+  hl: 'PUNCANYA?',
+  hookSub: 'sebab puncanya… dalam hati',
+  arab: '',
+  surah: 'Peta Emosi Tubuh',
+  kadLabel: 'PETA EMOSI TUBUH',
+  image: 'peta_emosi.jpg',
+  terjemahan: '"Sebab puncanya bukan dalam darah, tapi dalam hati."',
+  anim: 'tubuh2',
+  points: [
+    {top: 'PINGGANG SAKIT', title: ['KEBIMBANGAN', 'KEWANGAN'], hl: 'KEWANGAN', note: 'Risau duit, hutang, masa depan anak-anak'},
+    {top: 'PINGGUL TEGANG', title: ['TAKUT', 'BERUBAH'], hl: 'BERUBAH', note: 'Takut melangkah walau tempat dah tak sesuai'},
+    {top: 'SIKU & LENGAN', title: ['SUKAR', 'BERADAPTASI'], hl: 'BERADAPTASI', note: 'Terpaksa ikut arus yang hati tak setuju'},
+    {top: 'PERGELANGAN TANGAN', title: ['RASA', 'TERKONGKONG'], hl: 'TERKONGKONG', note: 'Macam tangan yang diikat'},
+  ],
+  endBig: 'KAU BUKAN LEMAH',
+  endLine: 'Kau cuma terlalu lama jadi kuat.',
+};
