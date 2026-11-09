@@ -1,0 +1,94 @@
+{
+ "duration": 30.5,
+ "accent": "180,140,255",
+ "head_y": 780,
+ "opening_end": 2.6,
+ "pop_hold": 1.35,
+ "intro": {
+  "t0": 0.15,
+  "t1": 5.35,
+  "scene": "energy_flow",
+  "y": 1020,
+  "release": 2.2
+ },
+ "pops": [
+  [
+   5.5,
+   "TAPIS"
+  ],
+  [
+   7.1,
+   "CELIK"
+  ],
+  [
+   13.0,
+   "BARU NAMPAK"
+  ],
+  [
+   19.0,
+   "TAK DAPAT FLOW"
+  ],
+  [
+   21.7,
+   "KENAPA?"
+  ]
+ ],
+ "cards": [
+  {
+   "t": 0.4,
+   "d": 4.9,
+   "top": "RAHSIA",
+   "title": [
+    "CARA",
+    "ENERGY FLOW"
+   ],
+   "sub": "lepaskan yang terikat",
+   "dna": false,
+   "flow": true
+  },
+  {
+   "t": 8.9,
+   "d": 3.6,
+   "top": "DIA TAHAN",
+   "title": [
+    "BARU",
+    "TAK RASA"
+   ],
+   "sub": "bila buang, baru nampak",
+   "dna": false
+  },
+  {
+   "t": 14.5,
+   "d": 3.6,
+   "top": "SEBAB TU ORANG",
+   "title": [
+    "BUAT",
+    "RAWATAN"
+   ],
+   "sub": "inilah sebabnya",
+   "dna": false,
+   "flow": true
+  },
+  {
+   "t": 23.5,
+   "d": 4.1,
+   "top": "TERIKAT DALAM",
+   "title": [
+    "SISTEM",
+    "SARAF"
+   ],
+   "sub": "ada trauma yang terikat",
+   "dna": true
+  }
+ ],
+ "end": {
+  "t": 27.9,
+  "cta": 28.4,
+  "cta_text": "KLIK LINK BIO",
+  "label": "KELAS",
+  "big": "BEBAS",
+  "platform": "Dari Masa Lalu",
+  "question": "Untuk maklumat lanjut",
+  "dy": 560
+ }
+}
