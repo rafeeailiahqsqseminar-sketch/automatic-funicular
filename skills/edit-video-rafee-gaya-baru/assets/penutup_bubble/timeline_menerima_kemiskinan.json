@@ -1,0 +1,214 @@
+{
+ "duration": 16.2,
+ "accent": "180,140,255",
+ "head_y": 400,
+ "opening_end": 1.6,
+ "pop_hold": 1.35,
+ "pops": [
+  [
+   2.38,
+   "KEMISKINAN"
+  ],
+  [
+   5.12,
+   "KEKAYAAN?"
+  ],
+  [
+   7.12,
+   "FAHAM TAK?"
+  ]
+ ],
+ "cards": [
+  {
+   "t": 8.75,
+   "d": 3.0,
+   "top": "SETIAP YANG KAU",
+   "title": [
+    "TAK",
+    "SANGGUP"
+   ],
+   "sub": "macam mana nak lepaskan?",
+   "dna": false
+  }
+ ],
+ "end": {
+  "t": 999,
+  "cta": 999,
+  "cta_text": "KOMEN NAK",
+  "label": "KELAS ONLINE",
+  "big": "PERCUMA",
+  "platform": "Web &nbsp;•&nbsp; Telegram",
+  "question": "Ingin meneruskan kelas ini?"
+ },
+ "cap_y": 1600,
+ "caps": [
+  [
+   1.6,
+   3.0,
+   [
+    [
+     1.64,
+     "Kalau"
+    ],
+    [
+     2.1,
+     "kemiskinan"
+    ]
+   ]
+  ],
+  [
+   3.0,
+   4.15,
+   [
+    [
+     3.06,
+     "kau"
+    ],
+    [
+     3.24,
+     "tak"
+    ],
+    [
+     3.42,
+     "boleh"
+    ],
+    [
+     3.54,
+     "nak"
+    ],
+    [
+     3.76,
+     "terima,"
+    ]
+   ]
+  ],
+  [
+   4.15,
+   4.88,
+   [
+    [
+     4.18,
+     "macam"
+    ],
+    [
+     4.3,
+     "mana"
+    ],
+    [
+     4.56,
+     "kau"
+    ],
+    [
+     4.74,
+     "nak"
+    ]
+   ]
+  ],
+  [
+   4.88,
+   6.4,
+   [
+    [
+     4.9,
+     "terima"
+    ],
+    [
+     5.18,
+     "kekayaan?"
+    ]
+   ]
+  ],
+  [
+   7.15,
+   8.3,
+   [
+    [
+     7.18,
+     "Faham"
+    ],
+    [
+     7.64,
+     "tak?"
+    ]
+   ]
+  ],
+  [
+   8.38,
+   9.65,
+   [
+    [
+     8.42,
+     "Untuk"
+    ],
+    [
+     8.72,
+     "menerima"
+    ],
+    [
+     9.36,
+     "setiap"
+    ]
+   ]
+  ],
+  [
+   9.65,
+   10.68,
+   [
+    [
+     9.7,
+     "yang"
+    ],
+    [
+     9.72,
+     "kau"
+    ],
+    [
+     9.9,
+     "tak"
+    ],
+    [
+     10.1,
+     "sanggup,"
+    ]
+   ]
+  ],
+  [
+   10.68,
+   11.35,
+   [
+    [
+     10.72,
+     "macam"
+    ],
+    [
+     10.8,
+     "mana"
+    ],
+    [
+     11.02,
+     "kau"
+    ],
+    [
+     11.18,
+     "nak"
+    ]
+   ]
+  ],
+  [
+   11.35,
+   12.1,
+   [
+    [
+     11.38,
+     "lepaskan?"
+    ]
+   ]
+  ]
+ ],
+ "outro": {
+  "t": 12.2,
+  "top": "TERIMA KASIH",
+  "l1": "SILA FOLLOW",
+  "l2": "KLIK LINK BIO"
+ }
+}
