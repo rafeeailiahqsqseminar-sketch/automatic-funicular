@@ -7,7 +7,7 @@ import quantumData from './data/quantum.json';
 import lepas1Data from './data/lepas_p1.json';
 import lepas2Data from './data/lepas_p2.json';
 import {Ayat, ayatDuration} from './Ayat';
-import {ubun, ubunVO, dengar, dengarVO, sulbi} from './data/ayat';
+import {ubun, ubunVO, dengar, dengarVO, sulbi, sulbiVO} from './data/ayat';
 
 const FPS = 30;
 const base = {width: 1080, height: 1920, fps: FPS, durationInFrames: Math.round(5.6 * FPS)};
@@ -145,6 +145,7 @@ export const Root: React.FC = () => (
   <>
     <Composition id="UbunUbunVO" component={Ayat} defaultProps={ubunVO} width={1080} height={1920} fps={30} durationInFrames={Math.round(66.7 * 30)} />
     <Composition id="PendengaranVO" component={Ayat} defaultProps={dengarVO} width={1080} height={1920} fps={30} durationInFrames={Math.round(80.1 * 30)} />
+    <Composition id="SulbiVO" component={Ayat} defaultProps={sulbiVO} width={1080} height={1920} fps={30} durationInFrames={Math.round(78.3 * 30)} />
     <Composition id="UbunUbun" component={Ayat} defaultProps={ubun} width={1080} height={1920} fps={30} durationInFrames={Math.round(ayatDuration(4) * 30)} />
     <Composition id="Pendengaran" component={Ayat} defaultProps={dengar} width={1080} height={1920} fps={30} durationInFrames={Math.round(ayatDuration(4) * 30)} />
     <Composition id="Sulbi" component={Ayat} defaultProps={sulbi} width={1080} height={1920} fps={30} durationInFrames={Math.round(ayatDuration(4) * 30)} />

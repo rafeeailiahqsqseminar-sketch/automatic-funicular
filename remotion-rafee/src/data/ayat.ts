@@ -1,6 +1,7 @@
 import {AyatProps} from '../Ayat';
 import ubunVo from './ubun_vo.json';
 import dengarVo from './dengar_vo.json';
+import sulbiVo from './sulbi_vo.json';
 
 // Siri "Keajaiban Al-Quran": teks terjemahan & keterangan ikut nota Cikgu Rafee.
 export const ubun: AyatProps = {
@@ -73,4 +74,11 @@ export const dengarVO: AyatProps = {
   ...dengar,
   words: dengarVo.words,
   timing: {ayat: 5.9, tr0: 13.1, tr1: 20.0, points: [20.4, 32.9, 44.4, 51.5], end: 59.6, total: 80.1},
+};
+
+// Sulbi & Tara'ib dengan suara ElevenLabs (Tulang_Sulbi.mp3, 78.3 s)
+export const sulbiVO: AyatProps = {
+  ...sulbi,
+  words: sulbiVo.words,
+  timing: {ayat: 4.4, tr0: 10.7, tr1: 20.6, points: [21.5, 29.55, 45.8, 54.85], end: 58.3, total: 78.3},
 };
