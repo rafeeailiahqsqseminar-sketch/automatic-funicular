@@ -1,0 +1,28 @@
+{
+  "_nota": "Config sebenar video Berhenti (13 Nov 2026). Salin & ubah untuk video baru. Path relatif kepada fail config ini.",
+  "duration": 51.4,
+  "words": "vwords.json",
+  "word_fix": {"counsellor,": "kaunselor,", "normalise": "normalize", "ialahkan": "iyakan", "pas": "past"},
+  "lead_words": {"text": "Stoplah jadi pusat rehab untuk perempuan yang emosi dia masih berterabur.", "t0": 0.2, "t1": 4.75},
+  "doodle_scale": 1.25,
+  "box_y": 50,
+  "cap_y": 1400,
+  "cap_size": 128,
+  "doodles": [
+    {"png": "01_stop.png",               "t0": 0.00,  "t1": 4.95},
+    {"png": "02_kaunseling.png",         "t0": 4.95,  "t1": 6.85},
+    {"png": "03_penyelamat.png",         "t0": 6.85,  "t1": 8.20},
+    {"png": "04_balang_kaca.png",        "t0": 8.20,  "t1": 13.40},
+    {"png": "05_meletup.png",            "t0": 13.40, "t1": 18.70},
+    {"png": "06_patah_hati.png",         "t0": 18.70, "t1": 25.10},
+    {"png": "07_ditiup_marah.png",       "t0": 25.10, "t1": 34.40},
+    {"png": "08_bangku_hati.png",        "t0": 34.40, "t1": 36.95},
+    {"png": "09_berdua.png",             "t0": 36.95, "t1": 39.25},
+    {"png": "10_kusut.png",              "t0": 39.25, "t1": 43.00},
+    {"png": "11_pasangan_bahagia.png",   "t0": 43.00, "t1": 45.60},
+    {"png": "12_sibuk_multitasking.png", "t0": 45.60, "t1": 51.40}
+  ],
+  "_doodle_animasi_contoh": {"ref": "video_contoh.mp4", "r0": 0.6, "r1": 2.7, "crop_bottom": 380, "t0": 0, "t1": 4.95},
+  "impacts": [24.06, 43.12],
+  "shimmers": [43.08, 49.4]
+}
