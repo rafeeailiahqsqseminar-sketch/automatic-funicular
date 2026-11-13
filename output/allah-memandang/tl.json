@@ -1,0 +1,70 @@
+{
+ "_note": "Allah Memandang (13 Nov 2026): Pop Emas + watak animasi, tiada card.",
+ "duration": 56.4333,
+ "accent": "110,215,255",
+ "head_y": 370,
+ "opening_end": 2.2,
+ "pop_hold": 1.35,
+ "pops": [
+  [
+   6.5,
+   "KHALIFAH"
+  ],
+  [
+   9.35,
+   "REZEKI"
+  ],
+  [
+   13.85,
+   "LUAR BIASA"
+  ],
+  [
+   15.85,
+   "HEBAT"
+  ],
+  [
+   18.75,
+   "MATA ALLAH"
+  ],
+  [
+   27.9,
+   "ANDA KHALIFAH"
+  ],
+  [
+   35.25,
+   "BETUL"
+  ],
+  [
+   38.9,
+   "ALLAH TAHU"
+  ],
+  [
+   43.45,
+   "SANGAT HEBAT"
+  ],
+  [
+   48.1,
+   "MEMANDANG DIRI"
+  ]
+ ],
+ "cards": [],
+ "character": {
+  "t0": 0.5,
+  "t1": 49.85,
+  "x": 175,
+  "y": 1430,
+  "s": 0.95,
+  "poses": {
+   "0": "point",
+   "1": "cheer",
+   "2": "thumb",
+   "3": "cheer",
+   "4": "doa",
+   "5": "point",
+   "6": "thumb",
+   "7": "doa",
+   "8": "cheer",
+   "9": "think"
+  }
+ }
+}
