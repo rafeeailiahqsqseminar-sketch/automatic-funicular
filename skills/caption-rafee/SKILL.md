@@ -1,6 +1,6 @@
 ---
 name: caption-rafee
-description: Tulis caption TikTok / Bank Data untuk video Cikgu Rafee Ailiah dalam format yang beliau luluskan (hook, ayat kunci, hadis/ayat bersumber, mesej, ajakan komen, hashtag dengan #komuniti). Guna bila Cikgu kata "kaption", "caption", "buat caption tentang ...", atau selepas siap edit video dan dia minta caption.
+description: Tulis caption TikTok / Bank Data untuk video Cikgu Rafee Ailiah dalam format yang beliau luluskan (hook, ayat kunci, hadis/ayat bersumber, mesej, ajakan komen, hashtag dengan #komuniti, serta cadangan muzik latar). Guna bila Cikgu kata "kaption", "caption", "buat caption tentang ...", atau selepas siap edit video dan dia minta caption.
 ---
 
 # Caption Rafee (format diluluskan 13–14 Nov 2026: "Allah Memandang", "Tahajud")
@@ -21,7 +21,15 @@ Jawab terus dengan caption dalam satu blok kod (senang disalin). Bahasa Melayu s
 - Emoji sedikit sahaja (3–5 keseluruhan).
 - Tiada janji hasil ("pasti kaya", "doa pasti makbul serta-merta") dan tiada dakwaan kesihatan.
 - Jika caption untuk video yang baru diedit, ambil isi dan perkataan kunci dari transkrip/Pop Emas video itu.
-- Selepas caption, tawarkan dalam 1 baris: versi lebih pendek atau gaya lain.
+- Selepas caption, beri **cadangan muzik latar** (lihat bawah), kemudian tawarkan dalam 1 baris: versi lebih pendek atau gaya lain.
+
+## Muzik latar (WAJIB, selepas blok caption)
+Tulis 3 baris pendek di luar blok caption:
+- **Mood:** cth. tenang & syahdu / bersemangat & yakin / sayu & menginsafkan (ikut topik).
+- **Jenis:** instrumental sahaja (piano lembut, ambient pad, nasyid instrumental/rebana perlahan, strings). Tiada lagu berlirik supaya suara Cikgu jelas.
+- **Cari di TikTok Sounds:** 2–3 kata kunci, cth. "piano islamic calm", "nasheed instrumental", "ambient soft emotional".
+- **Tetapan:** volume muzik 10–15% (tenggelam di bawah suara).
+Jangan sebut tajuk lagu tertentu yang tidak pasti wujud. Jika muzik akan dimasukkan terus dalam edit video, ikut skil edit video (muzik hanya bila diminta).
 
 ## Contoh diluluskan (Tahajud)
 ```
@@ -45,6 +53,8 @@ Malam ini, kita cuba sama-sama? Tulis "INSYAALLAH" di ruangan komen. 👇
 
 #CikguRafee #Tahajud #Qiamullail #SepertigaMalam #PeringatanDiri #DekatDenganAllah #fyp #komuniti
 ```
+🎵 **Muzik latar:** tenang & syahdu — piano lembut atau ambient pad, instrumental sahaja.
+Cari: "piano islamic calm", "ambient night soft". Volume 10–15%.
 
 ## Contoh diluluskan (dari video "Allah Memandang")
 ```
@@ -63,3 +73,5 @@ Tonton sampai habis & tag kawan yang perlu dengar ini. 👇
 
 #CikguRafee #AllahMemandang #Khalifah #MotivasiDiri #PeringatanDiri #KelasIlmu #fyp #komuniti
 ```
+🎵 **Muzik latar:** yakin & menyentuh — strings/piano naik perlahan, instrumental sahaja.
+Cari: "inspirational piano soft", "nasheed instrumental". Volume 10–15%.
