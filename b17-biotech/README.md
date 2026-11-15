@@ -8,3 +8,5 @@ Aplikasi web satu fail untuk CEO B17 Biotech:
 - **Tugasan**: papan Kanban (Baharu → Sedang dibuat → Semakan CEO → Siap), seret-lepas, tapis, cari, lulus atau minta pembetulan.
 
 Buka `index.html` terus dalam pelayar. Data disimpan dalam `localStorage` pelayar. Angka kewangan dan saluran produk ialah data contoh.
+
+Bila dibuka di claude.ai, 3 pekerja AI dijawab oleh Claude sebenar (guna kuota Claude pengguna): berbual, cipta tugasan sendiri, dan tulis laporan "Hasil kerja". Di luar claude.ai, mereka guna jawapan tetap.

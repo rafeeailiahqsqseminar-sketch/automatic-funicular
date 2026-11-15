@@ -251,7 +251,8 @@ dialog::backdrop{background:rgba(8,20,18,.45)}
     <!-- PEKERJA AI -->
     <section class="view" id="v-ejen" hidden>
       <div class="topbar">
-        <div><div class="eyebrow">Tenaga kerja digital</div><h1>3 Pekerja AI</h1><p class="muted">Berbual, minta laporan atau beri tugasan terus. Taip <span class="mono">/tugas tajuk</span> untuk cipta tugasan.</p></div>
+        <div><div class="eyebrow">Tenaga kerja digital</div><h1>3 Pekerja AI</h1><p class="muted">Berbual, minta laporan atau minta mereka buat kerja. Mereka boleh cipta tugasan sendiri, atau taip <span class="mono">/tugas tajuk</span>.</p></div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px"><span class="pill p-sedia" id="aiBadge">Menyambung ke Claude…</span><span class="muted" style="font-size:.74rem" id="aiNote"></span></div>
       </div>
       <div class="grid three" id="agentCards"></div>
     </section>
@@ -307,6 +308,18 @@ dialog::backdrop{background:rgba(8,20,18,.45)}
       <button class="btn primary" type="submit">Simpan</button>
     </div>
   </form>
+</dialog>
+<dialog id="hasilDlg">
+  <div class="form">
+    <div><div class="eyebrow" id="hasilWho"></div><h2 id="hasilTitle"></h2></div>
+    <div id="hasilBody" style="white-space:pre-wrap;overflow-wrap:anywhere;font-size:.9rem;max-height:55vh;overflow:auto;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:12px"></div>
+    <div class="actions" style="flex-wrap:wrap">
+      <button class="btn" type="button" id="hasilRegen" style="margin-right:auto">Jana semula</button>
+      <button class="btn" type="button" id="hasilStop" hidden>Henti</button>
+      <button class="btn" type="button" id="hasilCopy">Salin</button>
+      <button class="btn primary" type="button" id="hasilClose">Tutup</button>
+    </div>
+  </div>
 </dialog>
 <div class="toast" id="toast" hidden></div>
 
@@ -375,6 +388,7 @@ function seed(){
 let S;
 try { S = JSON.parse(localStorage.getItem(KEY)) || seed(); } catch(e){ S = seed(); }
 if(!S.chats) S.chats = {};
+Object.keys(S.chats).forEach(k => S.chats[k] = S.chats[k].filter(m => !m.p));
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){} };
 
 const $ = s => document.querySelector(s);
@@ -477,11 +491,127 @@ function renderAgents(){
     if(lg.dataset.h !== html){ lg.innerHTML = html; lg.dataset.h = html; lg.scrollTop = lg.scrollHeight; }
   });
 }
+/* ---------- SAMBUNGAN CLAUDE ---------- */
+let sampleFn = null, toolsOK = false, aiOff = false, aiReady = false;
+function renderAiBadge(){
+  const b = $('#aiBadge'), n = $('#aiNote');
+  if(sampleFn && !aiOff){ b.className = 'pill p-kerja'; b.textContent = 'Disambung ke Claude'; n.textContent = 'Setiap mesej guna kuota Claude anda sendiri.'; }
+  else if(!aiReady){ b.className = 'pill p-sedia'; b.textContent = 'Menyambung ke Claude…'; n.textContent = ''; }
+  else { b.className = 'pill p-mesy'; b.textContent = 'Mod jawapan tetap'; n.textContent = aiOff ? 'Claude tidak dibenarkan untuk paparan ini.' : 'Claude hanya tersedia bila dibuka di claude.ai.'; }
+}
+if(window.claude && typeof window.claude.use === 'function'){
+  window.claude.use('sample').then(async s => {
+    sampleFn = s; aiReady = true;
+    if(s){ try { const l = await s.limits(); toolsOK = !!(l && l.tools); } catch(e){} }
+    renderAiBadge();
+  }).catch(() => { aiReady = true; renderAiBadge(); });
+} else { aiReady = true; }
+const HIDE_CODES = ['not_granted','sampling_disabled','not_declared','capability_disabled','capability_removed'];
+function errCopy(code){
+  return ({
+    not_granted:'Anda belum membenarkan halaman ini menggunakan Claude. Saya beralih ke jawapan tetap.',
+    sampling_disabled:'Claude tidak tersedia untuk akaun ini. Saya beralih ke jawapan tetap.',
+    rate_limited:'Terlalu banyak permintaan buat masa ini. Cuba lagi sebentar nanti.',
+    session_expired:'Sesi anda tamat. Sila log masuk semula ke claude.ai.',
+    refused:'Saya tidak dapat menjawab permintaan itu. Cuba ubah soalan anda.',
+    prompt_too_large:'Perbualan terlalu panjang. Muat semula halaman dan cuba lagi.',
+    cancelled:'Dihentikan.',
+  })[code] || 'Sambungan terputus. Cuba hantar semula.';
+}
+function persona(a){
+  const mine = S.tasks.filter(t => t.ejen === a.id && t.status !== 'siap');
+  const others = AGENTS.filter(o => o.id !== a.id).map(o => `${o.nama} (${o.peranan})`).join(', ');
+  return `Anda ialah ${a.nama}, ${a.peranan} di B17 Biotech, sebuah syarikat bioteknologi di Malaysia. Anda pekerja AI yang melapor terus kepada CEO, dan anda sedang berbual dengan CEO dalam aplikasi pejabat maya syarikat.
+Kemahiran anda: ${a.kemahiran.join(', ')}. Bilik anda: ${ROOMS[a.bilik].nama}. Rakan sekerja AI: ${others}.
+Saluran produk syarikat: B17-PRO (probiotik usus tempatan, peringkat pendaftaran NPRA), B17-AX (antioksidan mikroalga, praklinikal), B17-ENZ (enzim industri makanan, ujian perintis), B17-VET (vaksin ternakan ayam, penemuan).
+Tugasan anda yang belum siap:
+${mine.length ? mine.map(t => `- ${t.tajuk} | ${COLS.find(c=>c.id===t.status).nama}${t.status==='buat'?` ${t.progres}%`:''} | keutamaan ${t.keutamaan} | tarikh akhir ${t.tarikh||'tiada'}`).join('\n') : '- (tiada)'}
+Tarikh hari ini: ${iso(new Date())}.
+Cara menjawab: Bahasa Melayu, panggil pengguna "CEO", profesional dan mesra, ringkas (biasanya bawah 120 patah perkataan), teks biasa tanpa Markdown tebal; guna "-" untuk senarai. Angka teknikal atau kewangan yang anda beri ialah anggaran, jadi sebut begitu.
+${toolsOK ? 'Jika CEO meminta anda melakukan kerja baharu, guna alat cipta_tugasan untuk merekodkannya, kemudian sahkan kepada CEO.' : 'Jika CEO meminta kerja baharu, cadangkan CEO menaip "/tugas" diikuti tajuk tugasan.'}`;
+}
+async function askClaude(a){
+  const msg = {r:'ai', t:'Sedang berfikir…', p:true};
+  const hist = S.chats[a.id].filter(m => !m.p).slice(-16).map(m => ({role: m.r === 'me' ? 'user' : 'assistant', content: m.t}));
+  S.chats[a.id].push(msg); render();
+  const opts = {cache:false, modelTier:'quick', onText: ({text}) => { msg.t = text; msg.p = false; renderAgents(); }};
+  if(toolsOK) opts.tools = [{
+    name:'cipta_tugasan',
+    description:'Cipta tugasan baharu dalam papan tugasan syarikat, diberi kepada anda sendiri dan terus berstatus "Sedang dibuat". Pulangkan id dan tajuk tugasan.',
+    inputSchema:{type:'object', properties:{tajuk:{type:'string', description:'Tajuk ringkas tugasan dalam Bahasa Melayu'}, keutamaan:{type:'string', enum:['Tinggi','Sederhana','Rendah']}, hari:{type:'number', description:'Bilangan hari dari hari ini hingga tarikh akhir'}}, required:['tajuk']},
+    execute: input => {
+      const tajuk = String(input.tajuk || '').trim().slice(0,120); if(!tajuk) throw new Error('Tajuk kosong');
+      const k = ['Tinggi','Sederhana','Rendah'].includes(input.keutamaan) ? input.keutamaan : 'Sederhana';
+      const h = Math.max(1, Math.min(60, Math.round(Number(input.hari) || 5)));
+      const t = addTask({tajuk, ejen:a.id, keutamaan:k, tarikh:addDays(h), status:'buat', butiran:'Dicipta oleh '+a.nama+' semasa berbual dengan CEO'});
+      render(); toast(`${a.nama} mencipta tugasan baharu`);
+      return {id:t.id, tajuk:t.tajuk, tarikh_akhir:t.tarikh};
+    }}];
+  try {
+    const {text, truncated} = await sampleFn([{role:'user', content:persona(a)}, ...hist], opts);
+    msg.t = text + (truncated ? '\n\n(Jawapan terpotong)' : '');
+  } catch(e){
+    msg.t = (e && e.text ? e.text + '\n\n' : '') + errCopy(e && e.code);
+    if(e && HIDE_CODES.includes(e.code)){ aiOff = true; renderAiBadge(); }
+  }
+  msg.p = false; S.chats[a.id] = S.chats[a.id].slice(-40); save(); render();
+}
+
+/* ---------- HASIL KERJA (laporan oleh pekerja AI) ---------- */
+const hDlg = $('#hasilDlg'); let hTask = null, hCtl = null;
+function openHasil(t){
+  hTask = t; const a = agent(t.ejen);
+  $('#hasilWho').textContent = `Hasil kerja oleh ${a.nama} · ${a.peranan}`;
+  $('#hasilTitle').textContent = t.tajuk;
+  $('#hasilBody').textContent = t.hasil || '';
+  $('#hasilRegen').hidden = !(sampleFn && !aiOff);
+  hDlg.showModal();
+  if(!t.hasil){
+    if(sampleFn && !aiOff) genHasil();
+    else $('#hasilBody').textContent = 'Laporan hanya boleh dijana bila aplikasi dibuka di claude.ai dan Claude dibenarkan.';
+  }
+}
+async function genHasil(){
+  const t = hTask, a = agent(t.ejen); hCtl = new AbortController();
+  const body = $('#hasilBody'); body.textContent = `${a.nama} sedang menulis laporan…`;
+  $('#hasilStop').hidden = false; $('#hasilRegen').disabled = true;
+  const prompt = persona(a) + `
+
+Tugasan yang anda baru siapkan: "${t.tajuk}"${t.butiran ? `\nButiran: ${t.butiran}` : ''}
+Keutamaan: ${t.keutamaan}. Tarikh akhir: ${t.tarikh || 'tiada'}.
+
+Tulis hasil kerja untuk semakan CEO, kira-kira 200 hingga 300 patah perkataan, dalam teks biasa dengan bahagian berikut:
+RINGKASAN (2-3 ayat)
+DAPATAN UTAMA (3-5 poin bermula "-")
+RISIKO ATAU ISU (1-3 poin)
+CADANGAN LANGKAH SETERUSNYA (2-4 poin)
+Tandakan angka sebagai anggaran. Jangan tulis apa-apa sebelum RINGKASAN.`;
+  try {
+    const {text, truncated} = await sampleFn(prompt, {cache:false, signal:hCtl.signal, onText: ({text}) => { if(hTask === t) body.textContent = text; }});
+    t.hasil = text + (truncated ? '\n\n(Laporan terpotong)' : '');
+    if(hTask === t) body.textContent = t.hasil;
+    log(a.id, `menyerahkan laporan hasil kerja "${t.tajuk}".`); save(); render();
+  } catch(e){
+    if(hTask === t) body.textContent = (e && e.text ? e.text + '\n\n' : '') + errCopy(e && e.code);
+    if(e && HIDE_CODES.includes(e.code)){ aiOff = true; renderAiBadge(); $('#hasilRegen').hidden = true; }
+  } finally { $('#hasilStop').hidden = true; $('#hasilRegen').disabled = false; }
+}
+$('#hasilRegen').onclick = () => genHasil();
+$('#hasilStop').onclick = () => hCtl && hCtl.abort();
+$('#hasilClose').onclick = () => { hCtl && hCtl.abort(); hDlg.close(); };
+hDlg.addEventListener('close', () => { hCtl && hCtl.abort(); hTask = null; });
+$('#hasilCopy').onclick = async () => {
+  const txt = $('#hasilBody').textContent;
+  try { await navigator.clipboard.writeText(txt); toast('Laporan disalin'); }
+  catch(e){ const r = document.createRange(); r.selectNodeContents($('#hasilBody')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); toast('Teks dipilih. Tekan Ctrl+C untuk salin.'); }
+};
+
 function chat(a, text){
   S.chats[a.id].push({r:'me', t:text});
   const q = text.toLowerCase();
   let reply;
   const m = text.match(/^\/tugas\s+(.+)/i);
+  if(!m && sampleFn && !aiOff){ askClaude(a); return; }
   if(m){
     const t = addTask({tajuk:m[1].slice(0,120), ejen:a.id, keutamaan:'Sederhana', tarikh:addDays(5), status:'buat', butiran:''});
     reply = `Baik CEO. Tugasan "${t.tajuk}" saya mula sekarang. Saya akan hantar untuk semakan bila siap.`;
@@ -555,6 +685,7 @@ function renderBoard(){
         <div class="card-meta"><span class="who"><i style="background:${whoColor(t.ejen)}"></i>${whoName(t.ejen)}</span><span class="pill pri-${t.keutamaan}">${t.keutamaan}</span>${t.tarikh?`<span class="mono ${late?'down':'muted'}">${late?'Lewat · ':''}${fmtDate(t.tarikh)}</span>`:''}</div>
         ${t.status==='buat' && t.ejen!=='ceo' ? `<div class="prog"><div class="meter"><i style="width:${t.progres}%;background:${whoColor(t.ejen)}"></i></div><span class="mono">${t.progres}%</span></div>` : ''}
         <div class="card-actions">
+          ${t.ejen!=='ceo' && (t.status==='semak' || t.status==='siap') ? `<button class="btn sm" type="button" data-act="hasil">${t.hasil ? 'Lihat hasil' : 'Hasil kerja'}</button>` : ''}
           ${t.status==='semak' ? `<button class="btn sm" type="button" data-act="balik">Minta pembetulan</button><button class="btn sm primary" type="button" data-act="lulus">Lulus</button>` : ''}
           <button class="btn sm ghost" type="button" data-act="edit" aria-label="Sunting">Sunting</button>
           ${ci>0?`<button class="btn sm" type="button" data-act="kiri" aria-label="Pindah ke ${COLS[ci-1].nama}">←</button>`:''}
@@ -576,6 +707,7 @@ $('#board').addEventListener('click', e => {
   const ci = COLS.findIndex(c=>c.id===t.status);
   const act = b.dataset.act;
   if(act==='edit') return openTask(t);
+  if(act==='hasil') return openHasil(t);
   if(act==='kiri') moveTask(t, COLS[ci-1].id);
   if(act==='kanan') moveTask(t, COLS[ci+1].id);
   if(act==='lulus'){ moveTask(t,'siap'); toast('Tugasan diluluskan'); }
@@ -650,7 +782,7 @@ $('#standupBtn').onclick = () => gather('mesyuarat');
 $('#breakBtn').onclick = () => gather('pantri');
 addEventListener('hashchange', route);
 addEventListener('resize', () => renderOffice());
-renderChart(); renderPipeline(); renderFilter(); tick(); setInterval(tick, 30000);
+renderChart(); renderPipeline(); renderFilter(); renderAiBadge(); tick(); setInterval(tick, 30000);
 route();
 })();
 </script>
