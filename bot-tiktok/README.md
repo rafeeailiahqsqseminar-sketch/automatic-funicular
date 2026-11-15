@@ -25,7 +25,7 @@ Forward video kepada bot. Bot susun jadual, dan bila tiba masa posting bot hanta
 
 **C. Hidupkan bot**
 
-1. Pastikan kod ini sudah di-merge ke branch utama (`main`). GitHub hanya jalankan jadual dari branch utama.
+1. Merge pull request bot ini ke branch utama repo (sekarang `claude/new-session-c5roqr`). GitHub hanya jalankan jadual dari branch utama.
 2. Buka bot Cikgu di Telegram dan tekan **Start**. Orang pertama yang tekan Start menjadi pemilik bot, dan orang lain akan ditolak.
 
 ## Cara guna
