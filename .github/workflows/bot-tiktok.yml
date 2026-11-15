@@ -1,8 +1,11 @@
 name: Bot Jadual TikTok
 
+# Bot berjaga ~5 jam 40 minit setiap larian dan balas mesej serta-merta.
+# Jadual cron hanya "beratur" larian seterusnya: bila larian semasa tamat,
+# larian yang menunggu terus bermula, jadi bot sentiasa hidup.
 on:
   schedule:
-    - cron: "*/10 * * * *"   # setiap 10 minit
+    - cron: "*/15 * * * *"
   workflow_dispatch:          # boleh jalan manual dari tab Actions
 
 permissions:
@@ -10,12 +13,12 @@ permissions:
 
 concurrency:
   group: bot-tiktok
-  cancel-in-progress: false
+  cancel-in-progress: false   # jangan potong bot yang sedang berjaga
 
 jobs:
   jalan:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 355
     steps:
       - uses: actions/checkout@v4
 
@@ -23,18 +26,14 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Sediakan git
+        run: |
+          git config user.name "bot-jadual-tiktok"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
       - name: Jalankan bot
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          BOT_LAMA_MINIT: "340"
+          BOT_GIT_PUSH: "1"
         run: python bot-tiktok/bot.py
-
-      - name: Simpan jadual
-        run: |
-          if [ -n "$(git status --porcelain bot-tiktok/data)" ]; then
-            git config user.name "bot-jadual-tiktok"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add bot-tiktok/data
-            git commit -m "Kemaskini jadual TikTok [skip ci]"
-            git pull --rebase
-            git push
-          fi

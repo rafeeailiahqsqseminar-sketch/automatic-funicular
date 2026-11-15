@@ -57,9 +57,9 @@ Lepas itu, setiap kali bot hantar peringatan posting, video yang sama akan dikon
 
 Bot tidak membalas mesej lain dalam group.
 
-Jam asal ialah 8:30 malam setiap hari (waktu Malaysia). Bot semak setiap 10 minit, jadi balasan dan peringatan boleh lewat sehingga kira-kira 10 hingga 15 minit.
+Jam asal ialah 8:30 malam setiap hari (waktu Malaysia). Bot sentiasa berjaga dan balas dalam beberapa saat. Setiap larian GitHub berjaga kira-kira 5 jam 40 minit, kemudian larian seterusnya terus mengambil alih.
 
 ## Ujian
 
-Forward satu video kepada bot dan tunggu 10 minit. Bot akan balas "✅ #1 ... 📅 tarikh dan jam".
-Kalau tak mahu tunggu: di GitHub, klik **Actions**, kemudian **Bot Jadual TikTok**, kemudian **Run workflow**.
+Forward satu video kepada bot. Bot akan balas dalam beberapa saat: "✅ #1 ... 📅 tarikh dan jam".
+Kalau bot tak balas: di GitHub, klik **Actions**, kemudian **Bot Jadual TikTok**, kemudian **Run workflow**.
