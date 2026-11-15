@@ -15,14 +15,16 @@ Kongsi ke group kursus:
   - /kongsi 3           -> kongsi video #3 ke group sekarang
   - /group              -> lihat group yang disambung,  /putus -> putuskan group
 
-Skrip ini dijalankan oleh GitHub Actions setiap 10 minit. Setiap kali jalan,
-ia baca mesej baru, kemaskini jadual dan hantar peringatan yang sudah tiba masanya.
+Skrip ini dijalankan oleh GitHub Actions dan berjaga selama ~5.5 jam setiap kali
+(long polling), jadi mesej dibalas serta-merta. Bila tamat, larian seterusnya terus mengambil alih.
 Hanya pustaka standard Python digunakan.
 """
 
 import json
 import os
+import subprocess
 import sys
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -54,7 +56,7 @@ def api(method, **params):
         {k: (json.dumps(v) if isinstance(v, (dict, list)) else v) for k, v in params.items() if v is not None}
     ).encode()
     req = urllib.request.Request(f"https://api.telegram.org/bot{token}/{method}", data=data)
-    with urllib.request.urlopen(req, timeout=30) as r:
+    with urllib.request.urlopen(req, timeout=70) as r:
         res = json.loads(r.read())
     if not res.get("ok"):
         raise RuntimeError(f"{method}: {res}")
@@ -289,39 +291,61 @@ def hantar_yang_tiba(state):
 
 
 # ---------------------------------------------------------------- Main
+def simpan(state):
+    STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
+    STATE_FILE.write_text(json.dumps(state, indent=2, ensure_ascii=False) + "\n")
+    print("Jadual dikemaskini.", flush=True)
+    if os.environ.get("BOT_GIT_PUSH"):  # dalam GitHub Actions: simpan terus ke repo
+        cmds = [["git", "add", str(STATE_FILE)], ["git", "commit", "-qm", "Kemaskini jadual TikTok [skip ci]"],
+                ["git", "pull", "-q", "--rebase"], ["git", "push", "-q"]]
+        for c in cmds:
+            r = subprocess.run(c, capture_output=True, text=True)
+            if r.returncode:
+                print(f"Gagal simpan ({' '.join(c)}): {r.stderr.strip()}", file=sys.stderr, flush=True)
+                return
+
+
 def main():
     token = os.environ.get("TELEGRAM_TOKEN", "").strip()
     if not token:
         sys.exit("RALAT: secret TELEGRAM_TOKEN kosong. Tambah di Settings > Secrets and variables > Actions.")
     os.environ["TELEGRAM_TOKEN"] = token
     try:
-        api("getMe")
+        me = api("getMe")
     except urllib.error.HTTPError as e:
         if e.code in (401, 404):
             sys.exit("RALAT: Telegram tolak TELEGRAM_TOKEN (salah token). Salin semula token dari @BotFather.")
         raise
+    print(f"Bot: @{(me or {}).get('username')}", flush=True)
 
     state = {**DEFAULT_STATE, **json.loads(STATE_FILE.read_text())} if STATE_FILE.exists() else dict(DEFAULT_STATE)
-    asal = json.dumps(state, sort_keys=True)
 
+    # BOT_LAMA_MINIT: berapa lama bot berjaga dan balas serta-merta (0 = semak sekali sahaja)
+    lama = float(os.environ.get("BOT_LAMA_MINIT", "0"))
+    tamat = time.time() + lama * 60
     while True:
-        updates = api("getUpdates", offset=state["offset"], timeout=0, allowed_updates=["message"])
-        if not updates:
+        asal = json.dumps(state, sort_keys=True)
+        try:
+            # long polling: Telegram tahan sambungan sehingga 50 saat dan pulangkan mesej sebaik ia masuk
+            updates = api("getUpdates", offset=state["offset"], timeout=50 if lama else 0,
+                          allowed_updates=["message"])
+            for u in updates:
+                state["offset"] = u["update_id"] + 1
+                if "message" in u:
+                    try:
+                        handle(state, u["message"])
+                    except Exception as e:  # satu mesej rosak jangan hentikan bot
+                        print(f"Ralat mesej {u['update_id']}: {e}", file=sys.stderr, flush=True)
+            hantar_yang_tiba(state)
+        except Exception as e:  # rangkaian terputus dll: cuba lagi
+            if not lama:
+                raise
+            print(f"Ralat sementara: {e}", file=sys.stderr, flush=True)
+            time.sleep(5)
+        if json.dumps(state, sort_keys=True) != asal:
+            simpan(state)
+        if time.time() >= tamat:
             break
-        for u in updates:
-            state["offset"] = u["update_id"] + 1
-            if "message" in u:
-                try:
-                    handle(state, u["message"])
-                except Exception as e:  # satu mesej rosak jangan hentikan bot
-                    print(f"Ralat mesej {u['update_id']}: {e}", file=sys.stderr)
-
-    hantar_yang_tiba(state)
-
-    if json.dumps(state, sort_keys=True) != asal:
-        STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
-        STATE_FILE.write_text(json.dumps(state, indent=2, ensure_ascii=False) + "\n")
-        print("Jadual dikemaskini.")
 
 
 if __name__ == "__main__":
