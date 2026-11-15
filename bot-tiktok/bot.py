@@ -16,6 +16,7 @@ Hanya pustaka standard Python digunakan.
 import json
 import os
 import sys
+import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import datetime, timedelta, timezone
@@ -212,6 +213,17 @@ def hantar_yang_tiba(state):
 
 # ---------------------------------------------------------------- Main
 def main():
+    token = os.environ.get("TELEGRAM_TOKEN", "").strip()
+    if not token:
+        sys.exit("RALAT: secret TELEGRAM_TOKEN kosong. Tambah di Settings > Secrets and variables > Actions.")
+    os.environ["TELEGRAM_TOKEN"] = token
+    try:
+        api("getMe")
+    except urllib.error.HTTPError as e:
+        if e.code in (401, 404):
+            sys.exit("RALAT: Telegram tolak TELEGRAM_TOKEN (salah token). Salin semula token dari @BotFather.")
+        raise
+
     state = {**DEFAULT_STATE, **json.loads(STATE_FILE.read_text())} if STATE_FILE.exists() else dict(DEFAULT_STATE)
     asal = json.dumps(state, sort_keys=True)
 
