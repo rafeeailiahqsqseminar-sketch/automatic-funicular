@@ -39,6 +39,24 @@ Forward video kepada bot. Bot susun jadual, dan bila tiba masa posting bot hanta
 | Tukar jam posting | `/masa 20:30` atau `/masa 12:30 20:30` (dua kali sehari) |
 | Rapatkan jadual | `/susun` |
 
+## Kongsi video ke group kursus
+
+1. Buka group Telegram kursus.
+2. Tekan nama group di atas, kemudian **Add Members** (Tambah Ahli).
+3. Cari username bot Cikgu dan tambah ke group.
+4. Dalam group itu, taip `/sambung` dan hantar. Hanya Cikgu boleh sambung group.
+5. Dalam chat peribadi dengan bot, taip `/tiktok https://www.tiktok.com/@namaCikgu` supaya pautan TikTok disertakan dalam mesej group.
+
+Lepas itu, setiap kali bot hantar peringatan posting, video yang sama akan dikongsi ke group **30 minit kemudian** dengan mesej "🎬 Video baru dah keluar!". Masa 30 minit itu memberi peluang Cikgu post ke TikTok dulu.
+
+| Buat apa | Caranya |
+|---|---|
+| Kongsi ke group sekarang | `/kongsi 3` |
+| Lihat group yang disambung | `/group` |
+| Berhenti kongsi ke group | `/putus` |
+
+Bot tidak membalas mesej lain dalam group.
+
 Jam asal ialah 8:30 malam setiap hari (waktu Malaysia). Bot semak setiap 10 minit, jadi balasan dan peringatan boleh lewat sehingga kira-kira 10 hingga 15 minit.
 
 ## Ujian
