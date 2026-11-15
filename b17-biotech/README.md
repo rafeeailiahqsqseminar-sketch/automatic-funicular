@@ -1,5 +1,7 @@
 # B17 Biotech HQ
 
+Buka aplikasi: https://claude.ai/artifact/7kvFKxbCNKpiHmLGksnpSS
+
 Aplikasi web satu fail untuk CEO B17 Biotech:
 
 - **Papan CEO**: KPI, carta hasil, saluran produk R&D, aktiviti terkini.
