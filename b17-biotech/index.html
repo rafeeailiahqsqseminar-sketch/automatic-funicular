@@ -37,6 +37,7 @@
   --shadow:0 1px 2px rgba(0,0,0,.3); color-scheme:dark}
 
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html,body{height:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--f-body)}
 h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;letter-spacing:-.01em}
@@ -186,6 +187,16 @@ dialog::backdrop{background:rgba(8,20,18,.45)}
 .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--surface);padding:10px 16px;border-radius:10px;font-weight:600;font-size:.88rem;z-index:50;box-shadow:var(--shadow);max-width:calc(100vw - 32px)}
 
 .view[hidden]{display:none!important}
+.idea-grid{grid-template-columns:minmax(0,340px) minmax(0,1fr);align-items:start}
+.idea-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.idea{border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px;background:var(--surface);min-width:0}
+.idea.saved{border-color:var(--a3)}
+.idea h3{font-size:.95rem;overflow-wrap:anywhere}
+.idea .hook{border-left:3px solid var(--a3);padding-left:10px;font-style:italic;font-size:.88rem;overflow-wrap:anywhere}
+.idea dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 10px;font-size:.8rem}
+.idea dt{color:var(--muted);font-weight:700}
+.idea dd{margin:0;overflow-wrap:anywhere}
+.idea .card-actions{margin-top:auto}
 
 @media (max-width:1100px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:1fr}}
 @media (max-width:860px){
@@ -195,7 +206,8 @@ dialog::backdrop{background:rgba(8,20,18,.45)}
   .nav{flex-direction:row;width:100%;justify-content:space-around}
   .nav a{flex-direction:column;gap:2px;font-size:.68rem;padding:6px 8px}
   main{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-bottom:96px}
-  .two{grid-template-columns:1fr}
+  .two,.idea-grid{grid-template-columns:1fr}
+  .nav a{padding:6px 4px}
   .office{aspect-ratio:4/5}
   .toast{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
 }
@@ -210,6 +222,7 @@ dialog::backdrop{background:rgba(8,20,18,.45)}
       <a href="#papan" data-view="papan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Papan CEO</a>
       <a href="#ejen" data-view="ejen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="7" width="16" height="12" rx="3"/><path d="M12 3v4M9 12h.01M15 12h.01M9 16h6"/></svg>Pekerja AI</a>
       <a href="#pejabat" data-view="pejabat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg>Pejabat Maya</a>
+      <a href="#idea" data-view="idea"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3Z"/></svg>Idea Konten</a>
       <a href="#tugasan" data-view="tugasan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6h11M9 12h11M9 18h11"/><path d="m3 6 1.5 1.5L7 5M3 12l1.5 1.5L7 11M3 18l1.5 1.5L7 17"/></svg>Tugasan</a>
     </nav>
     <div class="side-foot">
@@ -273,6 +286,29 @@ dialog::backdrop{background:rgba(8,20,18,.45)}
       </div>
     </section>
 
+    <!-- IDEA KONTEN -->
+    <section class="view" id="v-idea" hidden>
+      <div class="topbar">
+        <div><div class="eyebrow">Dikendalikan oleh SERA</div><h1>Idea Konten</h1><p class="muted">SERA mencari idea konten untuk B17 Biotech. Pilih platform dan fokus, kemudian minta idea. Idea yang bagus boleh terus dijadikan tugasan, dan SERA akan tulis skripnya.</p></div>
+      </div>
+      <div class="grid idea-grid">
+        <form class="panel form" id="ideaForm">
+          <h2>Minta idea</h2>
+          <label>Platform<select id="iPlatform"><option>TikTok</option><option>Instagram Reels</option><option>Facebook</option><option>YouTube Shorts</option><option>LinkedIn</option></select></label>
+          <label>Fokus<select id="iFokus"><option>Jenama B17 Biotech secara umum</option><option>B17-PRO (probiotik usus tempatan)</option><option>B17-AX (antioksidan mikroalga)</option><option>B17-ENZ (enzim industri makanan)</option><option>B17-VET (vaksin ternakan ayam)</option><option>Di sebalik tabir makmal</option><option>Pasukan pekerja AI syarikat</option><option>Pendidikan sains untuk orang awam</option></select></label>
+          <label>Sasaran audiens<input id="iAudiens" value="Orang awam Malaysia umur 20-45 yang minat kesihatan" maxlength="140"></label>
+          <label>Arahan tambahan<textarea id="iExtra" rows="2" maxlength="300" placeholder="Pilihan. Cth: gaya santai, ada humor, sempena musim cuti sekolah"></textarea></label>
+          <label>Bilangan idea<select id="iCount"><option>3</option><option selected>5</option><option>8</option></select></label>
+          <div class="actions"><button class="btn" type="button" id="ideaStop" hidden>Henti</button><button class="btn primary" type="submit" id="ideaGo">Minta SERA cari idea</button></div>
+          <p class="muted" id="ideaStatus" style="margin:0;font-size:.82rem" aria-live="polite"></p>
+        </form>
+        <div class="panel">
+          <div class="panel-head"><h2>Bank idea</h2><div class="seg" id="ideaSeg" role="group" aria-label="Tapis idea"><button type="button" data-if="semua" aria-pressed="true">Semua</button><button type="button" data-if="simpan" aria-pressed="false">Disimpan</button></div></div>
+          <div class="idea-list" id="ideaList"></div>
+        </div>
+      </div>
+    </section>
+
     <!-- TUGASAN -->
     <section class="view" id="v-tugasan" hidden>
       <div class="topbar">
@@ -331,14 +367,14 @@ const AGENTS = [
    kemahiran:['Reka bentuk eksperimen','Analisis genomik','Kultur sel','Ulasan literatur'],
    salam:'Salam CEO. Saya AIRA, mengurus Makmal R&D. Bioreaktor BR-02 stabil pada pH 7.2 dan viabiliti sel 94%.',
    idea:['Cadangan: ulang assay ELISA untuk calon B17-AX dengan 3 replikasi lagi.','Saya jumpa 4 kertas kajian baharu tentang probiotik tempatan yang berkaitan dengan B17-PRO.','Data viabiliti sel minggu ini naik 2.1% berbanding minggu lepas.']},
-  {id:'niko', nama:'NIKO', peranan:'Pengurus Operasi & Kualiti AI', bilik:'operasi', warna:'var(--a2)',
-   kemahiran:['Kawalan kualiti GMP','Rantaian bekalan','Jadual pengeluaran','Audit SOP'],
+  {id:'niko', nama:'NIKO', peranan:'Pengurus Operasi, Kualiti & Regulatori AI', bilik:'operasi', warna:'var(--a2)',
+   kemahiran:['Kawalan kualiti GMP','Rantaian bekalan','Dokumen NPRA','Audit SOP'],
    salam:'Hai CEO. NIKO di sini. Batch BX-17-0048 lulus QC. Stok media kultur cukup untuk 18 hari.',
    idea:['Amaran: bekalan serum FBS perlu dipesan sebelum 25 Nov.','Kadar lulus QC bulan ini 98.4%, tertinggi tahun ini.','Saya cadangkan audit SOP bilik bersih dibuat minggu depan.']},
-  {id:'sera', nama:'SERA', peranan:'Strategi Pasaran & Regulatori AI', bilik:'strategi', warna:'var(--a3)',
-   kemahiran:['Dokumen NPRA','Analisis pasaran','Pitch pelabur','Kandungan pemasaran'],
-   salam:'Selamat sejahtera CEO. SERA bertugas. Dokumen pendaftaran NPRA untuk B17-PRO sudah 70% siap.',
-   idea:['Pasaran nutraseutikal ASEAN dijangka tumbuh 8.5% setahun. Peluang untuk B17-PRO.','Saya boleh sediakan dek pitch pelabur Siri A dalam 2 hari.','Tarikh akhir permohonan geran MOSTI ialah 12 Dis.']},
+  {id:'sera', nama:'SERA', peranan:'Pencari Idea Konten & Pemasaran AI', bilik:'strategi', warna:'var(--a3)',
+   kemahiran:['Idea konten TikTok & Instagram','Skrip video pendek','Analisis trend','Pitch pelabur'],
+   salam:'Selamat sejahtera CEO. SERA bertugas. Tugas utama saya mencari idea konten untuk B17 Biotech. Buka halaman Idea Konten atau minta terus di sini.',
+   idea:['Idea: siri "Sehari di Makmal B17" yang tunjuk proses kultur probiotik dalam 30 saat.','Idea: video mitos lawan fakta tentang probiotik, sesuai untuk TikTok.','Idea: perkenalkan AIRA, NIKO dan SERA sebagai pasukan AI syarikat dalam satu video pendek.']},
 ];
 const COLS = [
   {id:'baru', nama:'Baharu'},
@@ -350,7 +386,7 @@ const ROOMS = {
   ceo:      {x:2,  y:4,  w:28, h:42, nama:'Bilik CEO', sub:'Anda di sini', cls:'ceo'},
   makmal:   {x:32, y:4,  w:36, h:42, nama:'Makmal R&D', sub:'Bioreaktor · BSL-2'},
   operasi:  {x:70, y:4,  w:28, h:42, nama:'Operasi & QC', sub:'Bilik bersih · GMP'},
-  strategi: {x:2,  y:52, w:30, h:44, nama:'Ruang Strategi', sub:'Pasaran · NPRA'},
+  strategi: {x:2,  y:52, w:30, h:44, nama:'Studio Konten', sub:'Idea · Pemasaran'},
   mesyuarat:{x:34, y:52, w:34, h:44, nama:'Bilik Mesyuarat', sub:'Muat 12 orang'},
   pantri:   {x:70, y:52, w:28, h:44, nama:'Pantri', sub:'Kopi & rehat'},
 };
@@ -372,7 +408,8 @@ function seed(){
       t('Pesan semula serum FBS & media kultur','niko','Tinggi',1,'buat',70),
       t('Audit SOP bilik bersih','niko','Sederhana',7,'baru'),
       t('Laporan QC batch BX-17-0048','niko','Sederhana',-1,'semak',100),
-      t('Draf dokumen pendaftaran NPRA B17-PRO','sera','Tinggi',6,'buat',70),
+      t('Draf dokumen pendaftaran NPRA B17-PRO','niko','Tinggi',6,'buat',30),
+      t('Kalendar konten TikTok bulan Disember','sera','Tinggi',4,'buat',55),
       t('Dek pitch pelabur Siri A','sera','Tinggi',12,'baru'),
       t('Analisis pesaing pasaran nutraseutikal ASEAN','sera','Rendah',-3,'siap',100),
       t('Semak kontrak pembekal reagen','ceo','Sederhana',3,'baru'),
@@ -494,6 +531,7 @@ function renderAgents(){
 /* ---------- SAMBUNGAN CLAUDE ---------- */
 let sampleFn = null, toolsOK = false, aiOff = false, aiReady = false;
 function renderAiBadge(){
+  if(typeof renderIdeas === 'function' && S.ideas) renderIdeas();
   const b = $('#aiBadge'), n = $('#aiNote');
   if(sampleFn && !aiOff){ b.className = 'pill p-kerja'; b.textContent = 'Disambung ke Claude'; n.textContent = 'Setiap mesej guna kuota Claude anda sendiri.'; }
   else if(!aiReady){ b.className = 'pill p-sedia'; b.textContent = 'Menyambung ke Claude…'; n.textContent = ''; }
@@ -573,9 +611,18 @@ function openHasil(t){
 }
 async function genHasil(){
   const t = hTask, a = agent(t.ejen); hCtl = new AbortController();
-  const body = $('#hasilBody'); body.textContent = `${a.nama} sedang menulis laporan…`;
+  const body = $('#hasilBody'); body.textContent = t.jenis === 'konten' ? `${a.nama} sedang menulis skrip…` : `${a.nama} sedang menulis laporan…`;
   $('#hasilStop').hidden = false; $('#hasilRegen').disabled = true;
-  const prompt = persona(a) + `
+  const prompt = t.jenis === 'konten' ? persona(a) + `
+
+Tugasan konten yang anda baru siapkan: "${t.tajuk}"${t.butiran ? `\nButiran: ${t.butiran}` : ''}
+
+Tulis skrip konten siap rakam untuk semakan CEO, dalam teks biasa dengan bahagian berikut:
+HOOK (ayat 3 saat pertama)
+SKRIP (babak bernombor; setiap babak ada VISUAL dan DIALOG; jumlah 30 hingga 60 saat)
+CAPTION (2-3 ayat)
+HASHTAG (5-8)
+Jangan buat dakwaan kesihatan yang belum dibuktikan, dan patuhi garis panduan iklan produk kesihatan di Malaysia. Jangan tulis apa-apa sebelum HOOK.` : persona(a) + `
 
 Tugasan yang anda baru siapkan: "${t.tajuk}"${t.butiran ? `\nButiran: ${t.butiran}` : ''}
 Keutamaan: ${t.keutamaan}. Tarikh akhir: ${t.tarikh || 'tiada'}.
@@ -590,7 +637,7 @@ Tandakan angka sebagai anggaran. Jangan tulis apa-apa sebelum RINGKASAN.`;
     const {text, truncated} = await sampleFn(prompt, {cache:false, signal:hCtl.signal, onText: ({text}) => { if(hTask === t) body.textContent = text; }});
     t.hasil = text + (truncated ? '\n\n(Laporan terpotong)' : '');
     if(hTask === t) body.textContent = t.hasil;
-    log(a.id, `menyerahkan laporan hasil kerja "${t.tajuk}".`); save(); render();
+    log(a.id, t.jenis === 'konten' ? `menyerahkan skrip untuk "${t.tajuk}".` : `menyerahkan laporan hasil kerja "${t.tajuk}".`); save(); render();
   } catch(e){
     if(hTask === t) body.textContent = (e && e.text ? e.text + '\n\n' : '') + errCopy(e && e.code);
     if(e && HIDE_CODES.includes(e.code)){ aiOff = true; renderAiBadge(); $('#hasilRegen').hidden = true; }
@@ -605,6 +652,85 @@ $('#hasilCopy').onclick = async () => {
   try { await navigator.clipboard.writeText(txt); toast('Laporan disalin'); }
   catch(e){ const r = document.createRange(); r.selectNodeContents($('#hasilBody')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); toast('Teks dipilih. Tekan Ctrl+C untuk salin.'); }
 };
+
+/* ---------- IDEA KONTEN (SERA) ---------- */
+function seedIdeas(){
+  const mk = (tajuk, hook, format, kenapa, cta, platform) => ({id:'I'+Math.random().toString(36).slice(2,8), tajuk, hook, format, kenapa, cta, platform, simpan:false, tugas:null, masa:Date.now(), contoh:true});
+  return [
+    mk('Sehari di Makmal B17 dalam 30 saat','"Anda tahu tak, satu botol probiotik bermula dari satu titis kultur?"','Montaj B-roll makmal dengan suara latar','Rasa ingin tahu tentang proses sebenar membina kepercayaan jenama','Ikut untuk siri di sebalik tabir minggu depan','TikTok'),
+    mk('Mitos lawan fakta: probiotik','"Probiotik semua sama sahaja? Salah."','Talking head dengan teks atas skrin','Format mitos lawan fakta mudah dikongsi dan mendidik','Komen mitos lain yang anda pernah dengar','Instagram Reels'),
+    mk('Kenali pasukan AI kami: AIRA, NIKO, SERA','"Syarikat biotek ini ada 3 pekerja yang tak pernah tidur."','Animasi ringkas avatar pejabat maya','Unik dan menonjolkan B17 sebagai syarikat moden','Tanya soalan kepada pasukan AI kami di komen','TikTok'),
+  ];
+}
+if(!S.ideas) S.ideas = seedIdeas();
+let ideaFilter = 'semua', ideaCtl = null;
+function renderIdeas(){
+  const list = S.ideas.filter(i => ideaFilter === 'semua' || i.simpan).slice().sort((a,b) => (b.simpan - a.simpan));
+  $('#ideaList').innerHTML = list.map(i => {
+    const t = i.tugas && S.tasks.find(x => x.id === i.tugas);
+    return `<article class="idea${i.simpan?' saved':''}" data-idea="${i.id}">
+      <div class="card-meta"><span class="tag">${esc(i.platform)}</span>${i.contoh?'<span class="sample">Contoh</span>':''}${t?`<span class="pill p-kerja">${COLS.find(c=>c.id===t.status).nama}</span>`:''}</div>
+      <h3>${esc(i.tajuk)}</h3>
+      <div class="hook">${esc(i.hook)}</div>
+      <dl><dt>Format</dt><dd>${esc(i.format)}</dd><dt>Kenapa</dt><dd>${esc(i.kenapa)}</dd><dt>CTA</dt><dd>${esc(i.cta)}</dd></dl>
+      <div class="card-actions">
+        <button class="btn sm ghost" type="button" data-ia="buang">Buang</button>
+        <button class="btn sm" type="button" data-ia="simpan" aria-pressed="${i.simpan}">${i.simpan?'★ Disimpan':'☆ Simpan'}</button>
+        ${t ? (t.hasil ? `<button class="btn sm primary" type="button" data-ia="skrip">Lihat skrip</button>` : `<a class="btn sm" href="#tugasan">Lihat tugasan</a>`) : `<button class="btn sm primary" type="button" data-ia="tugas">Jadikan tugasan</button>`}
+      </div></article>`;
+  }).join('') || `<p class="muted">${ideaFilter==='simpan' ? 'Belum ada idea disimpan. Tekan ☆ Simpan pada idea yang anda suka.' : 'Belum ada idea. Minta SERA cari idea di sebelah.'}</p>`;
+  const ok = sampleFn && !aiOff;
+  $('#ideaGo').disabled = !ok || !!ideaCtl;
+  if(!ideaCtl && !ok) $('#ideaStatus').textContent = aiReady ? 'Idea baharu hanya boleh dijana bila aplikasi dibuka di claude.ai dan Claude dibenarkan.' : 'Menyambung ke Claude…';
+  else if(!ideaCtl && /Menyambung|hanya boleh/.test($('#ideaStatus').textContent)) $('#ideaStatus').textContent = '';
+}
+$('#ideaSeg').addEventListener('click', e => { const b = e.target.closest('[data-if]'); if(!b) return; ideaFilter = b.dataset.if; $('#ideaSeg').querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b)); renderIdeas(); });
+$('#ideaList').addEventListener('click', e => {
+  const b = e.target.closest('[data-ia]'); if(!b) return;
+  const i = S.ideas.find(x => x.id === b.closest('[data-idea]').dataset.idea); const act = b.dataset.ia;
+  if(act === 'simpan') i.simpan = !i.simpan;
+  if(act === 'buang'){ S.ideas = S.ideas.filter(x => x !== i); toast('Idea dibuang'); }
+  if(act === 'tugas'){
+    const t = addTask({tajuk:'Hasilkan konten: ' + i.tajuk.slice(0,100), ejen:'sera', keutamaan:'Sederhana', tarikh:addDays(3), status:'buat', jenis:'konten', butiran:`${i.platform} · ${i.format}. Hook: ${i.hook}`});
+    i.tugas = t.id; i.simpan = true; toast('SERA mula menghasilkan konten ini');
+  }
+  if(act === 'skrip'){ const t = S.tasks.find(x => x.id === i.tugas); if(t) return openHasil(t); }
+  save(); render();
+});
+$('#ideaStop').onclick = () => ideaCtl && ideaCtl.abort();
+$('#ideaForm').addEventListener('submit', async e => {
+  e.preventDefault(); if(!sampleFn || aiOff || ideaCtl) return;
+  const sera = agent('sera'), platform = $('#iPlatform').value, fokus = $('#iFokus').value, audiens = $('#iAudiens').value.trim() || 'orang awam Malaysia', extra = $('#iExtra').value.trim(), n = Number($('#iCount').value);
+  const existing = S.ideas.slice(0,20).map(i => '- ' + i.tajuk).join('\n') || '- (tiada)';
+  const prompt = persona(sera) + `
+
+Tugas sekarang: cari ${n} idea konten baharu untuk ${platform}.
+Fokus: ${fokus}.
+Sasaran audiens: ${audiens}.${extra ? `\nArahan tambahan daripada CEO: ${extra}` : ''}
+Idea mesti sesuai untuk syarikat bioteknologi Malaysia, boleh dirakam dengan bajet kecil, dan tidak membuat dakwaan kesihatan yang belum dibuktikan.
+Jangan ulang idea yang sudah ada ini:
+${existing}
+
+Balas dengan HANYA satu tatasusunan JSON berisi ${n} objek, dalam Bahasa Melayu, dengan medan:
+"tajuk" (tajuk idea, pendek), "hook" (ayat pembuka 3 saat pertama), "format" (cara rakam, cth talking head, B-roll makmal, carousel), "kenapa" (satu ayat kenapa idea ini berkesan), "cta" (seruan tindakan di hujung).
+Contoh: [{"tajuk":"...","hook":"...","format":"...","kenapa":"...","cta":"..."}]`;
+  ideaCtl = new AbortController(); const st = $('#ideaStatus');
+  st.textContent = `SERA sedang mencari ${n} idea untuk ${platform}…`; $('#ideaStop').hidden = false; $('#ideaGo').disabled = true;
+  try {
+    const arr = await sampleFn.json(prompt, {cache:false, signal:ideaCtl.signal});
+    const fresh = (Array.isArray(arr) ? arr : []).filter(x => x && x.tajuk).slice(0, n).map(x => ({
+      id:'I'+Math.random().toString(36).slice(2,8), tajuk:String(x.tajuk).slice(0,140), hook:String(x.hook||'').slice(0,240), format:String(x.format||'').slice(0,140),
+      kenapa:String(x.kenapa||'').slice(0,240), cta:String(x.cta||'').slice(0,140), platform, simpan:false, tugas:null, masa:Date.now()}));
+    if(!fresh.length) throw {code:'invalid_json'};
+    S.ideas = fresh.concat(S.ideas).slice(0,80);
+    log('sera', `mencadangkan ${fresh.length} idea konten baharu untuk ${platform}.`);
+    st.textContent = `${fresh.length} idea baharu ditambah di atas senarai.`; toast(`SERA menemui ${fresh.length} idea baharu`);
+    ideaFilter = 'semua'; $('#ideaSeg').querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x.dataset.if === 'semua'));
+  } catch(err){
+    st.textContent = err && err.code === 'invalid_json' ? 'SERA memberi jawapan dalam format yang tidak dijangka. Tekan butang sekali lagi.' : errCopy(err && err.code);
+    if(err && HIDE_CODES.includes(err.code)){ aiOff = true; renderAiBadge(); }
+  } finally { ideaCtl = null; $('#ideaStop').hidden = true; save(); render(); }
+});
 
 function chat(a, text){
   S.chats[a.id].push({r:'me', t:text});
@@ -747,7 +873,7 @@ document.querySelectorAll('[data-new-task]').forEach(b => b.onclick = () => open
 
 /* ---------- RESET (pengesahan dalam halaman) ---------- */
 $('#resetBtn').onclick = function(){
-  if(this.dataset.armed){ S = seed(); save(); delete this.dataset.armed; this.textContent='Set semula data contoh'; $('#agentCards').innerHTML=''; render(); toast('Data contoh dipulihkan'); return; }
+  if(this.dataset.armed){ S = seed(); S.ideas = seedIdeas(); save(); delete this.dataset.armed; this.textContent='Set semula data contoh'; $('#agentCards').innerHTML=''; render(); toast('Data contoh dipulihkan'); return; }
   this.dataset.armed = '1'; this.textContent = 'Tekan lagi untuk sahkan'; setTimeout(()=>{ delete this.dataset.armed; this.textContent='Set semula data contoh'; }, 3000);
 };
 
@@ -766,7 +892,7 @@ setInterval(() => {
 }, 3000);
 
 /* ---------- ROUTER ---------- */
-const VIEWS = ['papan','ejen','pejabat','tugasan'];
+const VIEWS = ['papan','ejen','pejabat','idea','tugasan'];
 function route(){
   const v = VIEWS.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'papan';
   VIEWS.forEach(id => $('#v-'+id).hidden = id !== v);
@@ -774,7 +900,7 @@ function route(){
   render(); window.scrollTo(0,0);
 }
 function render(){
-  renderKpis(); renderTeamMini(); renderFeed(); renderAgents(); renderOffice(); renderBoard();
+  renderKpis(); renderTeamMini(); renderFeed(); renderAgents(); renderOffice(); renderBoard(); renderIdeas();
 }
 function tick(){ const d = new Date(); $('#clock').textContent = d.toLocaleTimeString('ms-MY',{hour:'2-digit',minute:'2-digit'}) + ' · Kuala Lumpur'; }
 $('#today').textContent = new Date().toLocaleDateString('ms-MY',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
