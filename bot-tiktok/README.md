@@ -1,6 +1,8 @@
 # Bot Jadual TikTok (Telegram)
 
-Forward video kepada bot. Bot susun jadual, dan bila tiba masa posting bot hantar balik video itu bersama caption. Cikgu cuma perlu simpan video dan post ke TikTok.
+Forward video kepada bot. Bot catat video itu, beri tarikh posting dan kira bilangan video. Bila tiba masa, bot ingatkan Cikgu untuk post ke TikTok dan hantar video itu kepada setiap peserta kursus secara peribadi.
+
+Video tidak disimpan di GitHub. Video kekal dalam Telegram, jadi jangan padam video dalam chat bot sebelum ia dihantar.
 
 ## Pasang (sekali sahaja)
 
@@ -38,6 +40,18 @@ Forward video kepada bot. Bot susun jadual, dan bila tiba masa posting bot hanta
 | Buang video | `/buang 3` (nombor dari `/jadual`) |
 | Tukar jam posting | `/masa 20:30` atau `/masa 12:30 20:30` (dua kali sehari) |
 | Rapatkan jadual | `/susun` |
+| Pautan daftar peserta | `/pautan` (kongsi pautan ini dengan peserta kursus) |
+| Bilangan peserta | `/peserta` |
+
+## Peserta kursus
+
+1. Taip `/pautan` dalam chat bot.
+2. Kongsi pautan itu dengan peserta kursus, contohnya dalam group WhatsApp kursus.
+3. Peserta buka pautan dan tekan **Start**. Cikgu akan dapat mesej "👤 Peserta baru".
+4. Bila tiba masa posting, setiap peserta terima video itu bersama caption secara peribadi.
+5. Peserta boleh taip `/berhenti` untuk berhenti terima video.
+
+Orang yang tekan Start tanpa pautan ini tidak akan didaftarkan.
 
 Jam asal ialah 8:30 malam setiap hari (waktu Malaysia). Bot semak setiap 10 minit, jadi balasan dan peringatan boleh lewat sehingga kira-kira 10 hingga 15 minit.
 
