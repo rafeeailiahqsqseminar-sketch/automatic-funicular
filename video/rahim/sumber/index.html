@@ -1,0 +1,300 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Cap;src:url(baloo-2-latin-800-normal.woff2)}
+@font-face{font-family:Gold;src:url(cinzel.woff2)}
+html,body{margin:0;background:#000}
+canvas{display:block}
+</style></head>
+<body><canvas id="c" width="720" height="1280"></canvas>
+<script>
+const W=720,H=1280,c=document.getElementById("c");let x=c.getContext("2d");
+const TOTAL=107.65;
+const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
+const ss=(a,b,v)=>{v=clamp((v-a)/(b-a));return v*v*(3-2*v)};
+const lerp=(a,b,t)=>a+(b-a)*t;
+function rng(s){return()=>{s=(s*16807)%2147483647;return(s-1)/2147483646}}
+const R=rng(7);
+const STARS=[...Array(260)].map(()=>({x:R()*W,y:R()*H,r:R()*1.8+0.3,p:R()*6.28,s:R()*2+0.5}));
+const DUST=[...Array(90)].map(()=>({x:R()*W,y:R()*H,r:R()*2.5+0.8,p:R()*6.28,v:R()*20+8}));
+
+// ---------- captions (teks skrip asal) ----------
+const CAPS=[
+[0.0,"Ada satu rahsia tentang tubuh wanita…"],
+[2.78,"Yang mungkin korang tak pernah terfikir sepanjang hidup."],
+[7.54,"Dan rahsia ini tersembunyi di sebalik satu bahagian tubuh…"],
+[12.26,"RAHIM.",1],
+[13.46,"Cuba korang perhatikan…"],
+[15.18,"Wanita Melayu zaman dahulu mengenakan kain cindai…"],
+[18.88,"Kain yang begitu halus dan bernilai,"],
+[21.58,"kadangkala dililit pada tubuh."],
+[24.12,"Tetapi ada satu persoalan yang jauh lebih misteri…"],
+[27.82,"Kenapa rahim wanita sering dikaitkan"],
+[31.0,"dengan kesucian dan permulaan kehidupan?"],
+[34.3,"Bayangkan…"],
+[34.96,"Dalam sebuah ruang yang gelap…"],
+[37.8,"Tanpa cahaya matahari…"],
+[39.78,"Sebuah kehidupan sedang terbentuk."],
+[42.56,"Jantung mula berdenyut…"],
+[44.92,"Tubuh mula berkembang…"],
+[46.84,"Tetapi ada sesuatu yang lebih misteri"],
+[49.08,"daripada pembentukan tubuh itu sendiri."],
+[52.38,"Bilakah sebenarnya jiwa mula mengenali kewujudannya?"],
+[56.36,"Dan kenapa kita langsung tidak mengingati"],
+[59.62,"kehidupan di dalam rahim ibu?"],
+[62.24,"Dalam sebahagian pandangan spiritual…"],
+[64.78,"Rahim digambarkan sebagai…"],
+[66.34,"PORTAL ANTARA DUA ALAM.",1],
+[68.9,"Alam yang tidak kelihatan…"],
+[70.82,"Dan alam fizikal yang kita diami hari ini."],
+[74.22,"Tetapi inilah persoalan yang paling menggetarkan…"],
+[77.8,"Kita semua pernah hidup di dalam rahim…"],
+[80.88,"Namun tiada seorang pun mampu menceritakan"],
+[84.2,"bagaimana rasanya ketika kehidupan itu mula terbentuk."],
+[88.76,"Jadi…"],
+[89.62,"Adakah rahim sekadar tempat manusia dilahirkan…"],
+[92.66,"atau simbol sebuah misteri kehidupan"],
+[95.84,"yang belum kita fahami sepenuhnya?"],
+[98.5,"Apa pandangan korang?"],
+[99.82,"Tulis di ruangan komen."],
+[101.34,null]];
+
+function wrap(txt,max){const w=txt.split(' ');const L=[];let cur='';
+ for(const s of w){const t=cur?cur+' '+s:s;if(x.measureText(t).width>max&&cur){L.push(cur);cur=s}else cur=t}
+ if(cur)L.push(cur);return L}
+function drawCaption(t){
+ let i=-1;for(let k=0;k<CAPS.length;k++)if(t>=CAPS[k][0])i=k;
+ if(i<0||!CAPS[i][1])return;
+ const [st,txt,emph]=CAPS[i];const en=CAPS[i+1][0];
+ const a=ss(st,st+0.18,t)*(1-ss(en-0.12,en,t));
+ const pop=1+0.12*(1-ss(st,st+0.25,t));
+ const size=emph?(txt.length>8?60:96):48;
+ x.save();x.globalAlpha=a;x.translate(W/2,880);x.scale(pop,pop);
+ x.font=`800 ${size}px Cap`;x.textAlign='center';x.textBaseline='middle';
+ const L=wrap(txt,emph?640:600);const lh=size*1.08;
+ L.forEach((l,j)=>{const y=(j-(L.length-1)/2)*lh;
+  x.lineJoin='round';x.lineWidth=size*0.22;x.strokeStyle='rgba(0,0,0,0.9)';x.strokeText(l,0,y);
+  if(emph){const g=x.createLinearGradient(0,y-size/2,0,y+size/2);g.addColorStop(0,'#fff6c8');g.addColorStop(0.5,'#ffd25a');g.addColorStop(1,'#d18a1c');x.fillStyle=g;x.shadowColor='rgba(255,200,80,0.9)';x.shadowBlur=30}
+  else{x.fillStyle='#fff';x.shadowColor='rgba(0,0,0,0)'}
+  x.fillText(l,0,y);x.shadowBlur=0});
+ x.restore()}
+
+// ---------- helpers ----------
+function glow(cx,cy,r,col,a=1){const g=x.createRadialGradient(cx,cy,0,cx,cy,r);g.addColorStop(0,col.replace('A',a));g.addColorStop(1,col.replace('A',0));x.fillStyle=g;x.fillRect(cx-r,cy-r,r*2,r*2)}
+function stars(t,a=1){for(const s of STARS){x.globalAlpha=a*(0.45+0.55*Math.sin(t*s.s+s.p)**2);x.fillStyle='#fff';x.beginPath();x.arc(s.x,s.y,s.r,0,7);x.fill()}x.globalAlpha=1}
+function dust(t,col,a=1,up=true){for(const d of DUST){const y=((d.y-(up?t*d.v:-t*d.v))%H+H)%H;const xx=d.x+Math.sin(t*0.7+d.p)*14;
+ x.globalAlpha=a*(0.4+0.6*Math.sin(t*2+d.p)**2);glow(xx,y,d.r*5,col);}x.globalAlpha=1}
+function bg(c1,c2,c3){const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,c1);g.addColorStop(0.6,c2);g.addColorStop(1,c3);x.fillStyle=g;x.fillRect(0,0,W,H)}
+function zoom(s,cx=W/2,cy=H/2){x.translate(cx,cy);x.scale(s,s);x.translate(-cx,-cy)}
+
+// wanita berbaju kurung (siluet) ; (px,py)=kaki, h=tinggi
+function woman(px,py,h,fill,t,opt={}){
+ const u=h/100;x.save();x.translate(px,py);x.scale(u,u);
+ x.fillStyle=fill;
+ if(opt.glow){x.shadowColor=opt.glow;x.shadowBlur=40/u*u*1.2}
+ x.beginPath();
+ x.moveTo(-3,-84);x.quadraticCurveTo(-4,-80,-11,-78.5);
+ x.quadraticCurveTo(-14,-77,-13.5,-70);x.lineTo(-14.5,-56);
+ x.quadraticCurveTo(-15,-50,-13,-47);
+ x.quadraticCurveTo(-17,-20,-18,-1);x.quadraticCurveTo(0,1.5,18,-1);
+ x.quadraticCurveTo(17,-20,13,-47);
+ x.quadraticCurveTo(15,-50,14.5,-56);x.lineTo(13.5,-70);
+ x.quadraticCurveTo(14,-77,11,-78.5);x.quadraticCurveTo(4,-80,3,-84);x.closePath();x.fill();
+ // kepala, sanggul
+ x.beginPath();x.ellipse(0,-91,6.2,7.4,0,0,7);x.fill();
+ x.beginPath();x.ellipse(-3.5,-88.5,4.2,3.4,0.3,0,7);x.fill();
+ x.shadowBlur=0;
+ // cindai berkibar
+ if(opt.cindai){const n=26,pts=[];for(let i=0;i<=n;i++){const k=i/n;
+   const bx=-11+k*(opt.cindaiDir||1)*48, by=-78+k*55+Math.sin(t*2.4-k*5)*7*k;pts.push([bx,by,1.2+5.5*Math.sin(k*3.14)*(0.6+0.4*k)])}
+  const g=x.createLinearGradient(-11,-78,30,-20);g.addColorStop(0,'#8a1020');g.addColorStop(0.5,'#d4362a');g.addColorStop(1,'#f2b33d');
+  x.fillStyle=g;x.globalAlpha=opt.cindaiA??1;x.beginPath();
+  pts.forEach((p,i)=>i?x.lineTo(p[0],p[1]-p[2]):x.moveTo(p[0],p[1]-p[2]));
+  for(let i=n;i>=0;i--)x.lineTo(pts[i][0],pts[i][1]+pts[i][2]);x.closePath();x.fill();
+  // corak emas
+  x.strokeStyle='rgba(255,220,120,0.8)';x.lineWidth=0.5;x.beginPath();pts.forEach((p,i)=>i?x.lineTo(p[0],p[1]):x.moveTo(p[0],p[1]));x.stroke();
+  // lilitan pinggang
+  x.fillStyle=g;x.beginPath();x.moveTo(-13.6,-50);x.lineTo(13.6,-50);x.lineTo(14.6,-42);x.lineTo(-14.6,-42);x.closePath();x.fill();
+  x.globalAlpha=1}
+ x.restore()}
+
+function palm(px,py,h,t,col){x.save();x.translate(px,py);x.strokeStyle=col;x.fillStyle=col;x.lineWidth=h*0.035;x.lineCap='round';
+ const sw=Math.sin(t*0.9+px)*h*0.03;x.beginPath();x.moveTo(0,0);x.quadraticCurveTo(h*0.1,-h*0.5,sw+h*0.04,-h);x.stroke();
+ x.translate(sw+h*0.04,-h);for(let i=0;i<7;i++){const a=-Math.PI+i*(Math.PI/6)+Math.sin(t+i)*0.05;x.save();x.rotate(a);x.beginPath();x.moveTo(0,0);
+  x.quadraticCurveTo(h*0.22,-h*0.1,h*0.42,h*0.08);x.quadraticCurveTo(h*0.22,-h*0.02,0,h*0.02);x.fill();x.restore()}x.restore()}
+function house(px,py,s,col,lit,t){x.save();x.translate(px,py);x.scale(s,s);x.fillStyle=col;
+ x.fillRect(-50,-60,100,45);for(const k of[-44,-10,24,40])x.fillRect(k,-15,5,15);
+ x.beginPath();x.moveTo(-62,-58);x.lineTo(0,-110);x.lineTo(62,-58);x.closePath();x.fill();
+ x.fillRect(-58,-20,116,4);
+ if(lit){x.fillStyle=`rgba(255,180,80,${0.75+0.2*Math.sin(t*3+px)})`;x.fillRect(-30,-50,16,20);x.fillRect(14,-50,16,20);glow(0,-40,70,'rgba(255,170,70,A)',0.25)}
+ x.restore()}
+
+function fetus(cx,cy,s,a,t){x.save();x.translate(cx,cy);x.scale(s,s);x.rotate(Math.sin(t*0.6)*0.04);x.globalAlpha=a;
+ const g=x.createRadialGradient(-10,-20,10,0,0,120);g.addColorStop(0,'#ffe0c8');g.addColorStop(0.6,'#f0a08a');g.addColorStop(1,'#a8485a');
+ x.fillStyle=g;x.shadowColor='rgba(255,170,140,0.9)';x.shadowBlur=40;
+ // badan melengkung
+ x.beginPath();x.moveTo(-20,-30);x.bezierCurveTo(-70,10,-50,95,10,100);x.bezierCurveTo(70,100,75,40,45,0);x.bezierCurveTo(30,-25,10,-35,-20,-30);x.fill();
+ // kepala
+ x.beginPath();x.arc(0,-62,50,0,7);x.fill();
+ x.shadowBlur=0;
+ // lutut & tangan
+ x.fillStyle='rgba(200,110,110,0.55)';x.beginPath();x.ellipse(28,55,26,18,-0.6,0,7);x.fill();
+ x.beginPath();x.ellipse(-5,-8,18,11,0.5,0,7);x.fill();
+ // mata tertutup
+ x.strokeStyle='rgba(120,50,60,0.7)';x.lineWidth=3;x.beginPath();x.arc(22,-60,8,0.2,2.6);x.stroke();
+ x.restore()}
+
+function womb(cx,cy,r,t,a){x.save();x.globalAlpha=a;const p=1+0.02*Math.sin(t*1.5);
+ const g=x.createRadialGradient(cx,cy,r*0.1,cx,cy,r*p);g.addColorStop(0,'rgba(255,150,130,0.55)');g.addColorStop(0.7,'rgba(160,30,60,0.45)');g.addColorStop(0.92,'rgba(255,120,120,0.55)');g.addColorStop(1,'rgba(255,120,120,0)');
+ x.fillStyle=g;x.beginPath();x.ellipse(cx,cy,r*p,r*1.12*p,0,0,7);x.fill();
+ x.strokeStyle='rgba(255,170,160,0.35)';x.lineWidth=2;for(let i=0;i<9;i++){x.beginPath();const a0=i*0.7+t*0.05;x.moveTo(cx+Math.cos(a0)*r*0.98,cy+Math.sin(a0)*r*1.1);
+  x.quadraticCurveTo(cx+Math.cos(a0+0.3)*r*0.75,cy+Math.sin(a0+0.3)*r*0.8,cx+Math.cos(a0+0.5)*r*0.9,cy+Math.sin(a0+0.5)*r);x.stroke()}
+ x.restore()}
+
+function heart(cx,cy,s,col){x.save();x.translate(cx,cy);x.scale(s,s);x.fillStyle=col;x.beginPath();x.moveTo(0,30);
+ x.bezierCurveTo(-60,-10,-30,-55,0,-25);x.bezierCurveTo(30,-55,60,-10,0,30);x.fill();x.restore()}
+function beat(t){const p=(t%0.85)/0.85;return Math.exp(-((p-0.05)**2)/0.002)+0.6*Math.exp(-((p-0.22)**2)/0.002)}
+
+// ---------- adegan ----------
+const SC=[
+[0,7.54,s1],[7.54,15.18,s2],[15.18,34.3,s3],[34.3,62.24,s5],[62.24,74.22,s8],[74.22,88.76,s9],[88.76,101.34,s10],[101.34,TOTAL+1,s12]];
+
+function s1(t,T){bg('#05061a','#1a1240','#2b1638');stars(t);zoom(1+T*0.012);
+ glow(W/2,640,380,'rgba(255,190,90,A)',0.25+0.05*Math.sin(t*2));
+ woman(W/2,1020,560,'#0b0716',t,{glow:'rgba(255,200,110,0.9)'});dust(t,'rgba(255,210,130,A)',0.7)}
+function s2(t,T){bg('#05061a','#1a1240','#2b1638');stars(t);
+ const z=1+ss(0,4.7,T)*1.6;zoom(z,W/2,640);
+ glow(W/2,640,380,'rgba(255,190,90,A)',0.3);
+ woman(W/2,1020,560,'#0b0716',t,{glow:'rgba(255,200,110,0.9)'});
+ const k=ss(1.5,4.7,T);glow(W/2,750,40+k*200,'rgba(255,215,130,A)',0.4+k*0.6);
+ x.setTransform(1,0,0,1,0,0);
+ const f=ss(4.6,4.75,T)*(1-ss(4.8,5.8,T));x.fillStyle=`rgba(255,240,200,${f*0.8})`;x.fillRect(0,0,W,H);
+ if(T>4.72){const q=T-4.72;for(let i=0;i<3;i++){const r=(q*260+i*120)%600;x.strokeStyle=`rgba(255,210,120,${(1-r/600)*0.8})`;x.lineWidth=4;x.beginPath();x.arc(W/2,560,r,0,7);x.stroke()}
+  glow(W/2,560,260,'rgba(255,190,90,A)',0.6+0.2*Math.sin(t*3));}
+ dust(t,'rgba(255,210,130,A)',0.8)}
+function s3(t,T){ // kampung senja -> malam, wanita bercindai
+ const d=ss(9,14,T);
+ const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,lerp_c('#2a1a4a','#0a0a24',d));g.addColorStop(0.42,lerp_c('#e2703a','#3a2050',d));g.addColorStop(0.6,lerp_c('#ffc46b','#8a4a5a',d));g.addColorStop(1,'#1a0f10');x.fillStyle=g;x.fillRect(0,0,W,H);
+ stars(t,d);zoom(1.05+T*0.006,W/2,800);
+ const sunY=700+d*120;glow(W/2,sunY,330,'rgba(255,200,110,A)',0.75*(1-d*0.6));x.fillStyle=`rgba(255,226,150,${1-d})`;x.beginPath();x.arc(W/2,sunY,70,0,7);x.fill();
+ x.fillStyle='#2a1a22';x.beginPath();x.moveTo(0,760);x.quadraticCurveTo(200,700,380,750);x.quadraticCurveTo(560,690,720,740);x.lineTo(720,820);x.lineTo(0,820);x.fill();
+ house(140,800,1.0,'#160c12',d>0.2||T>4,t);house(600,795,0.85,'#160c12',true,t);
+ palm(40,810,300,t,'#120a10');palm(690,810,340,t,'#120a10');palm(250,800,220,t,'#150c12');
+ // sawah
+ const fg=x.createLinearGradient(0,800,0,H);fg.addColorStop(0,lerp_c('#4b5a22','#1c2420',d));fg.addColorStop(1,'#0b100a');x.fillStyle=fg;x.fillRect(0,800,W,H-800);
+ x.strokeStyle='rgba(255,210,120,0.18)';x.lineWidth=2;for(let i=-8;i<=8;i++){x.beginPath();x.moveTo(W/2+i*15,800);x.lineTo(W/2+i*170,H);x.stroke()}
+ x.fillStyle='rgba(120,80,40,0.6)';x.beginPath();x.moveTo(W/2-12,800);x.lineTo(W/2+12,800);x.lineTo(W/2+150,H);x.lineTo(W/2-150,H);x.fill();
+ const walk=ss(0,8,T);const wy=lerp(1000,1150,walk);
+ woman(W/2+Math.sin(t*0.5)*4,wy,lerp(400,520,walk),'#0d0810',t,{cindai:true,glow:'rgba(255,190,110,0.6)'});
+ // tangan di rahim + cahaya (24.12->)
+ const hg=ss(9,12,T);if(hg>0){const sc=lerp(400,520,walk)/100;glow(W/2,wy-47*sc,120+20*Math.sin(t*2),'rgba(255,220,150,A)',hg*0.9);
+  for(let i=0;i<14;i++){const p=((t*0.4+i/14)%1);x.globalAlpha=hg*(1-p);glow(W/2+Math.sin(i*2.3+t)*60*p,wy-47*sc-p*380,9,'rgba(255,230,170,A)');}x.globalAlpha=1}
+ dust(t,'rgba(255,220,140,A)',0.5)}
+function lerp_c(a,b,t){const p=s=>[1,3,5].map(i=>parseInt(s.substr(i,2),16));const A=p(a),B=p(b);return`rgb(${A.map((v,i)=>Math.round(lerp(v,B[i],t))).join(',')})`}
+function s5(t,T){ // rahim gelap -> kehidupan -> jantung -> jiwa
+ bg('#07020a','#14040f','#0a0208');
+ const dark=ss(0,3,T);
+ dust(t,'rgba(255,120,140,A)',0.35*dark,false);
+ zoom(1+T*0.005,W/2,560);
+ womb(W/2,560,300,t,dark*0.9);
+ // cahaya matahari padam (37.8)
+ if(T>3.2&&T<5.6){const k=ss(3.2,3.8,T)*(1-ss(4.6,5.6,T));glow(W/2,180,200,'rgba(255,220,140,A)',k*0.5)}
+ const form=ss(5.5,8.5,T);const grow=lerp(0.55,1.0,ss(10.6,12.5,T));
+ if(form>0){for(let i=0;i<30;i++){const a=i*0.21+t*0.5,r=(1-form)*220+20;x.globalAlpha=(1-form)*0.8;glow(W/2+Math.cos(a)*r,580+Math.sin(a)*r,10,'rgba(255,200,170,A)')}x.globalAlpha=1;
+  fetus(W/2,590,grow*1.15,form,t);
+  // tali pusat
+  x.strokeStyle=`rgba(230,120,130,${form*0.7})`;x.lineWidth=7;x.beginPath();x.moveTo(W/2+20*grow,620);for(let i=0;i<=10;i++)x.lineTo(W/2+30+i*14+Math.sin(i*1.4+t*2)*8,640+i*14);x.stroke()}
+ // jantung 42.56 ->
+ const hb=ss(8.2,8.8,T)*(1-ss(26,27.9,T)*0.7);if(hb>0){const b=beat(t);glow(W/2+8,612,60+b*70,'rgba(255,60,80,A)',hb*(0.5+b*0.5));heart(W/2+8,612,0.5+b*0.12,`rgba(255,90,100,${hb*0.85})`);
+  // ECG
+  x.save();x.setTransform(1,0,0,1,0,0);x.globalAlpha=hb*(1-ss(12.5,13.5,T));x.strokeStyle='#ff6a7a';x.lineWidth=4;x.shadowColor='#ff3a50';x.shadowBlur=18;x.beginPath();
+  for(let px=0;px<=W;px+=4){const tt=t-(W-px)/400;const v=beat(tt);x.lineTo(px,190-v*90+((tt%0.85)>0.1&&(tt%0.85)<0.13?40:0))}x.stroke();x.restore()}
+ // jiwa turun 52.38 ->
+ const so=ss(18,22,T);if(T>18){const y=lerp(-80,560,so);const fade=1-ss(22,23,T);
+  for(let i=0;i<20;i++){x.globalAlpha=fade*(1-i/20)*0.6;glow(W/2,y-i*18,26-i,'rgba(200,220,255,A)')}x.globalAlpha=1;
+  glow(W/2,y,90,'rgba(220,235,255,A)',fade);glow(W/2,y,30,'rgba(255,255,255,A)',fade);
+  if(T>22){const k=ss(22,23,T)*(1-ss(23,26,T));glow(W/2,560,320,'rgba(210,225,255,A)',k*0.8)}}
+ // memori pudar 56.36 ->
+ if(T>22.2){const k=ss(22.2,27.9,T);for(let i=0;i<40;i++){const a=i*2.4,r=150+k*480*(0.5+((i*37)%10)/20);x.globalAlpha=(1-k)*0.8;glow(W/2+Math.cos(a)*r,560+Math.sin(a)*r,10,'rgba(200,215,255,A)')}x.globalAlpha=1;
+  x.setTransform(1,0,0,1,0,0);x.fillStyle=`rgba(0,0,0,${k*0.35})`;x.fillRect(0,0,W,H)}
+}
+function s8(t,T){ // portal antara dua alam
+ const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,'#0c0630');g.addColorStop(0.45,'#3a1a6a');g.addColorStop(0.55,'#0a2a4a');g.addColorStop(1,'#04121c');x.fillStyle=g;x.fillRect(0,0,W,H);
+ x.save();x.beginPath();x.rect(0,0,W,560);x.clip();stars(t);dust(t,'rgba(190,160,255,A)',0.6,false);x.restore();
+ // alam fizikal: bukit & bulan air
+ const ph=ss(6.5,8.5,T);
+ x.fillStyle=`rgba(20,60,70,${0.6+ph*0.4})`;x.beginPath();x.moveTo(0,1000);x.quadraticCurveTo(180,930,360,980);x.quadraticCurveTo(540,920,720,970);x.lineTo(720,H);x.lineTo(0,H);x.fill();
+ x.fillStyle='#061a20';x.beginPath();x.moveTo(0,1080);x.quadraticCurveTo(250,1020,450,1070);x.quadraticCurveTo(620,1040,720,1060);x.lineTo(720,H);x.lineTo(0,H);x.fill();
+ palm(90,1075,240,t,'#03100f');palm(640,1065,280,t,'#03100f');
+ const op=ss(0,2.5,T),cx=W/2,cy=560;zoom(1+ss(3.5,6,T)*0.15,cx,cy);
+ glow(cx,cy,420,'rgba(200,140,255,A)',op*0.45);
+ for(let i=0;i<5;i++){x.save();x.translate(cx,cy);x.rotate(t*(0.3+i*0.15)*(i%2?-1:1));x.globalAlpha=op*(0.8-i*0.12);
+  x.strokeStyle=['#ffe08a','#d8a0ff','#9fd8ff','#ffc0e0','#fff'][i];x.lineWidth=5-i*0.6;x.setLineDash([60-i*8,20+i*6]);x.shadowColor=x.strokeStyle;x.shadowBlur=20;
+  x.beginPath();x.ellipse(0,0,(150+i*38)*op,(200+i*48)*op,0,0,7);x.stroke();x.restore()}
+ x.setLineDash([]);x.globalAlpha=1;
+ // spiral zarah
+ for(let i=0;i<80;i++){const a=i*0.4-t*1.4,r=((i*13+t*60)%320);x.globalAlpha=op*(1-r/320);glow(cx+Math.cos(a)*r*0.75,cy+Math.sin(a)*r,6,'rgba(255,235,200,A)')}x.globalAlpha=1;
+ const core=x.createRadialGradient(cx,cy,0,cx,cy,170*op);core.addColorStop(0,'rgba(255,255,255,0.95)');core.addColorStop(0.4,'rgba(230,200,255,0.6)');core.addColorStop(1,'rgba(120,60,200,0)');x.fillStyle=core;x.beginPath();x.ellipse(cx,cy,140*op,190*op,0,0,7);x.fill();
+ // pancaran ke bumi
+ const b=ss(8.5,10,T);if(b>0){const bg2=x.createLinearGradient(0,cy,0,1080);bg2.addColorStop(0,`rgba(255,240,200,${b*0.5})`);bg2.addColorStop(1,'rgba(255,240,200,0)');x.fillStyle=bg2;x.beginPath();x.moveTo(cx-40,cy+150);x.lineTo(cx+40,cy+150);x.lineTo(cx+180,1080);x.lineTo(cx-180,1080);x.fill()}
+}
+const ORBS=[...Array(26)].map((_,i)=>({x:R()*W,s:R()*0.5+0.35,v:R()*30+35,p:R()*6.28,o:R()*H}));
+function s9(t,T){ // semua pernah hidup dalam rahim
+ bg('#0a0418','#2a0a2a','#3a1020');stars(t,0.6);
+ const a=ss(0,1.5,T);
+ for(const o of ORBS){const y=((o.o-T*o.v)%(H+200)+H+200)%(H+200)-100;const xx=o.x+Math.sin(t*0.5+o.p)*25;
+  x.globalAlpha=a;glow(xx,y,95*o.s,'rgba(255,170,150,A)',0.55);x.strokeStyle='rgba(255,210,190,0.5)';x.lineWidth=2;x.beginPath();x.arc(xx,y,55*o.s,0,7);x.stroke();
+  fetus(xx,y+4*o.s,0.33*o.s,a*0.9,t+o.p)}x.globalAlpha=1;
+ // ibu & anak (80.88->)
+ const m=ss(6.5,8.5,T);if(m>0){x.globalAlpha=m;glow(W/2,700,330,'rgba(255,190,140,A)',0.5);
+  woman(W/2,1060,600,'#120612',t,{cindai:true,glow:'rgba(255,190,140,0.9)'});
+  glow(W/2,1060-6*48,140+15*Math.sin(t*2),'rgba(255,215,170,A)',0.9);fetus(W/2+4,1060-6*47,0.28,0.9,t);x.globalAlpha=1}
+ dust(t,'rgba(255,200,170,A)',0.4)}
+function s10(t,T){ // persoalan akhir: bulan & galaksi
+ bg('#02040e','#0a1430','#101a2a');stars(t);
+ x.save();x.translate(W/2,360);x.rotate(t*0.05);for(let i=0;i<260;i++){const a=i*0.3,r=i*1.25;x.globalAlpha=0.5*(1-i/260);glow(Math.cos(a)*r,Math.sin(a)*r*0.5,8,'rgba(190,170,255,A)')}x.restore();x.globalAlpha=1;
+ zoom(1+T*0.008,W/2,900);
+ glow(W/2,560,340,'rgba(220,230,255,A)',0.35);x.fillStyle='#eef2ff';x.shadowColor='#cfe0ff';x.shadowBlur=60;x.beginPath();x.arc(W/2,560,170,0,7);x.fill();x.shadowBlur=0;
+ x.fillStyle='rgba(180,190,220,0.35)';for(const [a,b,r] of[[-50,-30,30],[40,20,22],[10,60,18],[-60,50,14]]){x.beginPath();x.arc(W/2+a,560+b,r,0,7);x.fill()}
+ x.fillStyle='#050812';x.beginPath();x.moveTo(0,1030);x.quadraticCurveTo(360,930,720,1030);x.lineTo(720,H);x.lineTo(0,H);x.fill();
+ woman(W/2,975,300,'#050812',t,{cindai:true,cindaiDir:-1});
+ // ikon komen (98.5->)
+ const k=ss(9.74,10.2,T);if(k>0){x.setTransform(1,0,0,1,0,0);const s=k*(1+0.06*Math.sin(t*6));x.save();x.translate(W/2,1080);x.scale(s,s);
+  x.fillStyle='#fff';x.shadowColor='rgba(255,210,100,0.9)';x.shadowBlur=30;x.beginPath();x.roundRect(-70,-50,140,90,26);x.fill();x.beginPath();x.moveTo(-25,38);x.lineTo(-40,70);x.lineTo(5,38);x.fill();
+  x.shadowBlur=0;x.fillStyle='#d4362a';for(const d of[-34,0,34]){x.beginPath();x.arc(d,-5,10,0,7);x.fill()}x.restore()}
+}
+function s12(t,T){ // kad penutup
+ bg('#0a0603','#1e1206','#0a0603');
+ const g0=x.createRadialGradient(W/2,600,0,W/2,600,520);g0.addColorStop(0,'rgba(255,190,90,0.25)');g0.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=g0;x.fillRect(0,0,W,H);
+ dust(t,'rgba(255,205,110,A)',0.8);
+ const a=ss(0.1,1.0,T),b=ss(1.4,2.3,T);
+ x.textAlign='center';x.textBaseline='middle';
+ x.globalAlpha=a;x.font='700 30px Gold';x.fillStyle='#e9c77a';x.fillText('SAYA',W/2,500);
+ const gg=x.createLinearGradient(0,540,0,640);gg.addColorStop(0,'#fff1c2');gg.addColorStop(0.5,'#f2c14e');gg.addColorStop(1,'#b5761b');
+ x.save();x.translate(W/2,590);const sc=lerp(1.12,1,a);x.scale(sc,sc);x.font='700 78px Gold';x.fillStyle=gg;x.shadowColor='rgba(255,190,80,0.7)';x.shadowBlur=30;x.fillText('RAFEE AILIAH',0,0);x.restore();
+ x.strokeStyle='#d9a94a';x.lineWidth=2;const lw=260*a;x.beginPath();x.moveTo(W/2-lw,665);x.lineTo(W/2+lw,665);x.stroke();
+ x.fillStyle='#f2c14e';x.save();x.translate(W/2,665);x.rotate(0.785);x.fillRect(-7,-7,14,14);x.restore();
+ x.globalAlpha=b;x.font='800 44px Cap';x.fillStyle='#fff';x.lineJoin='round';x.lineWidth=8;x.strokeStyle='rgba(0,0,0,0.6)';
+ x.strokeText('Sahabat Hati dan Fikiran Anda',W/2,740);x.fillText('Sahabat Hati dan Fikiran Anda',W/2,740);
+ x.globalAlpha=1;x.fillStyle=`rgba(0,0,0,${ss(5.6,6.3,T)})`;x.fillRect(0,0,W,H)}
+
+window.draw=function(t){
+ x.setTransform(1,0,0,1,0,0);x.globalAlpha=1;x.fillStyle='#000';x.fillRect(0,0,W,H);
+ const XF=0.6;
+ for(let i=0;i<SC.length;i++){const[a,b,f]=SC[i];
+  if(t<a-XF||t>b+XF)continue;
+  let al=1;if(i>0&&t<a+XF)al=ss(a-XF,a+XF,t);if(i<SC.length-1&&t>b-XF)al=Math.min(al,1-ss(b-XF,b+XF,t)*0.0+0);
+  if(i>0&&t<a-XF)continue;
+  if(i<SC.length-1&&t>b+XF)continue;
+  // lukis di lapisan berasingan supaya pudar silang
+  const lay=getLayer(i);const lx=lay.getContext('2d');const save=x;
+  x=lx;x.setTransform(1,0,0,1,0,0);x.globalAlpha=1;x.clearRect(0,0,W,H);f(t,t-a);x=save;
+  x.setTransform(1,0,0,1,0,0);x.globalAlpha=(i>0&&t<a+XF)?ss(a-XF,a+XF,t):1;x.drawImage(lay,0,0);x.globalAlpha=1}
+ // vignette
+ const v=x.createRadialGradient(W/2,H/2,H*0.3,W/2,H/2,H*0.75);v.addColorStop(0,'rgba(0,0,0,0)');v.addColorStop(1,'rgba(0,0,0,0.55)');x.fillStyle=v;x.fillRect(0,0,W,H);
+ drawCaption(t);
+ // pudar masuk
+ if(t<0.5){x.fillStyle=`rgba(0,0,0,${1-t/0.5})`;x.fillRect(0,0,W,H)}
+};
+const LAY={};function getLayer(i){if(!LAY[i]){const l=document.createElement('canvas');l.width=W;l.height=H;LAY[i]=l}return LAY[i]}
+</script></body></html>
