@@ -7,6 +7,7 @@ html,body{margin:0;background:#000}
 canvas{display:block}
 </style></head>
 <body><canvas id="c" width="720" height="1280"></canvas>
+<script src="capwords.js"></script>
 <script>
 const W=720,H=1280,c=document.getElementById("c");let x=c.getContext("2d");
 const TOTAL=107.65;
@@ -63,20 +64,25 @@ function wrap(txt,max){const w=txt.split(' ');const L=[];let cur='';
  for(const s of w){const t=cur?cur+' '+s:s;if(x.measureText(t).width>max&&cur){L.push(cur);cur=s}else cur=t}
  if(cur)L.push(cur);return L}
 function drawCaption(t){
- let i=-1;for(let k=0;k<CAPS.length;k++)if(t>=CAPS[k][0])i=k;
- if(i<0||!CAPS[i][1])return;
- const [st,txt,emph]=CAPS[i];const en=CAPS[i+1][0];
- const a=ss(st,st+0.18,t)*(1-ss(en-0.12,en,t));
- const pop=1+0.12*(1-ss(st,st+0.25,t));
- const size=emph?(txt.length>8?60:96):48;
- x.save();x.globalAlpha=a;x.translate(W/2,880);x.scale(pop,pop);
- x.font=`800 ${size}px Cap`;x.textAlign='center';x.textBaseline='middle';
- const L=wrap(txt,emph?640:600);const lh=size*1.08;
- L.forEach((l,j)=>{const y=(j-(L.length-1)/2)*lh;
-  x.lineJoin='round';x.lineWidth=size*0.22;x.strokeStyle='rgba(0,0,0,0.9)';x.strokeText(l,0,y);
-  if(emph){const g=x.createLinearGradient(0,y-size/2,0,y+size/2);g.addColorStop(0,'#fff6c8');g.addColorStop(0.5,'#ffd25a');g.addColorStop(1,'#d18a1c');x.fillStyle=g;x.shadowColor='rgba(255,200,80,0.9)';x.shadowBlur=30}
-  else{x.fillStyle='#fff';x.shadowColor='rgba(0,0,0,0)'}
-  x.fillText(l,0,y);x.shadowBlur=0});
+ let i=-1;for(let k=0;k<CAPW.length;k++)if(t>=CAPW[k][0])i=k;
+ if(i<0||!CAPW[i][1])return;
+ const [st,txt,emph,ws]=CAPW[i];const en=CAPW[i+1][0];
+ const out=1-ss(en-0.1,en,t);
+ const size=emph?(txt.length>8?82:124):76;
+ x.save();x.font=`800 ${size}px Cap`;x.textAlign='left';x.textBaseline='middle';x.lineJoin='round';
+ const sp=x.measureText(' ').width,maxw=emph?660:640,lh=size*1.1;
+ const lines=[];let cur=[],cw=0;
+ for(const [w,wt] of ws){const ww=x.measureText(w).width;if(cur.length&&cw+sp+ww>maxw){lines.push([cur,cw]);cur=[];cw=0}
+  cw+=(cur.length?sp:0)+ww;cur.push([w,wt,ww])}
+ if(cur.length)lines.push([cur,cw]);
+ lines.forEach(([L,lw],j)=>{const y=880+(j-(lines.length-1)/2)*lh;let px=W/2-lw/2;
+  for(const [w,wt,ww] of L){const k=ss(wt,wt+0.12,t);if(k>0){
+   const pop=1+0.35*(1-ss(wt,wt+0.18,t));x.save();x.globalAlpha=k*out;x.translate(px+ww/2,y);x.scale(pop,pop);
+   x.lineWidth=size*0.24;x.strokeStyle='rgba(0,0,0,0.92)';x.strokeText(w,-ww/2,0);
+   if(emph){const g=x.createLinearGradient(0,-size/2,0,size/2);g.addColorStop(0,'#fff6c8');g.addColorStop(0.5,'#ffd25a');g.addColorStop(1,'#d18a1c');x.fillStyle=g;x.shadowColor='rgba(255,200,80,0.9)';x.shadowBlur=30}
+   else x.fillStyle=(t<wt+0.35)?'#ffe27a':'#fff';
+   x.fillText(w,-ww/2,0);x.restore()}
+   px+=ww+sp}});
  x.restore()}
 
 // ---------- helpers ----------
@@ -102,7 +108,7 @@ function woman(px,py,h,fill,t,opt={}){
  x.quadraticCurveTo(14,-77,11,-78.5);x.quadraticCurveTo(4,-80,3,-84);x.closePath();x.fill();
  // kepala, sanggul
  x.beginPath();x.ellipse(0,-91,6.2,7.4,0,0,7);x.fill();
- x.beginPath();x.ellipse(-3.5,-88.5,4.2,3.4,0.3,0,7);x.fill();
+ x.beginPath();x.ellipse(-4.2,-87,3,2.5,0.3,0,7);x.fill();
  x.shadowBlur=0;
  // cindai berkibar
  if(opt.cindai){const n=26,pts=[];for(let i=0;i<=n;i++){const k=i/n;
