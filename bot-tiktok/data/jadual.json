@@ -1,10 +1,10 @@
 {
   "owner_chat_id": 60167214,
-  "offset": 954602930,
+  "offset": 954602931,
   "masa": [
     "20:30"
   ],
-  "next_id": 21,
+  "next_id": 22,
   "senarai": [
     {
       "id": 1,
@@ -185,6 +185,15 @@
       "tajuk": "Rahim animasi",
       "caption": "Kita semua pernah hidup di dalam rahim… tapi tiada seorang pun ingat bagaimana rasanya. 🤍\n\nAdakah rahim sekadar tempat manusia dilahirkan… atau portal antara dua alam? 🌙\n\nApa pandangan korang? Tulis di ruangan komen 👇\n\n#rahim #wanita #misterikehidupan #rahsiatubuh #ibu #kehidupan #spiritual #melayu #kaincindai #renungan #sahabathatidanfikirananda #rafeeailiah #fyp #komuniti",
       "slot": "2026-12-06T20:30",
+      "dihantar": false
+    },
+    {
+      "id": 21,
+      "chat_id": 60167214,
+      "message_id": 55,
+      "tajuk": "Lebih Baik Diam animasi",
+      "caption": "",
+      "slot": "2026-12-07T20:30",
       "dihantar": false
     }
   ],
