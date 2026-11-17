@@ -1,10 +1,10 @@
 {
   "owner_chat_id": 60167214,
-  "offset": 954602931,
+  "offset": 954602932,
   "masa": [
     "20:30"
   ],
-  "next_id": 22,
+  "next_id": 23,
   "senarai": [
     {
       "id": 1,
@@ -194,6 +194,15 @@
       "tajuk": "Lebih Baik Diam animasi",
       "caption": "",
       "slot": "2026-12-07T20:30",
+      "dihantar": false
+    },
+    {
+      "id": 22,
+      "chat_id": 60167214,
+      "message_id": 57,
+      "tajuk": "Trauma Komunikasi final",
+      "caption": "Lebih baik diam... daripada meluah? 🤍\n\nBukan sebab sombong. Tapi setiap kali kita cuba bersuara, ia dibalas dengan kritik, dipandang lekeh, atau dibiarkan sepi.\n\nAkhirnya kita bina benteng besi. Senyum depan orang, tapi berperang seorang diri di dalam gelap.\n\nKalau kau tengah di fasa ni, tarik nafas dalam-dalam... lepaskan perlahan-lahan.\n\nDiam bukan bermakna kita mengalah. Kita sedang belajar merawat diri yang lelah.\n\nPernah rasa macam ni? Komen \"🤍\" kalau kau faham.\n\n#lebihbaikdiam #traumakomunikasi #luahanhati #mindabawahsedar #rawatdiri #healing #komuniti #fyp",
+      "slot": "2026-12-08T20:30",
       "dihantar": false
     }
   ],
