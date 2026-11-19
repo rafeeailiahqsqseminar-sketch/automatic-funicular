@@ -1,0 +1,1785 @@
+{
+"cues": [
+{
+"text": "Pernahkah anda terfikir...",
+"words": [
+[
+"Pernahkah",
+4.06
+],
+[
+"anda",
+4.58
+],
+[
+"terfikir...",
+4.82
+]
+],
+"t": 4.06,
+"end": 5.5
+},
+{
+"text": "Ada dua detik paling misteri dalam kehidupan manusia.",
+"words": [
+[
+"Ada",
+5.5
+],
+[
+"dua",
+6.12
+],
+[
+"detik",
+6.54
+],
+[
+"paling",
+6.92
+],
+[
+"misteri",
+7.2
+],
+[
+"dalam",
+7.92
+],
+[
+"kehidupan",
+8.14
+],
+[
+"manusia.",
+8.64
+]
+],
+"t": 5.5,
+"end": 9.16
+},
+{
+"text": "Detik sebelum kita menarik nafas pertama...",
+"words": [
+[
+"Detik",
+9.66
+],
+[
+"sebelum",
+9.96
+],
+[
+"kita",
+10.38
+],
+[
+"menarik",
+10.58
+],
+[
+"nafas",
+11.1
+],
+[
+"pertama...",
+11.44
+]
+],
+"t": 9.66,
+"end": 12.0
+},
+{
+"text": "Dan detik selepas kita menghembuskan nafas terakhir.",
+"words": [
+[
+"Dan",
+12.0
+],
+[
+"detik",
+12.58
+],
+[
+"selepas",
+13.06
+],
+[
+"kita",
+13.64
+],
+[
+"menghembuskan",
+13.94
+],
+[
+"nafas",
+14.8
+],
+[
+"terakhir.",
+15.16
+]
+],
+"t": 12.0,
+"end": 15.82
+},
+{
+"text": "Anehnya...",
+"words": [
+[
+"Anehnya...",
+15.82
+]
+],
+"t": 15.82,
+"end": 17.24
+},
+{
+"text": "Kita tidak mengingati detik pertama itu.",
+"words": [
+[
+"Kita",
+17.24
+],
+[
+"tidak",
+17.42
+],
+[
+"mengingati",
+17.66
+],
+[
+"detik",
+18.26
+],
+[
+"pertama",
+18.66
+],
+[
+"itu.",
+18.98
+]
+],
+"t": 17.24,
+"end": 19.36
+},
+{
+"text": "Dan kita tidak tahu bagaimana kita akan menghadapi detik yang terakhir.",
+"words": [
+[
+"Dan",
+19.36
+],
+[
+"kita",
+19.82
+],
+[
+"tidak",
+20.12
+],
+[
+"tahu",
+20.38
+],
+[
+"bagaimana",
+20.86
+],
+[
+"kita",
+21.56
+],
+[
+"akan",
+21.86
+],
+[
+"menghadapi",
+22.1
+],
+[
+"detik",
+22.62
+],
+[
+"yang",
+23.1
+],
+[
+"terakhir.",
+23.24
+]
+],
+"t": 19.36,
+"end": 23.84
+},
+{
+"text": "Tetapi di antara kedua-duanya...",
+"words": [
+[
+"Tetapi",
+24.16
+],
+[
+"di",
+24.62
+],
+[
+"antara",
+24.84
+],
+[
+"kedua-duanya...",
+25.32
+]
+],
+"t": 24.16,
+"end": 26.08
+},
+{
+"text": "Tuhan menghadiahkan sesuatu yang sangat berharga.",
+"words": [
+[
+"Tuhan",
+26.46
+],
+[
+"menghadiahkan",
+26.78
+],
+[
+"sesuatu",
+27.58
+],
+[
+"yang",
+28.14
+],
+[
+"sangat",
+28.36
+],
+[
+"berharga.",
+28.9
+]
+],
+"t": 26.46,
+"end": 29.56
+},
+{
+"text": "Sebuah kehidupan.",
+"words": [
+[
+"Sebuah",
+29.56
+],
+[
+"kehidupan.",
+30.56
+]
+],
+"t": 29.56,
+"end": 31.4
+},
+{
+"text": "Cuba anda renungkan...",
+"words": [
+[
+"Cuba",
+31.4
+],
+[
+"anda",
+32.12
+],
+[
+"renungkan...",
+32.38
+]
+],
+"t": 31.4,
+"end": 32.88
+},
+{
+"text": "Sebelum dilahirkan...",
+"words": [
+[
+"Sebelum",
+33.32
+],
+[
+"dilahirkan...",
+33.7
+]
+],
+"t": 33.32,
+"end": 34.46
+},
+{
+"text": "Kita berada dalam rahim seorang ibu.",
+"words": [
+[
+"Kita",
+34.82
+],
+[
+"berada",
+35.04
+],
+[
+"dalam",
+35.52
+],
+[
+"rahim",
+35.86
+],
+[
+"seorang",
+36.34
+],
+[
+"ibu.",
+36.68
+]
+],
+"t": 34.82,
+"end": 37.06
+},
+{
+"text": "Kita tidak mengenali dunia...",
+"words": [
+[
+"Kita",
+37.36
+],
+[
+"tidak",
+37.6
+],
+[
+"mengenali",
+37.84
+],
+[
+"dunia...",
+38.3
+]
+],
+"t": 37.36,
+"end": 38.82
+},
+{
+"text": "Tidak mengetahui apa yang menanti...",
+"words": [
+[
+"Tidak",
+39.12
+],
+[
+"mengetahui",
+39.32
+],
+[
+"apa",
+39.98
+],
+[
+"yang",
+40.4
+],
+[
+"menanti...",
+40.66
+]
+],
+"t": 39.12,
+"end": 41.14
+},
+{
+"text": "Namun kita tetap melalui sebuah perjalanan.",
+"words": [
+[
+"Namun",
+41.46
+],
+[
+"kita",
+42.2
+],
+[
+"tetap",
+42.36
+],
+[
+"melalui",
+42.88
+],
+[
+"sebuah",
+43.34
+],
+[
+"perjalanan.",
+43.9
+]
+],
+"t": 41.46,
+"end": 44.56
+},
+{
+"text": "Kemudian kita dilahirkan.",
+"words": [
+[
+"Kemudian",
+44.84
+],
+[
+"kita",
+45.34
+],
+[
+"dilahirkan.",
+45.72
+]
+],
+"t": 44.84,
+"end": 46.42
+},
+{
+"text": "Kita mula mengenali wajah...",
+"words": [
+[
+"Kita",
+46.78
+],
+[
+"mula",
+46.96
+],
+[
+"mengenali",
+47.3
+],
+[
+"wajah...",
+47.74
+]
+],
+"t": 46.78,
+"end": 48.42
+},
+{
+"text": "Mendengar suara...",
+"words": [
+[
+"Mendengar",
+48.7
+],
+[
+"suara...",
+49.08
+]
+],
+"t": 48.7,
+"end": 49.56
+},
+{
+"text": "Merasai kasih sayang...",
+"words": [
+[
+"Merasai",
+49.98
+],
+[
+"kasih",
+50.48
+],
+[
+"sayang...",
+50.74
+]
+],
+"t": 49.98,
+"end": 51.36
+},
+{
+"text": "Dan perlahan-lahan belajar tentang kehidupan.",
+"words": [
+[
+"Dan",
+51.36
+],
+[
+"perlahan-lahan",
+51.78
+],
+[
+"belajar",
+52.68
+],
+[
+"tentang",
+53.28
+],
+[
+"kehidupan.",
+53.62
+]
+],
+"t": 51.36,
+"end": 54.34
+},
+{
+"text": "Tetapi semakin kita dewasa...",
+"words": [
+[
+"Tetapi",
+54.58
+],
+[
+"semakin",
+55.12
+],
+[
+"kita",
+55.9
+],
+[
+"dewasa...",
+56.22
+]
+],
+"t": 54.58,
+"end": 56.86
+},
+{
+"text": "Ada sesuatu yang aneh berlaku.",
+"words": [
+[
+"Ada",
+57.06
+],
+[
+"sesuatu",
+57.34
+],
+[
+"yang",
+57.9
+],
+[
+"aneh",
+58.1
+],
+[
+"berlaku.",
+58.58
+]
+],
+"t": 57.06,
+"end": 59.04
+},
+{
+"text": "Kita mula mengejar apa yang dunia tawarkan.",
+"words": [
+[
+"Kita",
+59.04
+],
+[
+"mula",
+59.62
+],
+[
+"mengejar",
+59.92
+],
+[
+"apa",
+60.44
+],
+[
+"yang",
+60.84
+],
+[
+"dunia",
+61.08
+],
+[
+"tawarkan.",
+61.58
+]
+],
+"t": 59.04,
+"end": 62.12
+},
+{
+"text": "Kekayaan...",
+"words": [
+[
+"Kekayaan...",
+62.54
+]
+],
+"t": 62.54,
+"end": 63.3
+},
+{
+"text": "Pengiktirafan...",
+"words": [
+[
+"Pengiktirafan...",
+63.56
+]
+],
+"t": 63.56,
+"end": 64.5
+},
+{
+"text": "Kedudukan...",
+"words": [
+[
+"Kedudukan...",
+64.82
+]
+],
+"t": 64.82,
+"end": 65.34
+},
+{
+"text": "Dan penerimaan manusia.",
+"words": [
+[
+"Dan",
+65.34
+],
+[
+"penerimaan",
+65.92
+],
+[
+"manusia.",
+66.76
+]
+],
+"t": 65.34,
+"end": 67.34
+},
+{
+"text": "Sehingga kadangkala...",
+"words": [
+[
+"Sehingga",
+67.66
+],
+[
+"kadangkala...",
+68.12
+]
+],
+"t": 67.66,
+"end": 68.68
+},
+{
+"text": "Kita terlalu sibuk membina kehidupan...",
+"words": [
+[
+"Kita",
+69.08
+],
+[
+"terlalu",
+69.26
+],
+[
+"sibuk",
+69.72
+],
+[
+"membina",
+70.24
+],
+[
+"kehidupan...",
+70.66
+]
+],
+"t": 69.08,
+"end": 71.4
+},
+{
+"text": "Sampai terlupa untuk bertanya mengapa kita diberikan kehidupan.",
+"words": [
+[
+"Sampai",
+71.4
+],
+[
+"terlupa",
+71.94
+],
+[
+"untuk",
+72.6
+],
+[
+"bertanya",
+72.9
+],
+[
+"mengapa",
+73.4
+],
+[
+"kita",
+74.24
+],
+[
+"diberikan",
+74.58
+],
+[
+"kehidupan.",
+75.26
+]
+],
+"t": 71.4,
+"end": 75.96
+},
+{
+"text": "Dalam episod lalu...",
+"words": [
+[
+"Dalam",
+76.3
+],
+[
+"episod",
+76.76
+],
+[
+"lalu...",
+77.06
+]
+],
+"t": 76.3,
+"end": 77.46
+},
+{
+"text": "Kita merenungkan satu perkataan daripada Al-Quran.",
+"words": [
+[
+"Kita",
+77.74
+],
+[
+"merenungkan",
+77.92
+],
+[
+"satu",
+78.56
+],
+[
+"perkataan",
+78.98
+],
+[
+"daripada",
+79.66
+],
+[
+"Al-Quran.",
+80.02
+]
+],
+"t": 77.74,
+"end": 80.58
+},
+{
+"text": "Dikembalikan.",
+"words": [
+[
+"Dikembalikan.",
+81.06
+]
+],
+"t": 81.06,
+"end": 81.92
+},
+{
+"text": "Setiap yang bernyawa akan merasai mati...",
+"words": [
+[
+"Setiap",
+82.4
+],
+[
+"yang",
+82.94
+],
+[
+"bernyawa",
+83.08
+],
+[
+"akan",
+83.58
+],
+[
+"merasai",
+84.04
+],
+[
+"mati...",
+84.58
+]
+],
+"t": 82.4,
+"end": 85.14
+},
+{
+"text": "Kemudian kepada Tuhan kita dikembalikan.",
+"words": [
+[
+"Kemudian",
+85.34
+],
+[
+"kepada",
+85.88
+],
+[
+"Tuhan",
+86.16
+],
+[
+"kita",
+87.02
+],
+[
+"dikembalikan.",
+87.3
+]
+],
+"t": 85.34,
+"end": 88.1
+},
+{
+"text": "Tetapi cuba fikirkan...",
+"words": [
+[
+"Tetapi",
+88.1
+],
+[
+"cuba",
+89.24
+],
+[
+"fikirkan...",
+89.54
+]
+],
+"t": 88.1,
+"end": 90.1
+},
+{
+"text": "Jika akhirnya kita akan kembali...",
+"words": [
+[
+"Jika",
+90.38
+],
+[
+"akhirnya",
+90.74
+],
+[
+"kita",
+91.32
+],
+[
+"akan",
+91.56
+],
+[
+"kembali...",
+91.82
+]
+],
+"t": 90.38,
+"end": 92.38
+},
+{
+"text": "Mengapa kita perlu melalui semua pengalaman ini?",
+"words": [
+[
+"Mengapa",
+92.84
+],
+[
+"kita",
+93.2
+],
+[
+"perlu",
+93.48
+],
+[
+"melalui",
+93.78
+],
+[
+"semua",
+94.24
+],
+[
+"pengalaman",
+94.74
+],
+[
+"ini?",
+95.3
+]
+],
+"t": 92.84,
+"end": 95.62
+},
+{
+"text": "Mengapa kita perlu mengenali cinta...",
+"words": [
+[
+"Mengapa",
+95.94
+],
+[
+"kita",
+96.4
+],
+[
+"perlu",
+96.68
+],
+[
+"mengenali",
+97.0
+],
+[
+"cinta...",
+97.44
+]
+],
+"t": 95.94,
+"end": 98.04
+},
+{
+"text": "Merasai kehilangan...",
+"words": [
+[
+"Merasai",
+98.38
+],
+[
+"kehilangan...",
+98.84
+]
+],
+"t": 98.38,
+"end": 99.48
+},
+{
+"text": "Menanggung kesedihan...",
+"words": [
+[
+"Menanggung",
+99.48
+],
+[
+"kesedihan...",
+100.48
+]
+],
+"t": 99.48,
+"end": 101.22
+},
+{
+"text": "Dan belajar melepaskan sesuatu yang sangat kita sayangi?",
+"words": [
+[
+"Dan",
+101.22
+],
+[
+"belajar",
+101.62
+],
+[
+"melepaskan",
+102.16
+],
+[
+"sesuatu",
+102.82
+],
+[
+"yang",
+103.34
+],
+[
+"sangat",
+103.56
+],
+[
+"kita",
+104.12
+],
+[
+"sayangi?",
+104.42
+]
+],
+"t": 101.22,
+"end": 104.9
+},
+{
+"text": "Mungkinkah di sebalik semua pengalaman itu...",
+"words": [
+[
+"Mungkinkah",
+105.26
+],
+[
+"di",
+105.88
+],
+[
+"sebalik",
+106.42
+],
+[
+"semua",
+106.42
+],
+[
+"pengalaman",
+106.8
+],
+[
+"itu...",
+107.44
+]
+],
+"t": 105.26,
+"end": 107.82
+},
+{
+"text": "Ada sesuatu yang sedang mengajak kita mengenali kehidupan dengan lebih mendalam?",
+"words": [
+[
+"Ada",
+108.06
+],
+[
+"sesuatu",
+108.32
+],
+[
+"yang",
+108.9
+],
+[
+"sedang",
+109.14
+],
+[
+"mengajak",
+109.46
+],
+[
+"kita",
+110.02
+],
+[
+"mengenali",
+110.3
+],
+[
+"kehidupan",
+110.92
+],
+[
+"dengan",
+111.58
+],
+[
+"lebih",
+111.8
+],
+[
+"mendalam?",
+112.22
+]
+],
+"t": 108.06,
+"end": 112.76
+},
+{
+"text": "Mungkin persoalan yang patut kita tanyakan bukan sekadar...",
+"words": [
+[
+"Mungkin",
+113.14
+],
+[
+"persoalan",
+113.64
+],
+[
+"yang",
+114.24
+],
+[
+"patut",
+114.42
+],
+[
+"kita",
+114.86
+],
+[
+"tanyakan",
+115.08
+],
+[
+"bukan",
+115.56
+],
+[
+"sekadar...",
+116.04
+]
+],
+"t": 113.14,
+"end": 116.86
+},
+{
+"text": "Dari mana kita datang?",
+"words": [
+[
+"Dari",
+116.86
+],
+[
+"mana",
+117.26
+],
+[
+"kita",
+117.58
+],
+[
+"datang?",
+117.9
+]
+],
+"t": 116.86,
+"end": 118.44
+},
+{
+"text": "Atau...",
+"words": [
+[
+"Atau...",
+118.44
+]
+],
+"t": 118.44,
+"end": 118.9
+},
+{
+"text": "Ke mana kita akan pergi?",
+"words": [
+[
+"Ke",
+118.9
+],
+[
+"mana",
+119.42
+],
+[
+"kita",
+119.72
+],
+[
+"akan",
+120.04
+],
+[
+"pergi?",
+120.28
+]
+],
+"t": 118.9,
+"end": 120.68
+},
+{
+"text": "Tetapi...",
+"words": [
+[
+"Tetapi...",
+121.02
+]
+],
+"t": 121.02,
+"end": 121.56
+},
+{
+"text": "Siapakah diri kita yang sedang melalui perjalanan ini?",
+"words": [
+[
+"Siapakah",
+121.56
+],
+[
+"diri",
+122.46
+],
+[
+"kita",
+122.78
+],
+[
+"yang",
+123.1
+],
+[
+"sedang",
+123.34
+],
+[
+"melalui",
+123.84
+],
+[
+"perjalanan",
+124.26
+],
+[
+"ini?",
+124.9
+]
+],
+"t": 121.56,
+"end": 125.14
+},
+{
+"text": "Kerana sejak kita dilahirkan...",
+"words": [
+[
+"Kerana",
+125.48
+],
+[
+"sejak",
+125.84
+],
+[
+"kita",
+126.3
+],
+[
+"dilahirkan...",
+126.54
+]
+],
+"t": 125.48,
+"end": 127.32
+},
+{
+"text": "Dunia mula memberikan kita nama.",
+"words": [
+[
+"Dunia",
+127.66
+],
+[
+"mula",
+128.06
+],
+[
+"memberikan",
+128.46
+],
+[
+"kita",
+128.98
+],
+[
+"nama.",
+129.26
+]
+],
+"t": 127.66,
+"end": 129.74
+},
+{
+"text": "Kemudian gelaran...",
+"words": [
+[
+"Kemudian",
+130.06
+],
+[
+"gelaran...",
+130.42
+]
+],
+"t": 130.06,
+"end": 130.92
+},
+{
+"text": "Pekerjaan...",
+"words": [
+[
+"Pekerjaan...",
+131.34
+]
+],
+"t": 131.34,
+"end": 132.08
+},
+{
+"text": "Kedudukan...",
+"words": [
+[
+"Kedudukan...",
+132.34
+]
+],
+"t": 132.34,
+"end": 132.86
+},
+{
+"text": "Dan pelbagai identiti.",
+"words": [
+[
+"Dan",
+132.86
+],
+[
+"pelbagai",
+133.38
+],
+[
+"identiti.",
+134.02
+]
+],
+"t": 132.86,
+"end": 134.78
+},
+{
+"text": "Lama-kelamaan...",
+"words": [
+[
+"Lama-kelamaan...",
+134.78
+]
+],
+"t": 134.78,
+"end": 136.34
+},
+{
+"text": "Kita mula percaya bahawa semua itulah diri kita.",
+"words": [
+[
+"Kita",
+136.34
+],
+[
+"mula",
+136.52
+],
+[
+"percaya",
+136.8
+],
+[
+"bahawa",
+137.3
+],
+[
+"semua",
+137.74
+],
+[
+"itulah",
+138.12
+],
+[
+"diri",
+138.8
+],
+[
+"kita.",
+139.1
+]
+],
+"t": 136.34,
+"end": 139.38
+},
+{
+"text": "Tetapi cuba bayangkan...",
+"words": [
+[
+"Tetapi",
+139.72
+],
+[
+"cuba",
+140.44
+],
+[
+"bayangkan...",
+140.66
+]
+],
+"t": 139.72,
+"end": 141.2
+},
+{
+"text": "Suatu hari nanti...",
+"words": [
+[
+"Suatu",
+141.48
+],
+[
+"hari",
+141.86
+],
+[
+"nanti...",
+142.14
+]
+],
+"t": 141.48,
+"end": 142.6
+},
+{
+"text": "Segala nama, pangkat dan gelaran itu tidak lagi bermakna.",
+"words": [
+[
+"Segala",
+142.98
+],
+[
+"nama,",
+143.26
+],
+[
+"pangkat",
+143.78
+],
+[
+"dan",
+144.66
+],
+[
+"gelaran",
+144.96
+],
+[
+"itu",
+145.36
+],
+[
+"tidak",
+145.74
+],
+[
+"lagi",
+146.12
+],
+[
+"bermakna.",
+146.6
+]
+],
+"t": 142.98,
+"end": 147.12
+},
+{
+"text": "Siapakah anda... apabila segala yang selama ini anda gunakan untuk memperkenalkan diri telah tiada?",
+"words": [
+[
+"Siapakah",
+147.5
+],
+[
+"anda...",
+148.04
+],
+[
+"apabila",
+148.92
+],
+[
+"segala",
+149.36
+],
+[
+"yang",
+149.84
+],
+[
+"selama",
+150.08
+],
+[
+"ini",
+150.44
+],
+[
+"anda",
+150.7
+],
+[
+"gunakan",
+150.94
+],
+[
+"untuk",
+151.52
+],
+[
+"memperkenalkan",
+151.82
+],
+[
+"diri",
+152.6
+],
+[
+"telah",
+153.1
+],
+[
+"tiada?",
+153.5
+]
+],
+"t": 147.5,
+"end": 153.84
+},
+{
+"text": "Dan lebih misteri lagi...",
+"words": [
+[
+"Dan",
+154.24
+],
+[
+"lebih",
+154.5
+],
+[
+"misteri",
+154.94
+],
+[
+"lagi...",
+155.48
+]
+],
+"t": 154.24,
+"end": 155.84
+},
+{
+"text": "Adakah anda benar-benar mengenali diri sendiri... atau selama ini hanya mengenali identiti yang dunia berikan kepada anda?",
+"words": [
+[
+"Adakah",
+156.2
+],
+[
+"anda",
+156.48
+],
+[
+"benar-benar",
+156.86
+],
+[
+"mengenali",
+157.72
+],
+[
+"diri",
+158.3
+],
+[
+"sendiri...",
+158.64
+],
+[
+"atau",
+159.02
+],
+[
+"selama",
+159.56
+],
+[
+"ini",
+159.96
+],
+[
+"hanya",
+160.28
+],
+[
+"mengenali",
+160.62
+],
+[
+"identiti",
+161.16
+],
+[
+"yang",
+161.84
+],
+[
+"dunia",
+162.08
+],
+[
+"berikan",
+162.58
+],
+[
+"kepada",
+163.06
+],
+[
+"anda?",
+163.32
+]
+],
+"t": 156.2,
+"end": 163.7
+},
+{
+"text": "Kita akan bongkar persoalan itu dalam Episod 7...",
+"words": [
+[
+"Kita",
+164.14
+],
+[
+"akan",
+164.4
+],
+[
+"bongkar",
+164.66
+],
+[
+"persoalan",
+165.22
+],
+[
+"itu",
+165.68
+],
+[
+"dalam",
+166.04
+],
+[
+"Episod",
+166.36
+],
+[
+"7...",
+166.78
+]
+],
+"t": 164.14,
+"end": 167.1
+},
+{
+"text": "Siapa Anda Tanpa Nama dan Gelaran?",
+"words": [
+[
+"Siapa",
+167.46
+],
+[
+"Anda",
+167.96
+],
+[
+"Tanpa",
+168.36
+],
+[
+"Nama",
+168.98
+],
+[
+"dan",
+169.4
+],
+[
+"Gelaran?",
+169.74
+]
+],
+"t": 167.46,
+"end": 170.22
+},
+{
+"text": "Rafee Ailiah — Sahabat Hati & Fikiran Anda.",
+"words": [
+[
+"Rafee",
+170.22
+],
+[
+"Ailiah",
+171.68
+],
+[
+"Sahabat",
+171.68
+],
+[
+"Hati",
+172.22
+],
+[
+"Fikiran",
+173.04
+],
+[
+"Anda.",
+173.52
+]
+],
+"t": 170.22,
+"end": 173.8
+}
+],
+"voDur": 174.21
+}

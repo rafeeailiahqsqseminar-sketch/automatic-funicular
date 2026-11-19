@@ -6,6 +6,7 @@ import {Quantum, QuantumProps} from './Quantum';
 import quantumData from './data/quantum.json';
 import lepas1Data from './data/lepas_p1.json';
 import lepas2Data from './data/lepas_p2.json';
+import {Episod6, EP6_DURATION} from './Episod6';
 
 const FPS = 30;
 const base = {width: 1080, height: 1920, fps: FPS, durationInFrames: Math.round(5.6 * FPS)};
@@ -141,6 +142,7 @@ const noCards = {words: undefined, cards: [], intro: {t: 999, d: 1, top: '', tit
 
 export const Root: React.FC = () => (
   <>
+    <Composition id="Episod6" component={Episod6} width={1080} height={1920} fps={30} durationInFrames={EP6_DURATION * 30} />
     <Composition id="Lepas1" component={FullVideo} defaultProps={lepas1} width={1080} height={1920} fps={30} durationInFrames={Math.floor(lepas1Data.duration * 30)} />
     <Composition id="Lepas2" component={FullVideo} defaultProps={lepas2} width={1080} height={1920} fps={30} durationInFrames={Math.floor(lepas2Data.duration * 30)} />
     <Composition id="Lepas1Cover" component={FullVideo} defaultProps={{...lepas1, ...noCards, coverText: 'Tawanan kepada keinginan?'}} width={1080} height={1920} fps={30} durationInFrames={Math.floor(lepas1Data.duration * 30)} />
