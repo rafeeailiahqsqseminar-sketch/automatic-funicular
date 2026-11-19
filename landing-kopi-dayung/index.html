@@ -120,11 +120,17 @@ nav .btn{padding:10px 18px;font-size:.8rem}
 
 /* pakej */
 .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
-.pkg{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:28px 22px;text-align:center;position:relative}
-.pkg.hot{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),0 20px 60px -25px rgba(224,166,58,.6)}
-.pkg h3{font-family:Anton,sans-serif;font-weight:400;font-size:2.2rem;line-height:1}
-.pkg .amt{font-family:Anton,sans-serif;color:var(--gold2);font-size:2.4rem;margin:14px 0}
-.pkg .btn{width:100%;margin-top:10px}
+.pkg{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:28px 22px;text-align:left;position:relative;display:flex;flex-direction:column}
+.pkg .ptop{display:flex;justify-content:space-between;align-items:center;gap:8px;font-weight:800;letter-spacing:.08em;color:var(--muted);font-size:.9rem}
+.pkg .badge{background:#3a2414;color:var(--gold2);font-size:.75rem;letter-spacing:.02em;padding:5px 10px;border-radius:999px}
+.pkg.hot .badge{background:var(--gold);color:#2a1606}
+.pkg .pop{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--gold);color:#2a1606;font-weight:800;font-size:.75rem;letter-spacing:.06em;padding:6px 14px;border-radius:999px;white-space:nowrap}
+.pkg h3{font-family:Anton,sans-serif;font-weight:400;font-size:2.3rem;line-height:1.05;margin:16px 0 8px}
+.pkg h3 em{font-style:normal;color:var(--gold2)}
+.pkg .gift{color:var(--gold2);font-weight:700;font-size:.92rem}
+.pkg .gift.sub2{color:var(--muted);font-weight:600}
+.pkg p{color:var(--muted);margin:14px 0 20px;flex:1}
+.pkg .btn{width:100%}
 
 /* checkout */
 .checkout{background:linear-gradient(180deg,var(--bg2),#2a170a)}
@@ -283,13 +289,31 @@ footer{padding:36px 0 110px;border-top:1px solid var(--line);color:#8f7a63;font-
 <section id="pakej"><div class="wrap">
   <div class="center">
     <span class="eyebrow">Promosi 3, 5 &amp; 10 Sachet</span>
-    <h2>Pilih <em>pakej</em></h2>
-    <p class="lead">Bermula RM20</p>
+    <h2>Pilih pakej <em>Kopi Dayung anda</em></h2>
+    <p class="lead">Dapatkan hadiah percuma sabun eksklusif dengan pilihan Pakej 2 dan Pakej 3.</p>
   </div>
   <div class="pgrid">
-    <div class="pkg"><h3>3 SACHET</h3><div class="amt">RM[isi]</div><a href="https://wa.me/601126703669" target="_blank" rel="noopener" class="btn btn-ghost">Pilih</a></div>
-    <div class="pkg hot"><h3>5 SACHET</h3><div class="amt">RM[isi]</div><a href="https://wa.me/601126703669" target="_blank" rel="noopener" class="btn btn-gold">Pilih</a></div>
-    <div class="pkg"><h3>10 SACHET</h3><div class="amt">RM[isi]</div><a href="https://wa.me/601126703669" target="_blank" rel="noopener" class="btn btn-ghost">Pilih</a></div>
+    <div class="pkg">
+      <div class="ptop"><span>PAKEJ 1</span><span class="badge">Pek Percubaan</span></div>
+      <h3>3 Pcs — <em>RM20</em></h3>
+      <div class="gift sub2">Pek Sachet Aluminium Individu</div>
+      <p>Sesuai untuk yang baru ingin mencuba rasa dan keserasian Kopi Dayung.</p>
+      <a href="https://wa.me/601126703669" target="_blank" rel="noopener" class="btn btn-ghost">Pilih Pakej</a>
+    </div>
+    <div class="pkg hot"><span class="pop">★ PALING POPULAR ★</span>
+      <div class="ptop"><span>PAKEJ 2</span><span class="badge">Percuma Sabun</span></div>
+      <h3>5 Pcs — <em>RM30</em></h3>
+      <div class="gift">🎁 Percuma Sabun Eksklusif</div>
+      <p>Pilihan paling ramai! Lebih jimat dengan hadiah percuma sabun eksklusif.</p>
+      <a href="https://wa.me/601126703669" target="_blank" rel="noopener" class="btn btn-gold">Pilih Pakej</a>
+    </div>
+    <div class="pkg">
+      <div class="ptop"><span>PAKEJ 3</span><span class="badge">Percuma Sabun</span></div>
+      <h3>10 Pcs — <em>RM49</em></h3>
+      <div class="gift">🎁 Percuma Sabun Eksklusif</div>
+      <p>Stok berbaloi untuk kegunaan berkala dengan penjimatan maksimum.</p>
+      <a href="https://wa.me/601126703669" target="_blank" rel="noopener" class="btn btn-ghost">Pilih Pakej</a>
+    </div>
   </div>
 </div></section>
 
