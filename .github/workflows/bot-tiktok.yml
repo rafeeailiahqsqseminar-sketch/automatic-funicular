@@ -34,6 +34,9 @@ jobs:
       - name: Jalankan bot
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TIKTOK_CLIENT_KEY: ${{ secrets.TIKTOK_CLIENT_KEY }}
+          TIKTOK_CLIENT_SECRET: ${{ secrets.TIKTOK_CLIENT_SECRET }}
+          TIKTOK_REDIRECT_URI: ${{ vars.TIKTOK_REDIRECT_URI }}   # kosong = guna https://github.com/<repo>
           BOT_LAMA_MINIT: "340"
           BOT_GIT_PUSH: "1"
         run: python bot-tiktok/bot.py

@@ -15,13 +15,23 @@ Kongsi ke group kursus:
   - /kongsi 3           -> kongsi video #3 ke group sekarang
   - /group              -> lihat group yang disambung,  /putus -> putuskan group
 
+Post terus ke TikTok (TikTok Content Posting API):
+  - /sambungtiktok      -> pautan untuk benarkan bot post ke akaun TikTok Cikgu
+  - /autotiktok on|off  -> hidup / matikan auto-post
+  - /privasitiktok awam|kawan|sendiri
+  - /statustiktok, /putustiktok
+
 Skrip ini dijalankan oleh GitHub Actions dan berjaga selama ~5.5 jam setiap kali
 (long polling), jadi mesej dibalas serta-merta. Bila tamat, larian seterusnya terus mengambil alih.
 Hanya pustaka standard Python digunakan.
 """
 
+import base64
+import hashlib
+import hmac
 import json
 import os
+import secrets
 import subprocess
 import sys
 import time
@@ -45,6 +55,10 @@ DEFAULT_STATE = {
     "group_id": None,
     "group_nama": None,
     "tiktok": None,
+    "tiktok_auth": None,        # token TikTok, disulitkan (lihat sulit())
+    "tiktok_auto": False,
+    "tiktok_privasi": "PUBLIC_TO_EVERYONE",
+    "tiktok_oauth_state": None,
 }
 LEWAT_GROUP = timedelta(minutes=30)  # beri masa Cikgu post ke TikTok dulu
 
@@ -67,6 +81,246 @@ def send(chat_id, text, **kw):
     # Telegram hadkan 4096 aksara setiap mesej
     for i in range(0, max(len(text), 1), 4000):
         api("sendMessage", chat_id=chat_id, text=text[i:i + 4000], **kw)
+
+
+# ---------------------------------------------------------------- TikTok API
+TIKTOK_API = "https://open.tiktokapis.com"
+TIKTOK_SCOPE = "user.info.basic,video.publish"
+PRIVASI = {"awam": "PUBLIC_TO_EVERYONE", "kawan": "MUTUAL_FOLLOW_FRIENDS", "sendiri": "SELF_ONLY"}
+NAMA_PRIVASI = {v: k for k, v in PRIVASI.items()} | {"FOLLOWER_OF_CREATOR": "pengikut"}
+_semak_seterusnya = {}  # publish_id -> masa semakan status seterusnya (tidak disimpan ke repo)
+
+
+class TikTokRalat(Exception):
+    def __init__(self, kod, mesej=""):
+        super().__init__(f"{kod}: {mesej}")
+        self.kod, self.mesej = kod, mesej
+
+
+def tiktok_dikonfigur():
+    return bool(os.environ.get("TIKTOK_CLIENT_KEY") and os.environ.get("TIKTOK_CLIENT_SECRET"))
+
+
+def redirect_uri():
+    u = os.environ.get("TIKTOK_REDIRECT_URI", "").strip()
+    if u:
+        return u
+    repo = os.environ.get("GITHUB_REPOSITORY")
+    return f"https://github.com/{repo}" if repo else None
+
+
+# Token disimpan dalam jadual.json (yang di-commit ke repo), jadi ia disulitkan
+# dengan kunci daripada secret TIKTOK_CLIENT_SECRET + TELEGRAM_TOKEN.
+def _kunci():
+    return hashlib.sha256(f"{os.environ['TIKTOK_CLIENT_SECRET']}|{os.environ['TELEGRAM_TOKEN']}".encode()).digest()
+
+
+def _aliran(kunci, nonce, n):
+    out = bytearray()
+    i = 0
+    while len(out) < n:
+        out += hashlib.sha256(kunci + nonce + i.to_bytes(8, "big")).digest()
+        i += 1
+    return bytes(out[:n])
+
+
+def sulit(obj):
+    kunci, nonce = _kunci(), os.urandom(16)
+    data = json.dumps(obj).encode()
+    ct = bytes(a ^ b for a, b in zip(data, _aliran(kunci, nonce, len(data))))
+    tag = hmac.new(kunci, nonce + ct, hashlib.sha256).digest()
+    return base64.b64encode(nonce + tag + ct).decode()
+
+
+def buka(teks):
+    try:
+        raw = base64.b64decode(teks)
+        nonce, tag, ct = raw[:16], raw[16:48], raw[48:]
+        kunci = _kunci()
+        if not hmac.compare_digest(tag, hmac.new(kunci, nonce + ct, hashlib.sha256).digest()):
+            return None
+        return json.loads(bytes(a ^ b for a, b in zip(ct, _aliran(kunci, nonce, len(ct)))))
+    except Exception:
+        return None
+
+
+def tiktok_http(method, path, body=None, form=None, token=None):
+    headers, data = {}, None
+    if form is not None:
+        data = urllib.parse.urlencode(form).encode()
+        headers["Content-Type"] = "application/x-www-form-urlencoded"
+    elif body is not None:
+        data = json.dumps(body).encode()
+        headers["Content-Type"] = "application/json; charset=UTF-8"
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    req = urllib.request.Request(TIKTOK_API + path, data=data, headers=headers, method=method)
+    try:
+        with urllib.request.urlopen(req, timeout=60) as r:
+            res = json.loads(r.read() or b"{}")
+    except urllib.error.HTTPError as e:
+        try:
+            res = json.loads(e.read())
+        except Exception:
+            raise TikTokRalat(f"http_{e.code}", str(e))
+    err = res.get("error")
+    if isinstance(err, dict):  # API kandungan: {"data": ..., "error": {"code": "ok"}}
+        if err.get("code") not in (None, "ok"):
+            raise TikTokRalat(err["code"], err.get("message", ""))
+        return res.get("data") or {}
+    if err:  # API OAuth: {"error": "invalid_grant", "error_description": ...}
+        raise TikTokRalat(err, res.get("error_description", ""))
+    return res
+
+
+def _oauth(**form):
+    return tiktok_http("POST", "/v2/oauth/token/", form={
+        "client_key": os.environ["TIKTOK_CLIENT_KEY"], "client_secret": os.environ["TIKTOK_CLIENT_SECRET"], **form})
+
+
+def simpan_token(state, res):
+    t = time.time()
+    state["tiktok_auth"] = sulit({
+        "access_token": res["access_token"],
+        "expires_at": t + int(res.get("expires_in", 86400)) - 300,
+        "refresh_token": res["refresh_token"],
+        "refresh_expires_at": t + int(res.get("refresh_expires_in", 31536000)),
+        "open_id": res.get("open_id"),
+    })
+
+
+def access_token(state):
+    if not tiktok_dikonfigur():
+        raise TikTokRalat("tiada_secret", "TIKTOK_CLIENT_KEY / TIKTOK_CLIENT_SECRET belum ditambah")
+    auth = buka(state["tiktok_auth"]) if state.get("tiktok_auth") else None
+    if not auth:
+        raise TikTokRalat("belum_sambung", "taip /sambungtiktok")
+    if time.time() < auth["expires_at"]:
+        return auth["access_token"]
+    res = _oauth(grant_type="refresh_token", refresh_token=auth["refresh_token"])
+    simpan_token(state, res)
+    return res["access_token"]
+
+
+def nama_akaun(state):
+    d = tiktok_http("GET", "/v2/user/info/?fields=open_id,display_name", token=access_token(state))
+    return (d.get("user") or {}).get("display_name") or "akaun TikTok"
+
+
+def potong_caption(teks, had=2200):
+    # TikTok kira panjang caption dalam unit UTF-16
+    b = (teks or "").encode("utf-16-le")[: had * 2]
+    return b.decode("utf-16-le", errors="ignore")
+
+
+def file_dari(msg):
+    media = msg.get("video") or msg.get("document") or {}
+    return media.get("file_id"), media.get("mime_type") or "video/mp4"
+
+
+def muat_turun_video(v):
+    if not v.get("file_id"):
+        # video lama tiada file_id: forward senyap untuk dapatkan file_id, kemudian padam semula
+        m = api("forwardMessage", chat_id=v["chat_id"], from_chat_id=v["chat_id"], message_id=v["message_id"],
+                disable_notification=True)
+        try:
+            api("deleteMessage", chat_id=v["chat_id"], message_id=m["message_id"])
+        except Exception:
+            pass
+        v["file_id"], v["mime"] = file_dari(m)
+        if not v["file_id"]:
+            raise TikTokRalat("tiada_video", "video asal tidak dijumpai dalam chat")
+    try:
+        f = api("getFile", file_id=v["file_id"])
+    except urllib.error.HTTPError as e:
+        if e.code == 400:
+            raise TikTokRalat("terlalu_besar", "Telegram hanya benarkan bot muat turun video 20MB ke bawah")
+        raise
+    url = f"https://api.telegram.org/file/bot{os.environ['TELEGRAM_TOKEN']}/{f['file_path']}"
+    with urllib.request.urlopen(url, timeout=300) as r:
+        return r.read()
+
+
+def post_ke_tiktok(state, v):
+    """Muat naik video ke TikTok (Direct Post). Pulangkan (publish_id, privasi)."""
+    token = access_token(state)
+    info = tiktok_http("POST", "/v2/post/publish/creator_info/query/", body={}, token=token)
+    pilihan = info.get("privacy_level_options") or []
+    privasi = state.get("tiktok_privasi") or "PUBLIC_TO_EVERYONE"
+    if pilihan and privasi not in pilihan:
+        privasi = "SELF_ONLY" if "SELF_ONLY" in pilihan else pilihan[0]
+    video = muat_turun_video(v)
+
+    def init(p):
+        return tiktok_http("POST", "/v2/post/publish/video/init/", token=token, body={
+            "post_info": {
+                "title": potong_caption(v["caption"]),
+                "privacy_level": p,
+                "disable_comment": bool(info.get("comment_disabled")),
+                "disable_duet": bool(info.get("duet_disabled")),
+                "disable_stitch": bool(info.get("stitch_disabled")),
+            },
+            # Video Telegram paling besar 20MB, jadi sentiasa satu chunk sahaja
+            "source_info": {"source": "FILE_UPLOAD", "video_size": len(video), "chunk_size": len(video),
+                            "total_chunk_count": 1},
+        })
+
+    try:
+        d = init(privasi)
+    except TikTokRalat as e:
+        # app yang belum lulus audit TikTok hanya boleh post sebagai Private
+        if e.kod.startswith("unaudited_client") and privasi != "SELF_ONLY":
+            privasi = "SELF_ONLY"
+            d = init(privasi)
+        else:
+            raise
+    req = urllib.request.Request(d["upload_url"], data=video, method="PUT", headers={
+        "Content-Type": v.get("mime") or "video/mp4",
+        "Content-Length": str(len(video)),
+        "Content-Range": f"bytes 0-{len(video) - 1}/{len(video)}",
+    })
+    try:
+        urllib.request.urlopen(req, timeout=300).read()
+    except urllib.error.HTTPError as e:
+        raise TikTokRalat(f"muat_naik_{e.code}", "TikTok tolak fail video")
+    return d["publish_id"], privasi
+
+
+def sebab(e):
+    if isinstance(e, TikTokRalat):
+        if e.kod in ("invalid_grant", "access_token_invalid", "scope_not_authorized", "belum_sambung"):
+            return "sambungan TikTok tamat atau dibatalkan. Taip /sambungtiktok untuk sambung semula"
+        if e.kod == "spam_risk_too_many_posts":
+            return "TikTok hadkan bilangan post sehari"
+        return f"{e.mesej or e.kod} ({e.kod})"
+    return str(e)
+
+
+def semak_status_tiktok(state):
+    t = time.time()
+    for v in state["senarai"]:
+        pid = v.get("tiktok_publish_id")
+        if v.get("tiktok_status") != "proses" or t < _semak_seterusnya.get(pid, 0):
+            continue
+        _semak_seterusnya[pid] = t + 30
+        try:
+            d = tiktok_http("POST", "/v2/post/publish/status/fetch/", body={"publish_id": pid},
+                            token=access_token(state))
+        except Exception as e:
+            print(f"Semak status TikTok #{v['id']}: {e}", file=sys.stderr, flush=True)
+            continue
+        status = d.get("status")
+        if status == "PUBLISH_COMPLETE":
+            v["tiktok_status"] = "siap"
+            send(v["chat_id"], f"✅ #{v['id']} {v['tajuk']} sudah dipost ke TikTok.")
+        elif status == "FAILED":
+            v["tiktok_status"] = "gagal"
+            send(v["chat_id"], f"⚠️ TikTok gagal post #{v['id']} ({d.get('fail_reason')}). Sila post sendiri:")
+            peringatan_manual(v)
+        elif now() - datetime.fromisoformat(v["dihantar_pada"]).replace(tzinfo=MYT) > timedelta(minutes=30):
+            v["tiktok_status"] = "tak_pasti"
+            send(v["chat_id"], f"⏳ #{v['id']} {v['tajuk']} masih diproses TikTok selepas 30 minit. "
+                               "Semak dalam app TikTok.")
 
 
 # ---------------------------------------------------------------- Masa & slot
@@ -147,6 +401,8 @@ def handle(state, msg):
             "message_id": msg["message_id"],
             "tajuk": tajuk_dari(msg) or f"Video #{state['next_id']}",
             "caption": msg.get("caption") or "",
+            "file_id": file_dari(msg)[0],
+            "mime": file_dari(msg)[1],
             "slot": next_free_slot(state, now(), taken),
             "dihantar": False,
         }
@@ -155,6 +411,10 @@ def handle(state, msg):
         nota = "" if item["caption"] else "\n(Tiada caption. Reply video ini dengan caption TikTok.)"
         send(chat_id, f"✅ #{item['id']} {item['tajuk']}\n📅 {fmt(item['slot'])}{nota}",
              reply_to_message_id=msg["message_id"])
+        return
+
+    if text.startswith("http") and "code=" in text and state.get("tiktok_oauth_state"):
+        terima_kod_tiktok(state, chat_id, text)
         return
 
     reply = msg.get("reply_to_message")
@@ -179,7 +439,9 @@ def handle(state, msg):
              "/masa 12:30 20:30 - tukar jam posting\n/susun - rapatkan semula jadual\n\n"
              "Group kursus: tambah saya ke group, kemudian taip /sambung dalam group itu.\n"
              "/tiktok <pautan> - pautan TikTok untuk mesej group\n/kongsi 3 - kongsi video #3 ke group sekarang\n"
-             "/group - lihat group\n/putus - putuskan group")
+             "/group - lihat group\n/putus - putuskan group\n\n"
+             "Post terus ke TikTok:\n/sambungtiktok - sambung akaun TikTok\n/autotiktok on|off - hidup/matikan auto-post\n"
+             "/privasitiktok awam|kawan|sendiri\n/statustiktok - status sambungan\n/putustiktok - putuskan TikTok")
     elif cmd == "/jadual":
         p = pending(state)
         if not p:
@@ -231,6 +493,63 @@ def handle(state, msg):
     elif cmd == "/susun":
         susun_semula(state)
         send(chat_id, "🔄 Jadual disusun semula. Taip /jadual.")
+    elif cmd == "/sambungtiktok":
+        if not tiktok_dikonfigur():
+            send(chat_id, "Secret TIKTOK_CLIENT_KEY dan TIKTOK_CLIENT_SECRET belum ditambah di GitHub. "
+                          "Ikut langkah dalam bot-tiktok/README.md.")
+        elif not redirect_uri():
+            send(chat_id, "TIKTOK_REDIRECT_URI belum ditetapkan.")
+        else:
+            state["tiktok_oauth_state"] = secrets.token_urlsafe(16)
+            url = "https://www.tiktok.com/v2/auth/authorize/?" + urllib.parse.urlencode({
+                "client_key": os.environ["TIKTOK_CLIENT_KEY"], "scope": TIKTOK_SCOPE, "response_type": "code",
+                "redirect_uri": redirect_uri(), "state": state["tiktok_oauth_state"]})
+            send(chat_id, "🔗 Sambung TikTok:\n\n"
+                          "1. Tekan pautan di bawah.\n"
+                          "2. Log masuk TikTok dan tekan Authorize (Benarkan).\n"
+                          "3. Satu halaman lain akan terbuka. Salin alamat penuh di bar alamat (bermula dengan https).\n"
+                          "4. Tampal alamat itu di sini dan hantar.\n\n" + url,
+                 disable_web_page_preview=True)
+    elif cmd == "/autotiktok":
+        pilih = (args[0].lower() if args else "")
+        if pilih not in ("on", "off", "hidup", "mati"):
+            send(chat_id, f"Auto-post sekarang: {'ON' if state.get('tiktok_auto') else 'OFF'}.\nContoh: /autotiktok on")
+        elif pilih in ("on", "hidup") and not state.get("tiktok_auth"):
+            send(chat_id, "Sambung TikTok dulu: /sambungtiktok")
+        else:
+            state["tiktok_auto"] = pilih in ("on", "hidup")
+            send(chat_id, "🤖 Auto-post ON. Bila tiba masa, saya post sendiri ke TikTok." if state["tiktok_auto"]
+                 else "Auto-post OFF. Saya hantar peringatan sahaja, Cikgu post sendiri.")
+    elif cmd == "/privasitiktok":
+        p = PRIVASI.get(args[0].lower()) if args else None
+        if not p:
+            send(chat_id, f"Privasi sekarang: {NAMA_PRIVASI.get(state.get('tiktok_privasi'), '?')}.\n"
+                          "Contoh: /privasitiktok awam  (atau kawan, sendiri)")
+        else:
+            state["tiktok_privasi"] = p
+            send(chat_id, f"🔒 Privasi post TikTok: {args[0].lower()}.")
+    elif cmd == "/statustiktok":
+        if not state.get("tiktok_auth"):
+            send(chat_id, "TikTok belum disambung. Taip /sambungtiktok")
+        else:
+            try:
+                nama = nama_akaun(state)
+                send(chat_id, f"🎵 Disambung ke: {nama}\nAuto-post: {'ON' if state.get('tiktok_auto') else 'OFF'}\n"
+                              f"Privasi: {NAMA_PRIVASI.get(state.get('tiktok_privasi'), '?')}")
+            except Exception as e:
+                send(chat_id, f"⚠️ {sebab(e)}")
+    elif cmd == "/putustiktok":
+        auth = buka(state["tiktok_auth"]) if state.get("tiktok_auth") and tiktok_dikonfigur() else None
+        if auth:
+            try:
+                tiktok_http("POST", "/v2/oauth/revoke/", form={
+                    "client_key": os.environ["TIKTOK_CLIENT_KEY"], "client_secret": os.environ["TIKTOK_CLIENT_SECRET"],
+                    "token": auth["access_token"]})
+            except Exception:
+                pass
+        state["tiktok_auth"] = None
+        state["tiktok_auto"] = False
+        send(chat_id, "TikTok diputuskan. Auto-post OFF.")
     elif text:
         send(chat_id, "Forward video kepada saya, atau taip /bantuan.")
 
@@ -250,6 +569,32 @@ def handle_group(state, msg):
     elif state["group_id"] == msg["chat"]["id"]:
         state["group_id"] = state["group_nama"] = None
         send(msg["chat"]["id"], "Group ini diputuskan.")
+
+
+def terima_kod_tiktok(state, chat_id, text):
+    q = urllib.parse.parse_qs(urllib.parse.urlparse(text.strip()).query)
+    kod, st = (q.get("code") or [None])[0], (q.get("state") or [None])[0]
+    if not kod or st != state.get("tiktok_oauth_state"):
+        send(chat_id, "Pautan ini tidak sepadan. Taip /sambungtiktok dan cuba semula dengan pautan yang baru.")
+        return
+    state["tiktok_oauth_state"] = None
+    try:
+        simpan_token(state, _oauth(grant_type="authorization_code", code=kod, redirect_uri=redirect_uri()))
+        state["tiktok_auto"] = True
+        try:
+            nama = nama_akaun(state)
+        except Exception:
+            nama = "akaun TikTok"
+        send(chat_id, f"✅ Disambung ke {nama}.\n🤖 Auto-post ON: bila tiba masa, saya post terus ke TikTok.\n"
+                      "Matikan bila-bila masa: /autotiktok off")
+    except Exception as e:
+        send(chat_id, f"⚠️ Gagal sambung TikTok: {sebab(e)}. Taip /sambungtiktok untuk cuba semula.")
+
+
+def peringatan_manual(v):
+    api("copyMessage", chat_id=v["chat_id"], from_chat_id=v["chat_id"], message_id=v["message_id"],
+        caption=f"🔔 Masa posting TikTok!\n#{v['id']} {v['tajuk']}")
+    send(v["chat_id"], v["caption"] or "(Tiada caption)")
 
 
 def kongsi_ke_group(state, v):
@@ -273,9 +618,20 @@ def hantar_yang_tiba(state):
     for v in pending(state):
         if v["slot"] > t:
             break
-        api("copyMessage", chat_id=v["chat_id"], from_chat_id=v["chat_id"], message_id=v["message_id"],
-            caption=f"🔔 Masa posting TikTok!\n#{v['id']} {v['tajuk']}")
-        send(v["chat_id"], v["caption"] or "(Tiada caption)")
+        if state.get("tiktok_auto") and state.get("tiktok_auth"):
+            try:
+                pid, privasi = post_ke_tiktok(state, v)
+                v["tiktok_publish_id"], v["tiktok_status"] = pid, "proses"
+                nota = ("\n🔒 Dipost sebagai Private kerana app TikTok belum lulus audit."
+                        if privasi == "SELF_ONLY" and state.get("tiktok_privasi") != "SELF_ONLY" else "")
+                send(v["chat_id"], f"📤 #{v['id']} {v['tajuk']} sedang dipost ke TikTok. "
+                                   f"Saya beritahu bila siap.{nota}")
+            except Exception as e:
+                print(f"Gagal post TikTok #{v['id']}: {e}", file=sys.stderr, flush=True)
+                send(v["chat_id"], f"⚠️ Gagal post #{v['id']} ke TikTok: {sebab(e)}.\nSila post sendiri:")
+                peringatan_manual(v)
+        else:
+            peringatan_manual(v)
         v["dihantar"] = True
         v["dihantar_pada"] = t
         if state["group_id"]:
@@ -337,6 +693,8 @@ def main():
                     except Exception as e:  # satu mesej rosak jangan hentikan bot
                         print(f"Ralat mesej {u['update_id']}: {e}", file=sys.stderr, flush=True)
             hantar_yang_tiba(state)
+            if state.get("tiktok_auth") and tiktok_dikonfigur():
+                semak_status_tiktok(state)
         except Exception as e:  # rangkaian terputus dll: cuba lagi
             if not lama:
                 raise
