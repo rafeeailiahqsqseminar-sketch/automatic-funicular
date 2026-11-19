@@ -63,3 +63,58 @@ Jam asal ialah 8:30 malam setiap hari (waktu Malaysia). Bot sentiasa berjaga dan
 
 Forward satu video kepada bot. Bot akan balas dalam beberapa saat: "✅ #1 ... 📅 tarikh dan jam".
 Kalau bot tak balas: di GitHub, klik **Actions**, kemudian **Bot Jadual TikTok**, kemudian **Run workflow**.
+
+## Post terus ke TikTok (auto-post)
+
+Bila auto-post ON, bila tiba masa bot muat naik video terus ke TikTok dengan caption, tanpa Cikgu sentuh. Kalau gagal, bot hantar peringatan biasa supaya Cikgu post sendiri.
+
+**Perkara penting**
+
+- Video mesti **20MB ke bawah**. Itu had Telegram untuk bot muat turun video. Video lebih besar akan dihantar sebagai peringatan biasa.
+- Sebelum app TikTok Cikgu **lulus audit TikTok**, semua video hanya boleh dipost sebagai **Private** (hanya Cikgu nampak). Lepas lulus audit, video dipost sebagai Public.
+- TikTok mungkin tolak audit untuk bot peribadi. Kalau ditolak, auto-post kekal Private sahaja.
+
+**A. Buat app di TikTok for Developers**
+
+1. Buka https://developers.tiktok.com dan log masuk dengan akaun TikTok Cikgu.
+2. Klik **Manage apps**, kemudian **Connect an app**.
+3. Isi nama app, ikon, kategori dan penerangan.
+4. Isi **Terms of Service URL** dan **Privacy Policy URL**. TikTok wajibkan dua pautan ini.
+5. Pada **Platforms**, pilih **Web** dan isi alamat laman web Cikgu.
+6. Klik **Add products**, kemudian tambah **Login Kit** dan **Content Posting API**.
+7. Dalam **Content Posting API**, hidupkan **Direct Post**.
+8. Dalam **Login Kit**, pada **Redirect URI**, tampal:
+   `https://github.com/rafeeailiahqsqseminar-sketch/automatic-funicular`
+9. Pada **Scopes**, pastikan `user.info.basic` dan `video.publish` ditanda.
+10. Klik **Submit for review**. Semasa menunggu, Cikgu boleh guna **Sandbox** (langkah B).
+
+**B. Guna Sandbox sementara menunggu (pilihan)**
+
+1. Dalam app, tukar suis di atas dari **Production** ke **Sandbox**, kemudian klik **Create Sandbox**.
+2. Ulang langkah A6 hingga A9 dalam Sandbox.
+3. Klik **Target Users**, kemudian tambah akaun TikTok Cikgu.
+4. Guna **Client key** dan **Client secret** Sandbox dalam langkah C. Bila app lulus, tukar kepada kunci Production.
+
+**C. Masukkan kunci dalam GitHub**
+
+1. Dalam app TikTok, salin **Client key** dan **Client secret**.
+2. Buka repo `automatic-funicular` di GitHub, klik **Settings**, kemudian **Secrets and variables**, kemudian **Actions**.
+3. Klik **New repository secret**. Name: `TIKTOK_CLIENT_KEY`, Secret: tampal Client key. Klik **Add secret**.
+4. Klik **New repository secret** sekali lagi. Name: `TIKTOK_CLIENT_SECRET`, Secret: tampal Client secret. Klik **Add secret**.
+
+**D. Sambung dalam bot**
+
+1. Dalam chat bot, taip `/sambungtiktok` dan hantar.
+2. Tekan pautan yang bot beri, log masuk TikTok dan tekan **Authorize**.
+3. Satu halaman GitHub akan terbuka. Salin alamat penuh di bar alamat.
+4. Tampal alamat itu dalam chat bot dan hantar.
+5. Bot balas "✅ Disambung". Auto-post kini ON.
+
+| Buat apa | Caranya |
+|---|---|
+| Hidup / matikan auto-post | `/autotiktok on` atau `/autotiktok off` |
+| Tukar privasi post | `/privasitiktok awam`, `/privasitiktok kawan` atau `/privasitiktok sendiri` |
+| Semak sambungan | `/statustiktok` |
+| Putuskan TikTok | `/putustiktok` |
+
+Sambungan kekal selama setahun. Selepas itu, taip `/sambungtiktok` semula.
