@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kopi Dayung</title>
+<meta name="description" content="Minuman Kopi Pracampuran Herba Pilihan — Kopi Dayung. Bermula RM20.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#140d08; --bg2:#1e140d; --card:#26190f; --line:#3b2a1c;
+  --gold:#e0a63a; --gold2:#f4c766; --cream:#f6ead8; --muted:#bfa98d;
+  --red:#c9372c; --ok:#3fae6a;
+  --wrap:1100px; --r:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--cream);font-family:Inter,system-ui,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,video{max-width:100%;display:block}
+a{color:inherit}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 16px}
+section{padding:72px 0}
+.eyebrow{display:inline-block;font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);border:1px solid var(--line);padding:6px 12px;border-radius:999px;background:rgba(224,166,58,.06)}
+h1,h2{font-family:Anton,Impact,sans-serif;font-weight:400;letter-spacing:.01em;line-height:1.05;text-transform:uppercase}
+h1{font-size:clamp(2.4rem,7vw,4.6rem);margin:18px 0}
+h2{font-size:clamp(1.9rem,5vw,3rem);margin:14px 0 12px}
+h1 em,h2 em{font-style:normal;color:var(--gold)}
+.lead{color:var(--muted);font-size:1.08rem;max-width:560px}
+.center{text-align:center}.center .lead{margin:0 auto}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:800;letter-spacing:.04em;text-decoration:none;padding:16px 26px;border-radius:999px;transition:transform .15s,box-shadow .15s;font-size:.98rem;text-transform:uppercase}
+.btn:hover{transform:translateY(-2px)}
+.btn-gold{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#2a1606;box-shadow:0 10px 30px -8px rgba(224,166,58,.6)}
+.btn-ghost{border:1.5px solid var(--gold);color:var(--gold)}
+.btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.ph{border:2px dashed #6b5036;border-radius:var(--r);display:grid;place-items:center;text-align:center;color:var(--muted);font-size:.9rem;padding:16px;background:repeating-linear-gradient(45deg,rgba(255,255,255,.015) 0 12px,transparent 12px 24px)}
+
+/* top bar */
+.topbar{background:var(--gold);color:#2a1606;text-align:center;font-weight:700;font-size:.82rem;padding:8px 16px;letter-spacing:.04em}
+nav{position:sticky;top:0;z-index:40;background:rgba(20,13,8,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
+.logo{font-family:Anton,sans-serif;font-size:1.5rem;letter-spacing:.04em}
+.logo span{color:var(--gold)}
+nav .btn{padding:10px 18px;font-size:.8rem}
+
+/* hero */
+.hero{padding:56px 0 64px;background:radial-gradient(900px 500px at 85% 20%,rgba(224,166,58,.18),transparent 60%),var(--bg)}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
+.trust{display:flex;flex-wrap:wrap;gap:10px 18px;margin-top:28px;color:var(--muted);font-size:.88rem;font-weight:600}
+.trust span::before{content:"✓";color:var(--gold);margin-right:6px;font-weight:800}
+.pack{background:linear-gradient(160deg,#3a2414,#1b110a);border:1px solid var(--line);border-radius:28px;padding:22px;position:relative;box-shadow:0 30px 80px -30px rgba(0,0,0,.8)}
+.pack .tag{position:absolute;top:18px;left:18px;font-size:.7rem;font-weight:800;letter-spacing:.12em;background:rgba(0,0,0,.45);padding:6px 10px;border-radius:999px;color:var(--gold2)}
+.pack .ph{aspect-ratio:1/1;border-radius:20px}
+.pack .meta{display:flex;justify-content:space-between;align-items:end;margin-top:18px;gap:12px}
+.pack .name{font-family:Anton,sans-serif;font-size:1.9rem;line-height:1}
+.pack .sub{color:var(--muted);font-size:.85rem;margin-top:4px}
+.price{text-align:right;font-size:.8rem;color:var(--muted);white-space:nowrap}
+.price b{display:block;font-family:Anton,sans-serif;font-weight:400;color:var(--gold2);font-size:2rem;line-height:1}
+
+/* problems */
+.problems{background:var(--bg2)}
+.grid4{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:36px}
+.pcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:26px}
+.pcard h3{font-size:1.15rem;color:var(--gold2);margin-bottom:8px;font-weight:700}
+.pcard p{color:var(--muted)}
+.note-strip{margin-top:26px;padding:18px 22px;border-left:4px solid var(--gold);background:rgba(224,166,58,.07);border-radius:0 12px 12px 0}
+.ingr{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px;align-items:center}
+.ingr b{color:var(--cream);margin-right:4px}
+.chip{background:#2f1f12;border:1px solid var(--line);padding:7px 14px;border-radius:999px;font-size:.88rem;font-weight:600;color:var(--gold2)}
+
+/* kenali */
+.kenali .wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:48px;align-items:center}
+.kenali .ph{aspect-ratio:4/5}
+.benefits{list-style:none;margin-top:22px;display:grid;gap:14px}
+.benefits li{display:flex;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.benefits .ic{flex:0 0 34px;height:34px;border-radius:50%;background:var(--gold);color:#2a1606;display:grid;place-items:center;font-weight:800}
+.benefits strong{display:block;color:var(--cream)}
+.benefits span{color:var(--muted);font-size:.95rem}
+.disclaimer{margin-top:20px;font-size:.82rem;color:#9b8670;font-style:italic}
+
+/* story */
+.story{background:var(--bg2)}
+.story .wrap{display:grid;grid-template-columns:1fr 380px;gap:48px;align-items:center}
+.babak{display:grid;gap:14px;margin-top:22px}
+.babak div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.babak b{color:var(--gold2);display:block;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase}
+.phone{aspect-ratio:9/16;border-radius:30px;border:8px solid #0b0705;background:#000;position:relative;overflow:hidden;box-shadow:0 30px 80px -30px rgba(0,0,0,.9)}
+.phone video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.phone .overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:space-between;padding:18px;background:linear-gradient(180deg,rgba(0,0,0,.55),transparent 30%,transparent 50%,rgba(0,0,0,.85))}
+.phone .top{display:flex;justify-content:space-between;font-size:.72rem;font-weight:700;letter-spacing:.1em}
+.phone .top button{background:rgba(255,255,255,.15);border:0;color:#fff;font:inherit;padding:4px 10px;border-radius:999px;cursor:pointer}
+.slide{display:none}.slide.on{display:block}
+.slide small{color:var(--gold2);font-weight:800;letter-spacing:.1em;font-size:.72rem}
+.slide h4{font-family:Anton,sans-serif;font-weight:400;font-size:1.6rem;line-height:1.1;margin:6px 0}
+.slide p{font-size:.86rem;color:#e8dccb}
+.phone .ctrl{display:flex;gap:8px;margin-top:12px}
+.phone .ctrl button,.phone .ctrl a{flex:1;font:inherit;font-size:.75rem;font-weight:700;padding:9px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:rgba(0,0,0,.4);color:#fff;cursor:pointer;text-align:center;text-decoration:none}
+.phone .ctrl a{background:var(--gold);color:#2a1606;border-color:var(--gold)}
+.phone .ph{position:absolute;inset:0;border:0;border-radius:0}
+
+/* live */
+.live .wrap{display:grid;grid-template-columns:360px 1fr;gap:48px;align-items:center}
+.live-badge{position:absolute;top:14px;left:14px;background:var(--red);color:#fff;font-size:.7rem;font-weight:800;padding:4px 10px;border-radius:6px;letter-spacing:.1em;z-index:2}
+.live blockquote{font-family:Anton,sans-serif;font-size:clamp(1.6rem,4vw,2.2rem);line-height:1.15;color:var(--gold2);margin:16px 0}
+.handle{color:var(--muted);font-weight:600;margin-top:10px}
+.small{font-size:.82rem;color:#9b8670;margin-top:14px}
+
+/* reviews */
+.reviews{background:var(--bg2)}
+.rgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}
+.review{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:12px}
+.review .who{display:flex;align-items:center;gap:12px}
+.av{width:40px;height:40px;border-radius:50%;background:var(--gold);color:#2a1606;display:grid;place-items:center;font-weight:800;text-transform:uppercase}
+.who b{display:block;font-size:.95rem}
+.who small{color:var(--muted);font-size:.78rem}
+.stars{color:var(--gold2);letter-spacing:2px;font-size:.9rem}
+.review p{color:#e8dccb}
+.src{display:inline-flex;gap:8px;align-items:center;margin-top:10px;font-weight:700;font-size:.8rem;letter-spacing:.1em;color:var(--muted)}
+
+/* pakej */
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
+.pkg{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:28px 22px;text-align:center;position:relative}
+.pkg.hot{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),0 20px 60px -25px rgba(224,166,58,.6)}
+.pkg h3{font-family:Anton,sans-serif;font-weight:400;font-size:2.2rem;line-height:1}
+.pkg .amt{font-family:Anton,sans-serif;color:var(--gold2);font-size:2.4rem;margin:14px 0}
+.pkg .btn{width:100%;margin-top:10px}
+
+/* checkout */
+.checkout{background:linear-gradient(180deg,var(--bg2),#2a170a)}
+.cbox{max-width:640px;margin:32px auto 0;background:var(--card);border:1px solid var(--line);border-radius:24px;padding:28px}
+.cbox .ph{min-height:180px}
+
+footer{padding:36px 0 110px;border-top:1px solid var(--line);color:#8f7a63;font-size:.82rem;text-align:center}
+
+/* floating mini video */
+.mini{position:fixed;right:16px;bottom:90px;width:130px;aspect-ratio:9/16;border-radius:16px;overflow:hidden;border:3px solid var(--gold);background:#000;z-index:50;box-shadow:0 20px 50px -10px rgba(0,0,0,.8);transform:translateX(160%);transition:transform .35s}
+.mini.show{transform:none}
+.mini .ph{position:absolute;inset:0;border:0;border-radius:0;font-size:.7rem}
+.mini .x{position:absolute;top:4px;right:4px;z-index:2;background:rgba(0,0,0,.6);color:#fff;border:0;width:24px;height:24px;border-radius:50%;cursor:pointer}
+/* sticky cta mobile */
+.sticky{position:fixed;left:0;right:0;bottom:0;z-index:45;padding:12px 16px;background:rgba(20,13,8,.95);border-top:1px solid var(--line);display:none}
+.sticky .btn{width:100%}
+
+@media (max-width:900px){
+  .hero .wrap,.kenali .wrap,.story .wrap,.live .wrap{grid-template-columns:1fr}
+  .story .phone,.live .phone{max-width:340px;margin:0 auto}
+  .rgrid,.pgrid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:600px){
+  section{padding:56px 0}
+  .grid4,.rgrid,.pgrid{grid-template-columns:1fr}
+  nav .btn{display:none}
+  .sticky{display:block}
+  .mini{bottom:84px;width:104px}
+  .btns .btn{flex:1 1 100%}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">Bermula RM20 • Penghantaran Seluruh Malaysia</div>
+<nav><div class="wrap">
+  <div class="logo">KOPI <span>DAYUNG</span></div>
+  <a href="#checkout" class="btn btn-gold">Order</a>
+</div></nav>
+
+<!-- HERO -->
+<header class="hero"><div class="wrap">
+  <div>
+    <span class="eyebrow">Minuman Kopi Pracampuran Herba Pilihan</span>
+    <h1>“Isteri tak rasa lagi… <em>suami dah habis?</em>”</h1>
+    <p class="lead">Ramai pasangan mencari cara untuk meningkatkan keyakinan dan menikmati masa bersama dengan lebih baik. Kenali Kopi Dayung.</p>
+    <div class="btns">
+      <a href="#checkout" class="btn btn-gold">Nak Cuba Kopi Dayung</a>
+      <a href="#pakej" class="btn btn-ghost">Lihat Pakej</a>
+    </div>
+    <div class="trust"><span>Bungkusan Privasi &amp; Rapi</span><span>Penghantaran Seluruh Malaysia</span><span>Mudah Dibancuh</span></div>
+  </div>
+  <div class="pack">
+    <span class="tag">SACHET ALUMINIUM KEDAP</span>
+    <div class="ph">[Gambar produk Kopi Dayung]</div>
+    <div class="meta">
+      <div><div class="name">KOPI DAYUNG</div><div class="sub">Kopi Untuk Lelaki • Tenaga Harian</div></div>
+      <div class="price">Bermula<b>RM20</b></div>
+    </div>
+  </div>
+</div></header>
+
+<!-- MASALAH -->
+<section class="problems"><div class="wrap">
+  <div class="center">
+    <span class="eyebrow">Situasi Biasa Rumah Tangga</span>
+    <h2>Pernah rasa <em>macam ni?</em></h2>
+    <p class="lead">Keletihan harian dan tekanan kerja sering mempengaruhi keyakinan diri apabila meluangkan masa berkualiti bersama pasangan.</p>
+  </div>
+  <div class="grid4">
+    <div class="pcard"><h3>“Masa bersama pasangan terasa terlalu singkat?”</h3><p>Selepas seharian penat bekerja, tenaga cepat menurun sehingga momen berkualiti bersama terasa tergesa-gesa.</p></div>
+    <div class="pcard"><h3>“Kurang yakin dengan prestasi diri?”</h3><p>Rasa bimbang memikirkan keupayaan diri membuatkan fikiran terganggu dan kurang tenang ketika bersama.</p></div>
+    <div class="pcard"><h3>“Rasa malu untuk berbincang dengan pasangan?”</h3><p>Ramai lelaki memilih untuk memendam perasaan seorang diri kerana segan meluahkan kepada isteri.</p></div>
+    <div class="pcard"><h3>“Nak lebih yakin dan selesa bersama pasangan?”</h3><p>Ingin mencari ikhtiar minuman harian yang ringkas, sedap diminum dan membantu menyegarkan badan.</p></div>
+  </div>
+  <div class="note-strip">Komunikasi terbuka bersama pasangan adalah langkah pertama membina keyakinan.</div>
+  <div class="ingr"><b>Ramuan Tertera Pada Pek:</b>
+    <span class="chip">Tongkat Ali</span><span class="chip">Guarana</span><span class="chip">Maca</span><span class="chip">Ubi Jaga</span><span class="chip">Serbuk Kopi</span><span class="chip">Krimer &amp; Gula</span>
+  </div>
+</div></section>
+
+<!-- KENALI -->
+<section class="kenali"><div class="wrap">
+  <div class="ph">[Gambar sachet / cawan Kopi Dayung]</div>
+  <div>
+    <span class="eyebrow">Pilihan Minuman Lelaki</span>
+    <h2>Kenali <em>Kopi Dayung</em></h2>
+    <p class="lead">Kopi Dayung ialah minuman kopi pracampuran yang dirumus khas untuk lelaki dewasa. Ia menggabungkan aroma serbuk kopi bersama ekstrak herba tradisional pilihan seperti Tongkat Ali, Guarana, Maca dan Ubi Jaga dalam pek sachet aluminium yang mudah dibawa ke mana-mana.</p>
+    <h3 style="margin-top:24px;font-size:1.05rem;color:var(--gold2)">Kelebihan Kopi Dayung:</h3>
+    <ul class="benefits">
+      <li><div class="ic">1</div><div><strong>Membantu Menyegarkan Badan</strong><span>Gabungan kopi dan ekstrak herba membantu mengurangkan rasa lesu selepas seharian bekerja.</span></div></li>
+      <li><div class="ic">2</div><div><strong>Menyokong Tenaga &amp; Keyakinan Diri</strong><span>Sesuai dijadikan amalan minuman sebelum meluangkan masa bersama pasangan.</span></div></li>
+      <li><div class="ic">3</div><div><strong>Sachet Individu Kedap Udara</strong><span>Mudah dibancuh dengan air panas pada bila-bila masa serta mengekalkan aroma kopi segar.</span></div></li>
+      <li><div class="ic">4</div><div><strong>Rasa Kopi Yang Enak</strong><span>Lemak berkrim dengan sedikit rasa pahit kopi asli yang digemari peminat kopi.</span></div></li>
+    </ul>
+    <p class="disclaimer">*Nota: Kopi Dayung adalah minuman kesihatan umum dan bukan ubat untuk merawat atau menyembuhkan sebarang penyakit. Kesan penerimaan setiap individu mungkin berbeza mengikut tahap kesihatan dan gaya hidup masing-masing.</p>
+    <div class="btns"><a href="#checkout" class="btn btn-gold">Nak Cuba Sekarang</a></div>
+  </div>
+</div></section>
+
+<!-- CERITA 9:16 -->
+<section class="story"><div class="wrap">
+  <div>
+    <span class="eyebrow">Video Cerita Pendek 9:16</span>
+    <h2>Jangan pendam seorang diri, <em>bincang dengan pasangan</em></h2>
+    <p class="lead">Tonton kisah santai suami isteri yang berbincang secara terbuka tentang rasa kurang yakin ketika bersama—dan bagaimana sokongan pasangan serta ikhtiar harian dengan Kopi Dayung membantu mengembalikan keceriaan.</p>
+    <div class="babak">
+      <div><b>Babak 1 &amp; 2</b>Suami meluahkan rasa kurang yakin &amp; isteri memberi sokongan positif.</div>
+      <div><b>Babak 3 &amp; 4</b>Memperkenalkan Kopi Dayung &amp; ajakan menyemak pakej sesuai.</div>
+    </div>
+    <div class="btns"><a href="#pakej" class="btn btn-ghost">Semak Pakej Sesuai</a></div>
+  </div>
+  <div class="phone">
+    <div class="ph">[Video cerita 9:16]</div>
+    <div class="overlay">
+      <div class="top"><span>CERITA PASANGAN • 9:16</span><button type="button" id="pause">Jeda</button></div>
+      <div>
+        <div class="slide"><small>BABAK 1 &amp; 2</small><p>Suami meluahkan rasa kurang yakin &amp; isteri memberi sokongan positif.</p></div>
+        <div class="slide on"><small>BABAK 3: IKHTIAR HARIAN</small><h4>“Kenali Kopi Dayung.”</h4><p>Kopi pracampuran lelaki dengan Tongkat Ali, Guarana, Maca &amp; Ubi Jaga.</p></div>
+        <div class="slide"><small>BABAK 3 &amp; 4</small><p>Memperkenalkan Kopi Dayung &amp; ajakan menyemak pakej sesuai.</p></div>
+        <div class="ctrl"><button type="button" id="prev">Sebelum</button><a href="#pakej">Lihat Pakej</a><button type="button" id="next">Seterusnya</button></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- LIVE -->
+<section class="live"><div class="wrap">
+  <div class="phone">
+    <span class="live-badge">RAKAMAN LIVE</span>
+    <div class="ph">[Video live — video_1.mp4]</div>
+  </div>
+  <div>
+    <span class="eyebrow">Siaran &amp; Ulasan Pembeli</span>
+    <h2>Rakaman live &amp; <em>maklum balas pembeli</em></h2>
+    <p class="lead">Tonton penerangan ringkas mengenai pilihan pek Kopi Dayung serta baca ulasan sebenar pembeli.</p>
+    <blockquote>“Patutlah Kopi ni orang asyik sebut-sebut!!”</blockquote>
+    <p>Promosi 3 sachet, 5 sachet &amp; 10 sachet Kopi Dayung!</p>
+    <p class="handle">Promosi 3, 5 &amp; 10 Sachet • @b17biotech.official</p>
+    <div class="btns"><a href="#checkout" class="btn btn-gold">Order Kopi Dayung</a></div>
+    <p class="small">*Video mini terapung akan muncul di sebelah kanan apabila anda menatal ke bawah.</p>
+  </div>
+</div></section>
+
+<!-- ULASAN -->
+<section class="reviews"><div class="wrap">
+  <div class="center">
+    <span class="eyebrow">Ulasan &amp; Komen Pembeli</span>
+    <h2>Ulasan pembeli <em>(TikTok)</em></h2>
+    <p class="lead">Dipetik terus daripada paparan ulasan pelanggan yang dimasukkan</p>
+  </div>
+  <div class="rgrid" id="rgrid"></div>
+</div></section>
+
+<!-- PAKEJ -->
+<section id="pakej"><div class="wrap">
+  <div class="center">
+    <span class="eyebrow">Promosi 3, 5 &amp; 10 Sachet</span>
+    <h2>Pilih <em>pakej</em></h2>
+    <p class="lead">Bermula RM20</p>
+  </div>
+  <div class="pgrid">
+    <div class="pkg"><h3>3 SACHET</h3><div class="amt">RM[isi]</div><a href="#checkout" class="btn btn-ghost">Pilih</a></div>
+    <div class="pkg hot"><h3>5 SACHET</h3><div class="amt">RM[isi]</div><a href="#checkout" class="btn btn-gold">Pilih</a></div>
+    <div class="pkg"><h3>10 SACHET</h3><div class="amt">RM[isi]</div><a href="#checkout" class="btn btn-ghost">Pilih</a></div>
+  </div>
+</div></section>
+
+<!-- CHECKOUT -->
+<section class="checkout" id="checkout"><div class="wrap center">
+  <span class="eyebrow">Order</span>
+  <h2>Nak cuba <em>Kopi Dayung?</em></h2>
+  <div class="cbox">
+    <div class="ph">[Borang order / pautan WhatsApp / pautan TikTok Shop — isi]</div>
+    <div class="trust" style="justify-content:center"><span>Bungkusan Privasi &amp; Rapi</span><span>Penghantaran Seluruh Malaysia</span><span>Mudah Dibancuh</span></div>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <p>KOPI DAYUNG • @b17biotech.official</p>
+  <p style="margin-top:8px">*Nota: Kopi Dayung adalah minuman kesihatan umum dan bukan ubat untuk merawat atau menyembuhkan sebarang penyakit.</p>
+</div></footer>
+
+<div class="mini" id="mini"><button class="x" id="miniX" aria-label="Tutup">×</button><div class="ph">[Video mini]</div></div>
+<div class="sticky"><a href="#checkout" class="btn btn-gold">Order Kopi Dayung</a></div>
+
+<script>
+const reviews=[
+  ["A**s W**s","Lalai","2025-11-17","Berkesan tapi tak cepat. Saya minum hari ini besok baru menjadi"],
+  ["m**6","Lalai","2025-12-26","Dah sampai kat rumah.minum semalam segar molek.dan 2 raun"],
+  ["T**n Z**i","Lalai","1-9","kopi padu dah kerap repeat oder"],
+  ["a**n","Lalai","2025-12-6","xdpt d nafikn ni pun repeat kli ke 5... kopi dayung...semmganye bd..."],
+  ["F**,","5pcs","2-21","Alhamdulillah barang dh sampai penghantaran laju bungkus rapi xde cacat 👍"],
+  ["Y**k","Lalai","2025-12-31","Kopi padu dayung lebih lama,penghantaranpun cepat sampai tq seller"],
+  ["k**s","Lalai","2025-10-9","Product quality:Good product well packed n on time delivery"]
+];
+const g=document.getElementById('rgrid');
+reviews.forEach(([n,i,d,t])=>{
+  const el=document.createElement('div');el.className='review';
+  el.innerHTML=`<div class="who"><div class="av"></div><div><b></b><small></small></div></div><p></p>`;
+  el.querySelector('.av').textContent=n[0];
+  el.querySelector('b').textContent=n;
+  el.querySelector('small').textContent=`• Item: ${i} • ${d}`;
+  el.querySelector('p').textContent=`"${t}"`;
+  g.appendChild(el);
+});
+// carousel
+const slides=[...document.querySelectorAll('.slide')];let cur=1;
+const show=k=>{cur=(k+slides.length)%slides.length;slides.forEach((s,j)=>s.classList.toggle('on',j===cur))};
+document.getElementById('prev').onclick=()=>show(cur-1);
+document.getElementById('next').onclick=()=>show(cur+1);
+let auto=setInterval(()=>show(cur+1),4000);const pb=document.getElementById('pause');
+pb.onclick=()=>{if(auto){clearInterval(auto);auto=null;pb.textContent='Main'}else{auto=setInterval(()=>show(cur+1),4000);pb.textContent='Jeda'}};
+// mini video
+const mini=document.getElementById('mini');let closed=false;
+document.getElementById('miniX').onclick=()=>{closed=true;mini.classList.remove('show')};
+addEventListener('scroll',()=>{if(!closed)mini.classList.toggle('show',scrollY>900)},{passive:true});
+</script>
+</body>
+</html>
