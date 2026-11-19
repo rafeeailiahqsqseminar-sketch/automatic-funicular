@@ -1,6 +1,6 @@
 {
   "owner_chat_id": 60167214,
-  "offset": 954602939,
+  "offset": 954602940,
   "masa": [
     "20:30"
   ],
@@ -272,5 +272,9 @@
   ],
   "group_id": null,
   "group_nama": null,
-  "tiktok": null
+  "tiktok": null,
+  "tiktok_auth": null,
+  "tiktok_auto": false,
+  "tiktok_privasi": "PUBLIC_TO_EVERYONE",
+  "tiktok_oauth_state": null
 }
