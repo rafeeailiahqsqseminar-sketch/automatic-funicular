@@ -1,10 +1,10 @@
 {
   "owner_chat_id": 60167214,
-  "offset": 954602941,
+  "offset": 954602945,
   "masa": [
     "20:30"
   ],
-  "next_id": 31,
+  "next_id": 32,
   "senarai": [
     {
       "id": 1,
@@ -279,6 +279,17 @@
       "file_id": "BAACAgUAAxkBAANOav72KVrkxe5Iwq_hRulHvZqSEIcAAnIlAAKa2flXIHe3Y1pNlkQ9BA",
       "mime": "video/mp4",
       "slot": "2026-12-16T20:30",
+      "dihantar": false
+    },
+    {
+      "id": 31,
+      "chat_id": 60167214,
+      "message_id": 88,
+      "tajuk": "Episod 10 Kembali Kepada Diri Yang Sebenar",
+      "caption": "Episod 10 (Episod Akhir): Kembali Kepada Diri Yang Sebenar 🌅\nSiri Misteri Kehidupan\n\nAdakah kita benar-benar mengenali diri…\natau masih hidup dalam topeng yang dibina oleh dunia?\n\nMungkin sepanjang hidup ini,\nkita bukan sedang mencari siapa diri kita…\ntetapi sedang belajar melepaskan segala yang bukan diri kita.\n\nMulakan dengan tiga ungkapan yang sederhana:\n🤍 Aku terima\n🤍 Aku ikhlas\n🤍 Aku lepaskan\n\n\"Sesungguhnya beruntunglah orang yang menyucikan jiwanya.\" (Surah Asy-Syams: 9)\n\nKongsikan kepada seseorang yang mungkin sedang mencari dirinya.\nNak melepaskan luka dengan lebih mendalam? Sertai kelas Terapi Jiwa. Klik link di bio.\n\n— Rafee Ailiah, sahabat hati dan fikiran anda\n\n#sirimisterikehidupan #mengenalidiri #melepaskan #terapijiwa #muhasabah #healing #kesihatanmental #ketenangan #fyp #tiktokmalaysia\n\n#komuniti",
+      "file_id": "BAACAgUAAxkBAANYav_YNt4MzXc5I_LNZ48sDArgeSsAArIlAAKa2QFUBPcoHcvwvN49BA",
+      "mime": "video/mp4",
+      "slot": "2026-12-17T20:30",
       "dihantar": false
     }
   ],
