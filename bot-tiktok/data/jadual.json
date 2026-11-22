@@ -1,10 +1,10 @@
 {
   "owner_chat_id": 60167214,
-  "offset": 954602945,
+  "offset": 954602946,
   "masa": [
     "20:30"
   ],
-  "next_id": 32,
+  "next_id": 33,
   "senarai": [
     {
       "id": 1,
@@ -292,6 +292,17 @@
       "file_id": "BAACAgUAAxkBAANYav_YNt4MzXc5I_LNZ48sDArgeSsAArIlAAKa2QFUBPcoHcvwvN49BA",
       "mime": "video/mp4",
       "slot": "2026-12-17T20:30",
+      "dihantar": false
+    },
+    {
+      "id": 32,
+      "chat_id": 60167214,
+      "message_id": 94,
+      "tajuk": "copy EC367F88-B0BF-46F8-A9C7-7D3451C2931B",
+      "caption": "Kenapa siang kita nampak tenang… tapi malam-malam tiba-tiba menangis bila teringat seseorang? 🌙\n\nKadang-kadang satu lagu, bau atau tempat boleh bawa kita kembali kepada kenangan yang sangat bermakna.\nBukan lagu itu yang \"bercakap\". Kita yang teringat cerita di sebaliknya.\n\nCuba tanya diri:\nBila aku teringat dia, apa yang paling aku rasa?\nRindu? Sedih? Bersalah? Atau syukur? 🤍\n\nBila kita boleh namakan perasaan itu, kita dah mula memahami diri sendiri.\n\nEpisod seterusnya: langkah pertama untuk menguruskan perasaan tanpa terus menekannya.\nFollow supaya tak terlepas 🔔\n\nKomen di bawah: perasaan apa yang paling kuat bila anda teringat dia?\n\n#BercakapDenganOrangMati #Ep#BahasaPerasaan #RafeeAiliah #SahabatHatiDanFikiran #rindu #kenangan #kehilangan #muhasabah #fyp",
+      "file_id": "BAACAgUAAxkBAANeawKTlEFYVRpt0952HtPPCSlx-RYAAlQjAALAyxhUJTMgMN2pp5Y9BA",
+      "mime": "video/quicktime",
+      "slot": "2026-12-18T20:30",
       "dihantar": false
     }
   ],
