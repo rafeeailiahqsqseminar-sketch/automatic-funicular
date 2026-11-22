@@ -1,0 +1,38 @@
+name: Bot Admin Komuniti
+
+# Sama seperti Bot Jadual TikTok: setiap larian berjaga ~5 jam 40 minit dan balas serta-merta.
+# Cron hanya beratur larian seterusnya supaya bot sentiasa hidup.
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: bot-komuniti
+  cancel-in-progress: false
+
+jobs:
+  jalan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Sediakan git
+        run: |
+          git config user.name "bot-admin-komuniti"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Jalankan bot
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.KOMUNITI_TOKEN }}
+          BOT_LAMA_MINIT: "340"
+          BOT_GIT_PUSH: "1"
+        run: python bot-komuniti/bot.py
