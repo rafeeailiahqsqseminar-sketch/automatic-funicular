@@ -1,10 +1,10 @@
 {
   "owner_chat_id": 60167214,
-  "offset": 954602959,
+  "offset": 954602962,
   "masa": [
     "20:30"
   ],
-  "next_id": 37,
+  "next_id": 40,
   "senarai": [
     {
       "id": 1,
@@ -351,6 +351,39 @@
       "file_id": "BAACAgUAAxkBAANxawMnj_zc9ldhdVpaXHd9g7InmGcAAhQiAAKBwyBUE_UJ6t1XlkY9BA",
       "mime": "video/mp4",
       "slot": "2026-12-22T20:30",
+      "dihantar": false
+    },
+    {
+      "id": 37,
+      "chat_id": 60167214,
+      "message_id": 131,
+      "tajuk": "terapi jiwa bahagian1",
+      "caption": "",
+      "file_id": "BAACAgUAAxkBAAODawcalhNtLCuT1aZdZn6PysNiB4oAAvUmAAJT5ThUMUIxz3oXp_g9BA",
+      "mime": "video/mp4",
+      "slot": "2026-12-23T20:30",
+      "dihantar": false
+    },
+    {
+      "id": 38,
+      "chat_id": 60167214,
+      "message_id": 132,
+      "tajuk": "terapi jiwa bahagian2",
+      "caption": "Apa yang dia rasa saat ini? 🤔\nBila badan berhenti melawan, dia lepaskan, bernafas dan berehat.\n\nPengalaman setiap orang berbeza.\n👉 Klik link di bio untuk sertai group Telegram & kelas online PERCUMA.\n\n#terapijiwa #lepaskan #cikgurafee #komuniti #fyp",
+      "file_id": "BAACAgUAAxkBAAOEawcayENhXVcVUwABY7r0vz4H8-cSAAL2JgACU-U4VOfHmRfB_YF1PQQ",
+      "mime": "video/mp4",
+      "slot": "2026-12-24T20:30",
+      "dihantar": false
+    },
+    {
+      "id": 39,
+      "chat_id": 60167214,
+      "message_id": 133,
+      "tajuk": "terapi jiwa bahagian3",
+      "caption": "Bila jiwa lepaskan semua… 🌿\nReaksi setiap orang berbeza. Ada yang rebah, ada yang tenang, ada yang tersenyum.\n\n👉 Nak tahu lebih? Klik link di bio, sertai group Telegram & kelas online PERCUMA.\n\n#terapijiwa #jiwatenang #cikgurafee #komuniti #fyp",
+      "file_id": "BAACAgUAAxkBAAOFawca-VPdlBQfp74w9tSBGiFSNMkAAvcmAAJT5ThUk11Wrl4Sbog9BA",
+      "mime": "video/mp4",
+      "slot": "2026-12-25T20:30",
       "dihantar": false
     }
   ],
